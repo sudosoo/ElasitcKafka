@@ -1,2 +1,5 @@
-package com.sudosoo.takeiteasy.entity;public enum MemberRole {
+package com.sudosoo.takeiteasy.entity;
+
+public enum MemberRole {
+    NOMAL
 }

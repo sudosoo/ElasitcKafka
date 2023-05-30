@@ -3,11 +3,14 @@ package com.sudosoo.takeiteasy.entity;
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -17,13 +20,45 @@ public class Heart extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "like_id")
-    private List<CommentLike> commentLike = new ArrayList<>();
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "board_id")
+    private Post post;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
+    @Builder
+    private Heart(Member member, Post post, Comment comment) {
+        this.member = member;
+        this.post = post;
+        this.comment = comment;
+    }
+
+    public static Heart postLike(Post post , Member member){
+        return Heart.builder()
+                .post(post)
+                .member(member)
+                .build();
+    }
+    public static Heart commentLike(Comment comment , Member member){
+        return Heart.builder()
+                .comment(comment)
+                .member(member)
+                .build();
+    }
+
+    private void setPost(Post post) {
+        this.post = post;
+        post.getHearts().add(this);
+    }
+    private void setComment(Comment comment) {
+        this.comment = comment;
+        comment.getHearts().add(this);
+    }
 
 }

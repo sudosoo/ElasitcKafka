@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LikeServiceImpl implements LikeService {
+public class HeartServiceImpl implements HeartService {
 
     private final HeartRepository heartRepository;
     private final MemberService memberService;
@@ -23,7 +23,6 @@ public class LikeServiceImpl implements LikeService {
 
     @Transactional
     public void postLike(HeartRequestDto heartRequestDTO){
-
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
@@ -33,10 +32,8 @@ public class LikeServiceImpl implements LikeService {
         
         heartRepository.save(heart);
     }
-
     @Transactional
     public void commentLike(HeartRequestDto heartRequestDTO)  {
-
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
@@ -46,9 +43,6 @@ public class LikeServiceImpl implements LikeService {
         
         heartRepository.save(heart);
     }
-
-
-
     @Transactional
     public void postDisLike(HeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());

@@ -2,7 +2,7 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.HeartRequestDto;
 
-public interface LikeService {
+public interface HeartService {
 
     void postLike(HeartRequestDto heartRequestDTO);
     void commentLike(HeartRequestDto heartRequestDTO);
