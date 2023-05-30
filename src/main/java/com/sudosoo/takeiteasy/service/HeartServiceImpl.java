@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HeartServiceImpl implements HeartService {
 
     private final HeartRepository heartRepository;
@@ -21,42 +22,43 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    @Transactional
     public void postLike(HeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
         // 이미 좋아요되어있으면 에러 반환
         validateLike(heartRepository.findByMemberAndPost(member, post));
-        var heart = Heart.postLike(post,member);
-        
+        Heart heart = Heart.postLike(post,member);
+        heart.setPost(post);
+
         heartRepository.save(heart);
     }
-    @Transactional
     public void commentLike(HeartRequestDto heartRequestDTO)  {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
         // 이미 좋아요되어있으면 에러 반환
         validateLike(heartRepository.findByMemberAndComment(member, comment));
-        var heart = Heart.commentLike(comment,member);
+        Heart heart = Heart.commentLike(comment,member);
+        heart.setComment(comment);
         
         heartRepository.save(heart);
     }
-    @Transactional
     public void postDisLike(HeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
         Heart heart = findHeartByMemberAndReference(member,post);
+        heart.unHeartPost();
 
         heartRepository.delete(heart);
     }
 
-    @Transactional
     public void commentDisLike(HeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
         Heart heart = findHeartByMemberAndReference(member, comment);
+
+        heart.unHeartComment();
 
         heartRepository.delete(heart);
     }

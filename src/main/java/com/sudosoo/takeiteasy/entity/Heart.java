@@ -7,9 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -52,13 +49,28 @@ public class Heart extends BaseEntity {
                 .build();
     }
 
-    private void setPost(Post post) {
+    public void setPost(Post post) {
         this.post = post;
         post.getHearts().add(this);
     }
-    private void setComment(Comment comment) {
+
+    public void setComment(Comment comment) {
         this.comment = comment;
         comment.getHearts().add(this);
+    }
+
+    public void unHeartPost() {
+        if (post != null) {
+            post.getHearts().remove(this);
+            post = null;
+        }
+    }
+
+    public void unHeartComment() {
+        if (comment != null) {
+            comment.getHearts().remove(this);
+            comment = null;
+        }
     }
 
 }

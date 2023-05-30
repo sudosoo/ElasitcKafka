@@ -9,21 +9,22 @@ import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostService postService;
     private final MemberService memberService;
-
     public void createComment(CreateCommentRequestDto createCommentRequestDto){
         Member member = memberService.getMemberByMemberId(createCommentRequestDto.getMemberId());
         Post post = postService.getPostByPostId(createCommentRequestDto.getPostId());
-        Comment comment = Comment.buildEntityFromDto(post,member, createCommentRequestDto.getContent());
+        Comment comment = Comment.buildEntityFromDto(member, createCommentRequestDto.getContent());
+        comment.setPost(post);
         commentRepository.save(comment);
     }
-
     public Comment getCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found comment id : " + commentId));

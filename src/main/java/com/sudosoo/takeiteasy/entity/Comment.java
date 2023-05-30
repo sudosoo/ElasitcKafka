@@ -35,10 +35,13 @@ public class Comment extends BaseEntity {
         this.post = post;
         this.hearts = hearts;
     }
+    public void setPost(Post post) {
+        this.post = post;
+        post.getComments().add(this);
+    }
 
-    public static Comment buildEntityFromDto(Post post,Member member,String content){
+    public static Comment buildEntityFromDto(Member member,String content){
         return Comment.builder()
-                .post(post)
                 .member(member)
                 .content(content)
                 .build();

@@ -17,17 +17,17 @@ public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String CategoryName;
+    private String categoryName;
     @OneToMany(mappedBy = "category")
     private List<Post> posts = new ArrayList<>();
 
-    private Category(String categoryName, List<Post> posts) {
-        CategoryName = categoryName;
-        this.posts = posts;
-    }
-
     public void addPost(Post post){
         this.posts.add(post);
-
+    }
+    private Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+    public static Category buildEntityFromDto(String categoryName){
+        return new Category(categoryName);
     }
 }

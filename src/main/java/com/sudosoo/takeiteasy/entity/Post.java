@@ -31,6 +31,8 @@ public class Post extends BaseEntity {
     private Integer viewCount;
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     private Post(String title, String content, Category category, Member member, Integer viewCount, List<Heart> hearts) {
@@ -41,7 +43,7 @@ public class Post extends BaseEntity {
         this.viewCount = viewCount;
         this.hearts = hearts;
     }
-    private void setCategory(Category category) {
+    public void setCategory(Category category) {
         this.category = category;
         category.getPosts().add(this);
     }
