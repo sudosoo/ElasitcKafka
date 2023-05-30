@@ -1,28 +1,29 @@
 package com.sudosoo.takeiteasy.entity;
 
+import com.sudosoo.takeiteasy.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentLike {
+public class Heart extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "like_id")
-    private Like like;
+    private List<CommentLike> commentLike = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
-
-    public static CommentLike buildEntityFromDto(String groupName){
-        return new CommentLike(groupName);
-    }
 }

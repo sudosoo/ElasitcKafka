@@ -1,4 +1,4 @@
 package com.sudosoo.takeiteasy.service;
 
-public interface UserService {
+public interface MemberService {
 }
