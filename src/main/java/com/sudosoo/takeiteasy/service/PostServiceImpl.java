@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.SetPostByCategoryRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
@@ -27,6 +28,8 @@ public class PostServiceImpl implements PostService {
         }
         postRepository.save(post);
     }
+
+
 
     public Post getPostByPostId(Long postId) {
         return postRepository.findById(postId)

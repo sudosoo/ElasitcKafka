@@ -23,6 +23,7 @@ public class Category extends BaseEntity {
 
     public void addPost(Post post){
         this.posts.add(post);
+        post.setCategory(this);
     }
     private Category(String categoryName) {
         this.categoryName = categoryName;
