@@ -13,4 +13,6 @@ public class CreatePostRequestDto {
     private Long memberId;
     @Nullable
     private Long categoryId;
+    @Nullable
+    private Long relatedPostId;
 }

@@ -27,7 +27,7 @@ public class HeartServiceImpl implements HeartService {
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
         // 이미 좋아요되어있으면 에러 반환
-        validateLike(heartRepository.findByMemberAndPost(member, post));
+        existLike(heartRepository.findByMemberAndPost(member, post));
         Heart heart = Heart.postLike(post,member);
         heart.setPost(post);
 
@@ -38,7 +38,7 @@ public class HeartServiceImpl implements HeartService {
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
         // 이미 좋아요되어있으면 에러 반환
-        validateLike(heartRepository.findByMemberAndComment(member, comment));
+        existLike(heartRepository.findByMemberAndComment(member, comment));
         Heart heart = Heart.commentLike(comment,member);
         heart.setComment(comment);
         
@@ -47,7 +47,7 @@ public class HeartServiceImpl implements HeartService {
     public void postDisLike(HeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
-        Heart heart = findHeartByMemberAndReference(member,post);
+        Heart heart = findHeartByMemberAndPostOrComment(member,post);
         heart.unHeartPost();
 
         heartRepository.delete(heart);
@@ -56,14 +56,14 @@ public class HeartServiceImpl implements HeartService {
     public void commentDisLike(HeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
-        Heart heart = findHeartByMemberAndReference(member, comment);
+        Heart heart = findHeartByMemberAndPostOrComment(member, comment);
 
         heart.unHeartComment();
 
         heartRepository.delete(heart);
     }
 
-    private Heart findHeartByMemberAndReference(Member member, Object reference) {
+    private Heart findHeartByMemberAndPostOrComment(Member member, Object reference) {
         if (reference instanceof Post) {
             return heartRepository.findByMemberAndPost(member, (Post) reference)
                     .orElseThrow(() -> new IllegalArgumentException("Could not find heart id"));
@@ -75,7 +75,7 @@ public class HeartServiceImpl implements HeartService {
         }
     }
 
-    private void validateLike(Optional<Heart> heartRepository) {
+    private void existLike(Optional<Heart> heartRepository) {
         if (heartRepository.isPresent()) {
             throw new IllegalArgumentException("Duplicated Like !");
         }

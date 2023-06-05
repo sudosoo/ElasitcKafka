@@ -26,6 +26,8 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+    @OneToMany(mappedBy = "post")
+    private List<RelatedPost> relatedPosts = new ArrayList<>();
     @ColumnDefault("0")
     @Column(name = "view_count", nullable = false)
     private Integer viewCount;
@@ -47,6 +49,7 @@ public class Post extends BaseEntity {
         this.category = category;
         category.getPosts().add(this);
     }
+
     public static Post buildEntityFromDto(String title,String content,Member member){
         return Post.builder()
                 .title(title)
@@ -54,5 +57,7 @@ public class Post extends BaseEntity {
                 .member(member)
                 .build();
     }
+
+
 
 }

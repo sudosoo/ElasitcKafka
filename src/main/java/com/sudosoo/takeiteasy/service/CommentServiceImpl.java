@@ -1,12 +1,10 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.CreateCommentRequestDto;
-import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
-import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
