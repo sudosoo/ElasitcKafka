@@ -28,7 +28,8 @@ public class Category extends BaseEntity {
     private Category(String categoryName) {
         this.categoryName = categoryName;
     }
-    public static Category buildEntityFromDto(String categoryName){
+    public static Category buildEntityFromName(String categoryName){
         return new Category(categoryName);
     }
+
 }

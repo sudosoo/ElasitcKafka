@@ -4,11 +4,11 @@ import com.sudosoo.takeiteasy.dto.HeartRequestDto;
 
 public interface HeartService {
 
-    void postLike(HeartRequestDto heartRequestDTO);
-    void commentLike(HeartRequestDto heartRequestDTO);
+    void postHeart(HeartRequestDto heartRequestDTO);
+    void commentHeart(HeartRequestDto heartRequestDTO);
 
-    void postDisLike(HeartRequestDto heartRequestDTO);
-    void commentDisLike(HeartRequestDto heartRequestDTO);
+    void postDisHeart(HeartRequestDto heartRequestDTO);
+    void commentDisHeart(HeartRequestDto heartRequestDTO);
 
 
 }

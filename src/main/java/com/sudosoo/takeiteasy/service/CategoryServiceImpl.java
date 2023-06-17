@@ -2,34 +2,29 @@ package com.sudosoo.takeiteasy.service;
 
 
 import com.sudosoo.takeiteasy.dto.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.SetCategoryByPostRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
-import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-    private final PostService postService;
-
+    @Override
     public void creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         String categoryName = createCategoryRequestDto.getCategoryName();
         Category category = createCategoryEntityByCategoryName(categoryName);
         categoryRepository.save(category);
+        log.info("New Category created :  categoryId {}", category.getId());
     }
 
-    public void setCategorytByPost(SetCategoryByPostRequestDto setCategoryByPostRequestDto) {
-        String categoryName = setCategoryByPostRequestDto.getCategoryName();
-        Category category = categoryRepository.findByCategoryName(categoryName).orElseGet(
-                ()-> createCategoryEntityByCategoryName(categoryName));
-        Post post = postService.getPostByPostId(setCategoryByPostRequestDto.getPostId());
 
-        category.addPost(post);
+    @Override
+    public void saveCategory(Category category) {
         categoryRepository.save(category);
     }
 
@@ -38,8 +33,16 @@ public class CategoryServiceImpl implements CategoryService {
                 () -> new IllegalArgumentException("Could not found category id : " + categoryId));
     }
 
-    private Category createCategoryEntityByCategoryName(String categoryName) {
-        return Category.buildEntityFromDto(categoryName);
+    @Override
+    public Category createCategoryEntityByCategoryName(String categoryName) {
+        return Category.buildEntityFromName(categoryName);
     }
+
+    @Override
+    public Category findByCategoryName(String categoryName){
+        return categoryRepository.findByCategoryName(categoryName).orElseThrow(
+                () -> new IllegalArgumentException("Could not found category name : " + categoryName));
+    }
+
 
 }

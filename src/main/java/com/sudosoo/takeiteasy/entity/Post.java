@@ -26,15 +26,15 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "relatedPost")
     private List<RelatedPost> relatedPosts = new ArrayList<>();
-    @ColumnDefault("0")
-    @Column(name = "view_count", nullable = false)
-    private Integer viewCount;
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
+    @ColumnDefault("0")
+    @Column(name = "view_count", nullable = false)
+    private Integer viewCount;
 
     @Builder
     private Post(String title, String content, Category category, Member member, Integer viewCount, List<Heart> hearts) {

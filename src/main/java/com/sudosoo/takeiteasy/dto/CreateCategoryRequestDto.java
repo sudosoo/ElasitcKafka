@@ -8,7 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateCategoryRequestDto {
     private String categoryName ;
-    private String content;
-
 
 }

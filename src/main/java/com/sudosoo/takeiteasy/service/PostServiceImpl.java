@@ -1,24 +1,24 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.entity.RelatedPost;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import com.sudosoo.takeiteasy.repository.RelatedPostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final RelatedPostRepository relatedpostRepository;
     private final MemberService memberService;
-    private final CategoryService categoryService;
 
     /**
      * 게시물 생성dto 받아 게시물을 저장하고,
@@ -29,11 +29,8 @@ public class PostServiceImpl implements PostService {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
         Post post = Post.buildEntityFromDto(createPostRequestDto.getTitle(), createPostRequestDto.getContent(), member);
 
-        if (createPostRequestDto.getCategoryId() != null) {
-            Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
-            post.setCategory(category);
-        }
         Post mainpost = postRepository.save(post);
+        log.info("New post created : memberName {}, postId{}", member.getUserName(), mainpost.getId());
 
         if (createPostRequestDto.getRelatedPostId() != null) {
             relatedMainPostByRelatedPostId(mainpost.getId(), createPostRequestDto.getRelatedPostId());
@@ -45,11 +42,11 @@ public class PostServiceImpl implements PostService {
      * */
     public Post getPostByPostId(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
+                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : {}" + postId));
     }
     public RelatedPost getRelatedPostByPostId(Long postId) {
         return relatedpostRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
+                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : {}" + postId));
     }
 
     /**
@@ -59,15 +56,17 @@ public class PostServiceImpl implements PostService {
         Post mainPost = getPostByPostId(mainPostId);
         Post relatedPost = getPostByPostId(relatedPostId);
         RelatedPost resultPost = RelatedPost.createRelatePost(mainPost,relatedPost);
+        log.info("New Related post has been created : main Post{} , related Post{}" , mainPostId,relatedPostId);
         relatedpostRepository.save(resultPost);
     }
     /**
      * 게시물 id를 받아 게시물 끼리 연관관계 끊어주는 메소드
      * */
-    private void removeRelatedMainPostByRelatedPostId(Long mainPostId,Long relatedPostId) {
+    public void removeRelatedMainPostByRelatedPostId(Long mainPostId,Long relatedPostId) {
         Post post = getPostByPostId(mainPostId);
         RelatedPost relatedPost = getRelatedPostByPostId(relatedPostId);
         post.getRelatedPosts().remove(relatedPost);
+        log.info("Deleted related posts: mainPostId{} ,relatedPostId{}" , mainPostId , relatedPostId);
         postRepository.save(post);
     }
 

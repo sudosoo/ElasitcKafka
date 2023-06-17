@@ -6,9 +6,11 @@ import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,6 +24,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = Comment.buildEntityFromDto(member, createCommentRequestDto.getContent());
         comment.setPost(post);
         commentRepository.save(comment);
+        log.info("New Comment created :  memberName{} , CommentId {}"+ member.getUserName(),comment.getId());
     }
     public Comment getCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
