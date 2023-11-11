@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,20 +19,28 @@ public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String title;
+
     private String content;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
     @OneToMany(mappedBy = "relatedPost")
-    private List<RelatedPost> relatedPosts = new ArrayList<>();
+    private List<Post> relatedPosts = new ArrayList<>();
+
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
+
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
+
     @ColumnDefault("0")
     @Column(name = "view_count", nullable = false)
     private Integer viewCount;
@@ -49,15 +58,9 @@ public class Post extends BaseEntity {
         this.category = category;
         category.getPosts().add(this);
     }
-
-    public static Post buildEntityFromDto(String title,String content,Member member){
-        return Post.builder()
-                .title(title)
-                .content(content)
-                .member(member)
-                .build();
+    public void setRelatedPost(Post post){
+        post.relatedPosts.add(this);
     }
-
 
 
 }

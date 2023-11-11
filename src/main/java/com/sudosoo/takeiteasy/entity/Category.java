@@ -25,11 +25,8 @@ public class Category extends BaseEntity {
         this.posts.add(post);
         post.setCategory(this);
     }
-    private Category(String categoryName) {
+    public Category(String categoryName) {
         this.categoryName = categoryName;
-    }
-    public static Category buildEntityFromName(String categoryName){
-        return new Category(categoryName);
     }
 
 }

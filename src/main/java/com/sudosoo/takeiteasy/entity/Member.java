@@ -3,7 +3,6 @@ package com.sudosoo.takeiteasy.entity;
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +16,9 @@ public class Member  extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String userName;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
@@ -26,13 +27,8 @@ public class Member  extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
-
-    private Member(String userName) {
+    public Member(String userName) {
         this.userName = userName;
     }
-    public static Member buildEntityFromDto(String userName){
-        return new Member(userName);
-    }
-
 
 }

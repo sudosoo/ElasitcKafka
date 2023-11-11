@@ -6,4 +6,5 @@ import com.sudosoo.takeiteasy.entity.Post;
 public interface PostService {
     void creatPost(CreatePostRequestDto createPostRequestDto);
     Post getPostByPostId(Long postId);
+
 }

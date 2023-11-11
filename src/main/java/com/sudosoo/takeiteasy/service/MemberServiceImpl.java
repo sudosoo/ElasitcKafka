@@ -16,13 +16,13 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     public void createMember(CreateMemberRequestDto createMemberRequestDto){
-        Member member = Member.buildEntityFromDto(createMemberRequestDto.getMemberName());
+        Member member = new Member(createMemberRequestDto.getMemberName());
         memberRepository.save(member);
-        log.info("New Member created : memberName{}"+ member.getUserName());
+        log.info("New Member created : memberName{}", member.getUserName());
     }
 
     public Member getMemberByMemberId(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found member id : " + memberId));
+                .orElseThrow(() -> new IllegalArgumentException("Could not found member id :"+memberId));
     }
 }

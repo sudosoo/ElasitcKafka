@@ -1,8 +1,6 @@
 package com.sudosoo.takeiteasy.controller;
 
-import com.sudosoo.takeiteasy.dto.CreateCommentRequestDto;
 import com.sudosoo.takeiteasy.dto.HeartRequestDto;
-import com.sudosoo.takeiteasy.service.CommentService;
 import com.sudosoo.takeiteasy.service.HeartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,7 @@ public class HeartController {
                                         .postId(postId)
                                         .memberId(memberId)
                                         .build();
-        heartService.postHeart(requestDto);
+        heartService.creatPostHeart(requestDto);
     }
 
     @PostMapping("/commentHeart")
@@ -34,7 +32,7 @@ public class HeartController {
                                         .commentId(commentId)
                                         .memberId(memberId)
                                         .build();
-        heartService.commentHeart(requestDto);
+        heartService.creatCommentHeart(requestDto);
     }
 
     @PutMapping("/postDisHeart")

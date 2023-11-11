@@ -24,39 +24,48 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    public void postHeart(HeartRequestDto heartRequestDTO){
+    public void creatPostHeart(HeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
-        // 이미 좋아요되어있으면 에러 반환
-        existLike(heartRepository.findByMemberAndPost(member, post));
-        Heart heart = Heart.postLike(post,member);
-        heart.setPost(post);
+        validateHeart(member, post);
+        Heart heart = Heart.getPostHeart(post,member);
 
         heartRepository.save(heart);
-        log.info("New PostHeart created : memberId {} , PostHeartId {}"+ member.getId(),heart.getId());
+        log.info("New PostHeart created : memberId {} , PostHeartId {}", member.getId(),heart.getId());
     }
-    public void commentHeart(HeartRequestDto heartRequestDTO)  {
+
+    private void validateHeart(Member member, Post post) {
+        heartRepository.findByMemberAndPost(member, post)
+                .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
+    }
+
+    public void creatCommentHeart(HeartRequestDto heartRequestDTO)  {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
         // 이미 좋아요되어있으면 에러 반환
-        existLike(heartRepository.findByMemberAndComment(member, comment));
-        Heart heart = Heart.commentLike(comment,member);
-        heart.setComment(comment);
+        validateHeart(member, comment);
+        Heart heart = Heart.getCommentHeart(comment,member);
         
         heartRepository.save(heart);
-        log.info("New CommentHeart created : memberName {} , CommentHeartId {}"+ member.getUserName(),heart.getId());
-
+        log.info("New CommentHeart created : memberName {} , CommentHeartId {}", member.getUserName(),heart.getId());
     }
+
+    private void validateHeart(Member member, Comment comment) {
+        heartRepository.findByMemberAndComment(member, comment)
+                .orElseThrow(()-> new IllegalArgumentException("Duplicated Like !"));
+    }
+
     public void postDisHeart(HeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
         Heart heart = findHeartByMemberAndPostOrComment(member,post);
+
         heart.unHeartPost();
 
         heartRepository.delete(heart);
-        log.info("Deleted PostHeart : memberName {} , PostHeartId {}"+ member.getUserName(),heart.getId());
+        log.info("Deleted PostHeart : memberName {} , PostHeartId {}", member.getUserName(),heart.getId());
     }
 
     public void commentDisHeart(HeartRequestDto heartRequestDTO) {
@@ -67,27 +76,26 @@ public class HeartServiceImpl implements HeartService {
         heart.unHeartComment();
 
         heartRepository.delete(heart);
-        log.info("Deleted CommentHeart : memberName {} , CommentHeartId {}"+ member.getUserName(),heart.getId());
+        log.info("Deleted CommentHeart : memberName {} , CommentHeartId {}", member.getUserName(),heart.getId());
     }
 
     private Heart findHeartByMemberAndPostOrComment(Member member, Object reference) {
         if (reference instanceof Post) {
-            return heartRepository.findByMemberAndPost(member, (Post) reference)
-                    .orElseThrow(() -> new IllegalArgumentException("Could not find heart id"));
+            return getPostHeart(member,(Post)reference);
         } else if (reference instanceof Comment) {
-            return heartRepository.findByMemberAndComment(member, (Comment) reference)
-                    .orElseThrow(() -> new IllegalArgumentException("Could not find heart id"));
+            return getCommentHeart(member,(Comment)reference);
         } else {
             throw new IllegalArgumentException("Unsupported reference type");
         }
     }
-
-    private void existLike(Optional<Heart> heartRepository) {
-        if (heartRepository.isPresent()) {
-            throw new IllegalArgumentException("Duplicated Like !");
-        }
+    private Heart getPostHeart(Member m ,Post p){
+        return heartRepository.findByMemberAndPost(m,p)
+                .orElseThrow(() -> new IllegalArgumentException("Could not find PostHeart id"));
     }
-
-   
+    
+    private Heart getCommentHeart(Member m ,Comment c){
+        return heartRepository.findByMemberAndComment(m,c)
+                .orElseThrow(() -> new IllegalArgumentException("Could not find CommentHeart id"));
+    }
 
 }

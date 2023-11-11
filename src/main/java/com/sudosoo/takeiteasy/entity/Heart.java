@@ -30,19 +30,19 @@ public class Heart extends BaseEntity {
     private Comment comment;
 
     @Builder
-    private Heart(Member member, Post post, Comment comment) {
+    public Heart(Member member, Post post, Comment comment) {
         this.member = member;
         this.post = post;
         this.comment = comment;
     }
 
-    public static Heart postLike(Post post , Member member){
+    public static Heart getPostHeart(Post post , Member member){
         return Heart.builder()
                 .post(post)
                 .member(member)
                 .build();
     }
-    public static Heart commentLike(Comment comment , Member member){
+    public static Heart getCommentHeart(Comment comment , Member member){
         return Heart.builder()
                 .comment(comment)
                 .member(member)

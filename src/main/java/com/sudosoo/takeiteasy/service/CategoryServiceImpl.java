@@ -18,14 +18,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         String categoryName = createCategoryRequestDto.getCategoryName();
         Category category = createCategoryEntityByCategoryName(categoryName);
+
         categoryRepository.save(category);
         log.info("New Category created :  categoryId {}", category.getId());
-    }
-
-
-    @Override
-    public void saveCategory(Category category) {
-        categoryRepository.save(category);
     }
 
     public Category getCategoryByCategoryId(Long categoryId) {
@@ -35,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategoryEntityByCategoryName(String categoryName) {
-        return Category.buildEntityFromName(categoryName);
+        return new Category(categoryName);
     }
 
     @Override

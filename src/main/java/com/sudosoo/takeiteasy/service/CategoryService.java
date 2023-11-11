@@ -5,7 +5,6 @@ import com.sudosoo.takeiteasy.entity.Category;
 
 public interface CategoryService {
     void creatCategory(CreateCategoryRequestDto createCategoryRequestDto);
-    void saveCategory(Category category);
     Category getCategoryByCategoryId(Long categoryId);
     Category createCategoryEntityByCategoryName(String categoryName);
     Category findByCategoryName(String categoryName);
