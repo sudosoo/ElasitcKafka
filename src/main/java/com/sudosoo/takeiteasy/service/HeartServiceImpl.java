@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.HeartRequestDto;
+import com.sudosoo.takeiteasy.dto.CommentHeartRequestDto;
+import com.sudosoo.takeiteasy.dto.PostHeartRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Heart;
 import com.sudosoo.takeiteasy.entity.Member;
@@ -10,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    public void creatPostHeart(HeartRequestDto heartRequestDTO){
+    public void creatPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
@@ -40,7 +39,7 @@ public class HeartServiceImpl implements HeartService {
                 .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
     }
 
-    public void creatCommentHeart(HeartRequestDto heartRequestDTO)  {
+    public void creatCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
@@ -57,7 +56,7 @@ public class HeartServiceImpl implements HeartService {
                 .orElseThrow(()-> new IllegalArgumentException("Duplicated Like !"));
     }
 
-    public void postDisHeart(HeartRequestDto heartRequestDTO) {
+    public void postDisHeart(PostHeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
         Heart heart = findHeartByMemberAndPostOrComment(member,post);
@@ -68,7 +67,7 @@ public class HeartServiceImpl implements HeartService {
         log.info("Deleted PostHeart : memberName {} , PostHeartId {}", member.getUserName(),heart.getId());
     }
 
-    public void commentDisHeart(HeartRequestDto heartRequestDTO) {
+    public void commentDisHeart(CommentHeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
         Heart heart = findHeartByMemberAndPostOrComment(member, comment);
@@ -92,7 +91,6 @@ public class HeartServiceImpl implements HeartService {
         return heartRepository.findByMemberAndPost(m,p)
                 .orElseThrow(() -> new IllegalArgumentException("Could not find PostHeart id"));
     }
-    
     private Heart getCommentHeart(Member m ,Comment c){
         return heartRepository.findByMemberAndComment(m,c)
                 .orElseThrow(() -> new IllegalArgumentException("Could not find CommentHeart id"));

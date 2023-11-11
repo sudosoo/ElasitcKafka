@@ -28,7 +28,7 @@ public class TestController {
     }
 
     @PostMapping( "/member")
-    public void saveMember(@RequestParam("membername")final CreateMemberRequestDto createMemberRequestDto) {
+    public void saveMember(@RequestParam("memberName")final CreateMemberRequestDto createMemberRequestDto) {
         memberService.createMember(createMemberRequestDto);
     }
 
