@@ -6,6 +6,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -28,6 +35,13 @@ public class Heart extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime creatTime;
+
+    @LastModifiedDate
+    private LocalDateTime updateTime;
 
     @Builder
     public Heart(Member member, Post post, Comment comment) {

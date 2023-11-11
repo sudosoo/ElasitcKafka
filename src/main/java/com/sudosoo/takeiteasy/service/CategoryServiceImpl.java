@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+
     @Override
     public void creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         String categoryName = createCategoryRequestDto.getCategoryName();
@@ -38,6 +39,4 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByCategoryName(categoryName).orElseThrow(
                 () -> new IllegalArgumentException("Could not found category name : " + categoryName));
     }
-
-
 }

@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class SampleController {
     private final KafkaProducer producer;
 
-
     @PostMapping(value = "/message")
     public String sendMessage(@RequestParam("message") String message) {
         this.producer.sendMessage(message);
         return "success";
     }
-
-
+    
     @PutMapping(value = "/message")
     public void sendMessage() {
         throw new IllegalArgumentException("에러테스트");

@@ -1,14 +1,16 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,14 @@ public class Post extends BaseEntity {
 
     @ColumnDefault("0")
     @Column(name = "view_count", nullable = false)
-    private Integer viewCount;
+    private int viewCount;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime creatTime;
+
+    @LastModifiedDate
+    private LocalDateTime updateTime;
 
     @Builder
     private Post(String title, String content, Category category, Member member, Integer viewCount, List<Heart> hearts) {
