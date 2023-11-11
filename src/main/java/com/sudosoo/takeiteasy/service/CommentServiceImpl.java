@@ -19,15 +19,14 @@ public class CommentServiceImpl implements CommentService {
     private final PostService postService;
     private final MemberService memberService;
 
-    public void createComment(CreateCommentRequestDto createCommentRequestDto){
+    public Comment createComment(CreateCommentRequestDto createCommentRequestDto){
         Member member = memberService.getMemberByMemberId(createCommentRequestDto.getMemberId());
         Post post = postService.getPostByPostId(createCommentRequestDto.getPostId());
         Comment comment = Comment.buildEntityFromDto(member, createCommentRequestDto.getContent());
 
         comment.setPost(post);
 
-        commentRepository.save(comment);
-        log.info("New Comment created :  memberName{} , CommentId {}",member.getUserName(),comment.getId());
+        return commentRepository.save(comment);
     }
     public Comment getCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)

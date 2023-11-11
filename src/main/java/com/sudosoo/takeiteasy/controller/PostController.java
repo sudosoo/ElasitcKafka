@@ -1,9 +1,11 @@
 package com.sudosoo.takeiteasy.controller;
 
 import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
     private final PostService postService;
     @PostMapping("/post")
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
-        postService.creatPost(requestDto);
+        Post post = postService.creatPost(requestDto);
+        log.info("New post created: memberName {}, categoryId {}, postId {}",
+                post.getUserName(), (post.getCategory() != null) ? post.getCategoryId() : null, post.getId());
         return ResponseEntity.ok().build();
     }
 

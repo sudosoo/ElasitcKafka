@@ -21,65 +21,25 @@ public class PostServiceImpl implements PostService {
     private final CategoryService categoryService;
     private final MemberService memberService;
 
-    /**
-     * 게시물 생성dto 받아 게시물을 저장하고,
-     * requestDto에 카테고리가 있다면 카테고리에 넣어준다.
-     * requestDto에 연관관계를 맺어야 할 게시물이 있다면 연관관계를 맺어준다.
-     * */
-    public void creatPost(CreatePostRequestDto createPostRequestDto) {
+    public Post creatPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
-        Post defaultPost = Post.builder()
-                .title(createPostRequestDto.getTitle())
-                .content(createPostRequestDto.getContent())
-                .member(member)
-                .build();
+        Post post = Post.getInstance(createPostRequestDto);
+
+        post.setMember(member);
 
         //카테고리ID가 있으면
         if (createPostRequestDto.getCategoryId() != null){
-            createPostWithCategory(createPostRequestDto, member);
+            createPostWithCategory(createPostRequestDto, post);
         }
 
-        postRepository.save(defaultPost);
-        log.info("New post created : memberName {}, postId{}", member.getUserName(), defaultPost.getId());
+        return postRepository.save(post);
     }
 
-    private void createPostWithCategory(CreatePostRequestDto createPostRequestDto, Member member) {
+    private Post createPostWithCategory(CreatePostRequestDto createPostRequestDto,Post post) {
         Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
-        Post post = Post.builder()
-                .title(createPostRequestDto.getTitle())
-                .content(createPostRequestDto.getContent())
-                .member(member)
-                .category(category)
-                .build();
+        post.setCategory(category);
 
-        postRepository.save(post);
-        log.info("New post created : memberName {}, postId{}", member.getUserName(), post.getId());
-    }
-
-    /**
-     * 게시물 id를 받아 게시물 끼리 연관관계 맺아주는 메소드
-     * */
-    public void setMainPostByRelatedPost(RelatedPostRequestDto dto) {
-        Post mainPost = getPostByPostId(dto.getPostId());
-        Post relatedPost = getPostByPostId(dto.getRelatedPostId());
-
-        mainPost.setRelatedPost(relatedPost);
-
-        postRepository.save(mainPost);
-        log.info("New related post created : main Post{} , related Post{}" ,mainPost,relatedPost);
-    }
-
-    /**
-     * 게시물 id를 받아 게시물 끼리 연관관계 끊어주는 메소드
-     * */
-    public void removeRelatedMainPostByRelatedPostId(Long mainPostId,Long relatedPostId) {
-        Post post = getPostByPostId(mainPostId);
-        Post relatedPost = getPostByPostId(relatedPostId);
-
-        post.getRelatedPosts().remove(relatedPost);
-
-        postRepository.save(post);
-        log.info("Deleted related posts: mainPostId{} ,relatedPostId{}" , mainPostId , relatedPostId);
+        return postRepository.save(post);
     }
 
     public Post getPostByPostId(Long postId) {

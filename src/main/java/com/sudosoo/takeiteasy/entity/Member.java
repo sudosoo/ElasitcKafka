@@ -38,7 +38,10 @@ public class Member  extends BaseEntity {
     @LastModifiedDate
     private LocalDateTime updateTime;
 
-    public Member(String userName) {
+    private Member(String userName) {
         this.userName = userName;
+    }
+    public static Member getInstance(String userName){
+        return new Member(userName);
     }
 }

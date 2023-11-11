@@ -23,15 +23,14 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    public void creatPostHeart(PostHeartRequestDto heartRequestDTO){
+    public Heart creatPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
         validateHeart(member, post);
         Heart heart = Heart.getPostHeart(post,member);
 
-        heartRepository.save(heart);
-        log.info("New PostHeart created : memberId {} , PostHeartId {}", member.getId(),heart.getId());
+        return heartRepository.save(heart);
     }
 
     private void validateHeart(Member member, Post post) {
@@ -39,16 +38,14 @@ public class HeartServiceImpl implements HeartService {
                 .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
     }
 
-    public void creatCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
+    public Heart creatCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
-        // 이미 좋아요되어있으면 에러 반환
         validateHeart(member, comment);
         Heart heart = Heart.getCommentHeart(comment,member);
         
-        heartRepository.save(heart);
-        log.info("New CommentHeart created : memberName {} , CommentHeartId {}", member.getUserName(),heart.getId());
+        return heartRepository.save(heart);
     }
 
     private void validateHeart(Member member, Comment comment) {
