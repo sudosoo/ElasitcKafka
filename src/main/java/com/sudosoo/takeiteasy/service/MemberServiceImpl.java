@@ -15,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
-    public void createMember(CreateMemberRequestDto createMemberRequestDto){
-        Member member = new Member(createMemberRequestDto.getMemberName());
+    public Member createMember(CreateMemberRequestDto createMemberRequestDto){
+        Member member = Member.getInstance(createMemberRequestDto.getMemberName());
 
-        memberRepository.save(member);
-        log.info("New Member created : memberName{}", member.getUserName());
+        return memberRepository.save(member);
     }
 
     public Member getMemberByMemberId(Long memberId) {

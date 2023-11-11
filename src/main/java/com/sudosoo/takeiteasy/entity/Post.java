@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -63,12 +64,32 @@ public class Post extends BaseEntity {
         this.viewCount = viewCount;
         this.hearts = hearts;
     }
+    public static Post getInstance(CreatePostRequestDto createPostRequestDto){
+        return  Post.builder()
+                .title(createPostRequestDto.getTitle())
+                .content(createPostRequestDto.getContent())
+                .build();
+    }
     public void setCategory(Category category) {
         this.category = category;
         category.getPosts().add(this);
     }
-    public void setRelatedPost(Post post){
-        post.relatedPosts.add(this);
+    public void setMember(Member member) {
+        this.member = member;
+        member.getPosts().add(this);
+    }
+
+    public String getUserName(){
+        if(this.member == null){
+            throw new IllegalArgumentException("해당 포스트엔 유저가 등록되어 있지 않습니다.");
+        }
+        return this.member.getUserName();
+    }
+    public Long getCategoryId(){
+        if(this.category == null){
+            throw new IllegalArgumentException("해당 포스트엔 카테고리가 등록되어 있지 않습니다.");
+        }
+        return this.category.getId();
     }
 
 

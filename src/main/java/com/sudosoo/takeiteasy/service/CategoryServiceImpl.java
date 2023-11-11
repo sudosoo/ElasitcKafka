@@ -16,12 +16,11 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public void creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
+    public Category creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         String categoryName = createCategoryRequestDto.getCategoryName();
-        Category category = createCategoryEntityByCategoryName(categoryName);
+        Category category = Category.getInstance(categoryName);
 
-        categoryRepository.save(category);
-        log.info("New Category created :  categoryId {}", category.getId());
+        return categoryRepository.save(category);
     }
 
     public Category getCategoryByCategoryId(Long categoryId) {
@@ -29,14 +28,4 @@ public class CategoryServiceImpl implements CategoryService {
                 () -> new IllegalArgumentException("Could not found category id : " + categoryId));
     }
 
-    @Override
-    public Category createCategoryEntityByCategoryName(String categoryName) {
-        return new Category(categoryName);
-    }
-
-    @Override
-    public Category findByCategoryName(String categoryName){
-        return categoryRepository.findByCategoryName(categoryName).orElseThrow(
-                () -> new IllegalArgumentException("Could not found category name : " + categoryName));
-    }
 }

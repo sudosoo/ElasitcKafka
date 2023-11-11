@@ -86,5 +86,8 @@ public class Heart extends BaseEntity {
             comment = null;
         }
     }
+    public String getUserName(){
+        return this.member.getUserName();
+    }
 
 }
