@@ -21,9 +21,12 @@ class MemberServiceImplTest {
     @Test
     @DisplayName("createMember")
     void createMember() {
+        //Given
         when(memberRepository.save(any(Member.class))).thenReturn(Member.getInstance(createPostRequestDto));
+        // When
         Member member = memberService.createMember(createPostRequestDto);
 
+        // Then
         String expectedMemberName = createPostRequestDto.getMemberName();
         String actualMemberName = member.getMemberName();
 
