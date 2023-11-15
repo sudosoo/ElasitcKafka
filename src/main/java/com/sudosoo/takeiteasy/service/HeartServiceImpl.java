@@ -61,7 +61,7 @@ public class HeartServiceImpl implements HeartService {
         heart.unHeartPost();
 
         heartRepository.delete(heart);
-        log.info("Deleted PostHeart : memberName {} , PostHeartId {}", member.getUserName(),heart.getId());
+        log.info("Deleted PostHeart : memberName {} , PostHeartId {}", member.getMemberName(),heart.getId());
     }
 
     public void commentDisHeart(CommentHeartRequestDto heartRequestDTO) {
@@ -72,7 +72,7 @@ public class HeartServiceImpl implements HeartService {
         heart.unHeartComment();
 
         heartRepository.delete(heart);
-        log.info("Deleted CommentHeart : memberName {} , CommentHeartId {}", member.getUserName(),heart.getId());
+        log.info("Deleted CommentHeart : memberName {} , CommentHeartId {}", member.getMemberName(),heart.getId());
     }
 
     private Heart findHeartByMemberAndPostOrComment(Member member, Object reference) {

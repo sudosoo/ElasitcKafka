@@ -26,14 +26,14 @@ public class PostServiceImpl implements PostService {
         Post post = Post.getInstance(createPostRequestDto);
 
         post.setMember(member);
-
         //카테고리ID가 있으면
         if (createPostRequestDto.getCategoryId() != null){
-            createPostWithCategory(createPostRequestDto, post);
+            return createPostWithCategory(createPostRequestDto, post);
         }
 
         return postRepository.save(post);
     }
+
 
     private Post createPostWithCategory(CreatePostRequestDto createPostRequestDto,Post post) {
         Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
@@ -44,6 +44,6 @@ public class PostServiceImpl implements PostService {
 
     public Post getPostByPostId(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : {}" + postId));
+                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
     }
 }

@@ -20,14 +20,14 @@ public class HeartController {
     @PostMapping("/postHeart")
     public ResponseEntity<Void> PostHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
         Heart heart = heartService.creatPostHeart(requestDto);
-        log.info("New PostHeart created : memberId {} , PostHeartId {}", heart.getUserName(),heart.getId());
+        log.info("New PostHeart created : memberId {} , PostHeartId {}", heart.getMemberName(),heart.getId());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/commentHeart")
     public ResponseEntity<Void> CommentHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
         Heart heart = heartService.creatCommentHeart(requestDto);
-        log.info("New CommentHeart created : memberName {} , CommentHeartId {}", heart.getUserName(),heart.getId());
+        log.info("New CommentHeart created : memberName {} , CommentHeartId {}", heart.getMemberName(),heart.getId());
         return ResponseEntity.ok().build();
     }
 

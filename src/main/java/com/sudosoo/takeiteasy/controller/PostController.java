@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +19,7 @@ public class PostController {
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
         Post post = postService.creatPost(requestDto);
         log.info("New post created: memberName {}, categoryId {}, postId {}",
-                post.getUserName(), (post.getCategory() != null) ? post.getCategoryId() : null, post.getId());
+                post.getMemberName(), (post.getCategory() != null) ? post.getCategoryId() : null, post.getId());
         return ResponseEntity.ok().build();
     }
 

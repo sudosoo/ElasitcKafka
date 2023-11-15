@@ -53,6 +53,6 @@ public class Comment extends BaseEntity {
         if(this.member == null){
             throw new IllegalArgumentException("사용자가 등록되어 있지 않습니다.");
         }
-        return this.member.getUserName();
+        return this.member.getMemberName();
     }
 }
