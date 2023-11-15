@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class Member  extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String userName;
+    private String memberName;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
@@ -33,15 +34,15 @@ public class Member  extends BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime creatTime;
+    private LocalDateTime createdTime;
 
     @LastModifiedDate
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
-    private Member(String userName) {
-        this.userName = userName;
+    private Member(CreateMemberRequestDto createMemberRequestDto) {
+        this.memberName = createMemberRequestDto.getMemberName();
     }
-    public static Member getInstance(String userName){
-        return new Member(userName);
+    public static Member getInstance(CreateMemberRequestDto createMemberRequestDto){
+        return new Member(createMemberRequestDto);
     }
 }

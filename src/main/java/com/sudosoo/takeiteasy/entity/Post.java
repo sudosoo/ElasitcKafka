@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -35,7 +34,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "relatedPost")
+    @OneToMany(mappedBy = "post")
     private List<Post> relatedPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
@@ -44,19 +43,18 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
-    @ColumnDefault("0")
     @Column(name = "view_count", nullable = false)
-    private int viewCount;
+    private int viewCount = 0;
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime creatTime;
+    private LocalDateTime createdTime;
 
     @LastModifiedDate
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
     @Builder
-    private Post(String title, String content, Category category, Member member, Integer viewCount, List<Heart> hearts) {
+    private Post(String title, String content, Category category, Member member,int viewCount, List<Heart> hearts) {
         this.title = title;
         this.content = content;
         this.category = category;
@@ -68,6 +66,7 @@ public class Post extends BaseEntity {
         return  Post.builder()
                 .title(createPostRequestDto.getTitle())
                 .content(createPostRequestDto.getContent())
+                .viewCount(0)
                 .build();
     }
     public void setCategory(Category category) {
@@ -79,11 +78,11 @@ public class Post extends BaseEntity {
         member.getPosts().add(this);
     }
 
-    public String getUserName(){
+    public String getMemberName(){
         if(this.member == null){
             throw new IllegalArgumentException("해당 포스트엔 유저가 등록되어 있지 않습니다.");
         }
-        return this.member.getUserName();
+        return this.member.getMemberName();
     }
     public Long getCategoryId(){
         if(this.category == null){

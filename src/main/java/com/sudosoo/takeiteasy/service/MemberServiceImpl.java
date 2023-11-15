@@ -16,8 +16,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     public Member createMember(CreateMemberRequestDto createMemberRequestDto){
-        Member member = Member.getInstance(createMemberRequestDto.getMemberName());
-
+        Member member = Member.getInstance(createMemberRequestDto);
         return memberRepository.save(member);
     }
 
