@@ -19,7 +19,7 @@ public class PostServiceImpl implements PostService {
     private final CategoryService categoryService;
     private final MemberService memberService;
 
-    public Post creatPost(CreatePostRequestDto createPostRequestDto) {
+    public Post createdPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
         Post post = Post.of(createPostRequestDto);
 

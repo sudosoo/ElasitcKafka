@@ -1,7 +1,5 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Member;
@@ -10,7 +8,6 @@ import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Optional;
 
@@ -38,7 +35,7 @@ class PostServiceImplTest {
         CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, null);
 
         //when
-        Post testPost = postService.creatPost(createPostRequestDto);
+        Post testPost = postService.createdPost(createPostRequestDto);
 
         //then
         String expectedTitle = createPostRequestDto.getTitle();
@@ -59,7 +56,7 @@ class PostServiceImplTest {
         when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
 
         //when
-        Post testPost = postService.creatPost(createPostRequestDto);
+        Post testPost = postService.createdPost(createPostRequestDto);
 
         //then
         String expectedTitle = createPostRequestDto.getTitle();
