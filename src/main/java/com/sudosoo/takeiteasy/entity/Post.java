@@ -60,7 +60,7 @@ public class Post extends BaseEntity {
         this.viewCount = viewCount;
         this.hearts = hearts;
     }
-    public static Post getInstance(CreatePostRequestDto createPostRequestDto){
+    public static Post of(CreatePostRequestDto createPostRequestDto){
         return  Post.builder()
                 .title(createPostRequestDto.getTitle())
                 .content(createPostRequestDto.getContent())

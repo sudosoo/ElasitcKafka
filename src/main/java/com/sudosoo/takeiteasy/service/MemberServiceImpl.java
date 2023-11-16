@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
-    public Member createMember(CreateMemberRequestDto createMemberRequestDto){
-        Member member = Member.getInstance(createMemberRequestDto);
+    public Member createdMember(CreateMemberRequestDto createMemberRequestDto){
+        Member member = Member.of(createMemberRequestDto);
         return memberRepository.save(member);
     }
 

@@ -4,6 +4,6 @@ import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.entity.Member;
 
 public interface MemberService {
-    Member createMember(CreateMemberRequestDto createMemberRequestDto);
+    Member createdMember(CreateMemberRequestDto createMemberRequestDto);
     Member getMemberByMemberId(Long memberId);
 }
