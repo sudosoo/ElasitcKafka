@@ -22,12 +22,14 @@ public class CommentServiceImpl implements CommentService {
     public Comment createComment(CreateCommentRequestDto createCommentRequestDto){
         Member member = memberService.getMemberByMemberId(createCommentRequestDto.getMemberId());
         Post post = postService.getPostByPostId(createCommentRequestDto.getPostId());
-        Comment comment = Comment.buildEntityFromDto(member, createCommentRequestDto.getContent());
+        Comment comment = Comment.of(createCommentRequestDto);
 
         comment.setPost(post);
+        comment.setMember(member);
 
         return commentRepository.save(comment);
     }
+
     public Comment getCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found comment id : " + commentId));

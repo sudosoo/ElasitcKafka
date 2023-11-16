@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.sudosoo.takeiteasy.dto.CreateCategoryRequestDto;
 import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
@@ -54,22 +55,23 @@ class PostServiceImplTest {
     @Test
     @DisplayName("createPostWithCategory")
     void createPostWithCategory() {
-        // Given
-        CreatePostRequestDto requestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, 1L);
-        when(categoryService.getCategoryByCategoryId(requestDto.getCategoryId())).thenReturn(Category.getInstance("TestCategory"));
-        Member member = memberService.getMemberByMemberId(requestDto.getMemberId());
+        // given
+        CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, 1L);
+        CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("TestCategory");
+        when(categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId())).thenReturn(Category.of(createCategoryRequestDto));
+        Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
 
-        // When
-        Post createdPost = postService.creatPost(requestDto);
+        // when
+        Post createdPost = postService.creatPost(createPostRequestDto);
         createdPost.setMember(member);
 
-        // Then
-        String expectedTitle = requestDto.getTitle();
+        // then
+        String expectedTitle = createPostRequestDto.getTitle();
         String actualTitle = createdPost.getTitle();
 
         assertNotNull(createdPost,"The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(categoryService, Mockito.times(1)).getCategoryByCategoryId(requestDto.getCategoryId());
+        verify(categoryService, Mockito.times(1)).getCategoryByCategoryId(createPostRequestDto.getCategoryId());
     }
 
     @Test

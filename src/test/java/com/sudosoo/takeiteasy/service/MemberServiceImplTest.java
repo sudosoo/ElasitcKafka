@@ -15,19 +15,19 @@ import static org.mockito.Mockito.*;
 class MemberServiceImplTest {
     MemberRepository memberRepository = mock(MemberRepository.class);
     MemberServiceImpl memberService = new MemberServiceImpl(memberRepository);
-    CreateMemberRequestDto createPostRequestDto = new CreateMemberRequestDto("TestMember");
-
+    CreateMemberRequestDto createMemberRequestDto = new CreateMemberRequestDto("TestMember");
 
     @Test
     @DisplayName("createMember")
     void createMember() {
-        //Given
-        when(memberRepository.save(any(Member.class))).thenReturn(Member.getInstance(createPostRequestDto));
-        // When
-        Member member = memberService.createMember(createPostRequestDto);
+        //given
+        when(memberRepository.save(any(Member.class))).thenReturn(Member.getInstance(createMemberRequestDto));
 
-        // Then
-        String expectedMemberName = createPostRequestDto.getMemberName();
+        //when
+        Member member = memberService.createMember(createMemberRequestDto);
+
+        //then
+        String expectedMemberName = createMemberRequestDto.getMemberName();
         String actualMemberName = member.getMemberName();
 
         assertNotNull(member, "The actual member should not be null");
@@ -37,14 +37,14 @@ class MemberServiceImplTest {
     @Test
     @DisplayName("getMemberByMemberId")
     void getMemberByMemberId() {
-        // Given
-        when(memberRepository.findById(any())).thenReturn(Optional.of(Member.getInstance(createPostRequestDto)));
+        // given
+        when(memberRepository.findById(any())).thenReturn(Optional.of(Member.getInstance(createMemberRequestDto)));
 
-        // When
+        // when
         Member member = memberService.getMemberByMemberId(1L);
 
-        // Then
-        String expectedMemberName = createPostRequestDto.getMemberName();
+        // then
+        String expectedMemberName = createMemberRequestDto.getMemberName();
         String actualMemberName = member.getMemberName();
 
         assertNotNull(member, "The actual member should not be null");
