@@ -1,17 +1,19 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.CreateCommentRequestDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
     @Id
@@ -30,6 +32,13 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "comment")
     private List<Heart> hearts = new ArrayList<>();
 
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdTime;
+
+    @LastModifiedDate
+    private LocalDateTime updatedTime;
+
     @Builder
     private Comment(String content, Member member, Post post, List<Heart> hearts) {
         this.content = content;
@@ -37,13 +46,14 @@ public class Comment extends BaseEntity {
         this.post = post;
         this.hearts = hearts;
     }
-    public static Comment buildEntityFromDto(Member member,String content){
+    public static Comment of(CreateCommentRequestDto createCommentRequestDto){
         return Comment.builder()
-                .member(member)
-                .content(content)
+                .content(createCommentRequestDto.getContent())
                 .build();
     }
-
+    public void setMember(Member member){
+        this.member = member;
+    }
     public void setPost(Post post) {
         this.post = post;
         post.getComments().add(this);

@@ -23,7 +23,7 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    public Heart creatPostHeart(PostHeartRequestDto heartRequestDTO){
+    public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
@@ -38,7 +38,7 @@ public class HeartServiceImpl implements HeartService {
                 .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
     }
 
-    public Heart creatCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
+    public Heart createdCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 

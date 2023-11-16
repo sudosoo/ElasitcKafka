@@ -17,8 +17,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
-        String categoryName = createCategoryRequestDto.getCategoryName();
-        Category category = Category.getInstance(categoryName);
+        Category category = Category.of(createCategoryRequestDto);
 
         return categoryRepository.save(category);
     }

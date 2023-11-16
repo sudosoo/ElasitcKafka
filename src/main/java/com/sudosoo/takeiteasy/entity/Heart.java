@@ -2,10 +2,7 @@ package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -18,6 +15,7 @@ import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Heart extends BaseEntity {
     @Id
@@ -29,7 +27,7 @@ public class Heart extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne(fetch = LAZY)
@@ -38,10 +36,10 @@ public class Heart extends BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime creatTime;
+    private LocalDateTime createdTime;
 
     @LastModifiedDate
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
     @Builder
     public Heart(Member member, Post post, Comment comment) {
