@@ -2,7 +2,9 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.entity.Member;
+import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,17 +16,17 @@ import static org.mockito.Mockito.*;
 
 class MemberServiceImplTest {
     MemberRepository memberRepository = mock(MemberRepository.class);
-    MemberServiceImpl memberService = new MemberServiceImpl(memberRepository);
+    MemberService memberService = new MemberServiceImpl(memberRepository);
     CreateMemberRequestDto createMemberRequestDto = new CreateMemberRequestDto("TestMember");
 
     @Test
-    @DisplayName("createMember")
-    void createMember() {
+    @DisplayName("createdMember")
+    void createdMember() {
         //given
-        when(memberRepository.save(any(Member.class))).thenReturn(Member.getInstance(createMemberRequestDto));
+        when(memberRepository.save(any(Member.class))).thenReturn(Member.of(createMemberRequestDto));
 
         //when
-        Member member = memberService.createMember(createMemberRequestDto);
+        Member member = memberService.createdMember(createMemberRequestDto);
 
         //then
         String expectedMemberName = createMemberRequestDto.getMemberName();
@@ -32,13 +34,14 @@ class MemberServiceImplTest {
 
         assertNotNull(member, "The actual member should not be null");
         assertEquals(expectedMemberName, actualMemberName, "Expected Member Name: " + expectedMemberName + ", Actual Member Name: " + actualMemberName);
+        verify(memberRepository, times(1)).save(any());
     }
 
     @Test
     @DisplayName("getMemberByMemberId")
     void getMemberByMemberId() {
         // given
-        when(memberRepository.findById(any())).thenReturn(Optional.of(Member.getInstance(createMemberRequestDto)));
+        when(memberRepository.findById(any())).thenReturn(Optional.of(Member.of(createMemberRequestDto)));
 
         // when
         Member member = memberService.getMemberByMemberId(1L);
@@ -49,5 +52,6 @@ class MemberServiceImplTest {
 
         assertNotNull(member, "The actual member should not be null");
         assertEquals(expectedMemberName, actualMemberName, "Expected Member Name: " + expectedMemberName + ", Actual Member Name: " + actualMemberName);
+        verify(memberRepository, times(1)).findById(1L);
     }
 }

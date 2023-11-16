@@ -44,7 +44,7 @@ public class Member  extends BaseEntity {
     private Member(CreateMemberRequestDto createMemberRequestDto) {
         this.memberName = createMemberRequestDto.getMemberName();
     }
-    public static Member getInstance(CreateMemberRequestDto createMemberRequestDto){
+    public static Member of(CreateMemberRequestDto createMemberRequestDto){
         return new Member(createMemberRequestDto);
     }
 }

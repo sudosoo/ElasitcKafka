@@ -22,73 +22,71 @@ class PostServiceImplTest {
     MemberService memberService = mock(MemberService.class);
     PostRepository postRepository = mock(PostRepository.class);
     CategoryService categoryService = mock(CategoryService.class);
-    PostServiceImpl postService = new PostServiceImpl(postRepository,categoryService,memberService);
+    PostService postService = new PostServiceImpl(postRepository,categoryService,memberService);
     CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle","TestContent",1L,null);
-
     @BeforeEach
     void setUp() {
-        CreateMemberRequestDto mockMember = new CreateMemberRequestDto("TestMember");
-        when(memberService.getMemberByMemberId(createPostRequestDto.getMemberId())).thenReturn(Member.getInstance(mockMember));
-        when(postRepository.save(any(Post.class))).thenReturn(Post.getInstance(createPostRequestDto));
+        Member memberMock = mock(Member.class);
+        when(memberService.getMemberByMemberId(createPostRequestDto.getMemberId())).thenReturn(memberMock);
+        when(postRepository.save(any(Post.class))).thenReturn(Post.of(createPostRequestDto));
     }
 
     @Test
     @DisplayName("createPostWithoutCategory")
     void creatPost() {
-        // Given
-        CreatePostRequestDto requestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, null);
-        Member member = memberService.getMemberByMemberId(requestDto.getMemberId());
+        //given
+        CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, null);
 
-        // When
-        Post createdPost = postService.creatPost(requestDto);
-        createdPost.setMember(member);
+        //when
+        Post testPost = postService.creatPost(createPostRequestDto);
 
-        // Then
-        String expectedTitle = requestDto.getTitle();
-        String actualTitle = createdPost.getTitle();
+        //then
+        String expectedTitle = createPostRequestDto.getTitle();
+        String actualTitle = testPost.getTitle();
 
-        assertNotNull(createdPost,"The created post should not be null");
+        assertNotNull(testPost, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(categoryService, Mockito.never()).getCategoryByCategoryId(any());
+        verify(categoryService,never()).getCategoryByCategoryId(anyLong());
+        verify(postRepository, times(1)).save(any());
     }
 
     @Test
     @DisplayName("createPostWithCategory")
     void createPostWithCategory() {
-        // given
+        //given
         CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, 1L);
-        CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("TestCategory");
-        when(categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId())).thenReturn(Category.of(createCategoryRequestDto));
-        Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
+        Category categoryMock = mock(Category.class);
+        when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
 
-        // when
-        Post createdPost = postService.creatPost(createPostRequestDto);
-        createdPost.setMember(member);
+        //when
+        Post testPost = postService.creatPost(createPostRequestDto);
 
-        // then
+        //then
         String expectedTitle = createPostRequestDto.getTitle();
-        String actualTitle = createdPost.getTitle();
+        String actualTitle = testPost.getTitle();
 
-        assertNotNull(createdPost,"The created post should not be null");
+        assertNotNull(testPost, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(categoryService, Mockito.times(1)).getCategoryByCategoryId(createPostRequestDto.getCategoryId());
+        verify(categoryService,times(1)).getCategoryByCategoryId(eq(1L));
+        verify(postRepository, times(1)).save(any());
     }
 
     @Test
     @DisplayName("getPostByPostId")
     void getPostByPostId() {
-        // Given
-        when(postRepository.findById(1L)).thenReturn(Optional.ofNullable(Post.getInstance(createPostRequestDto)));
-        Post expectedPost = Post.getInstance(createPostRequestDto);
+        //given
+        when(postRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
 
-        // When
-        Post createdPost = postService.creatPost(createPostRequestDto);
+        //when
+        Post testPost = postService.getPostByPostId(1L);
 
-        // Then
-        String expectedTitle = expectedPost.getTitle();
-        String actualTitle = createdPost.getTitle();
+        //then
+        String expectedTitle = createPostRequestDto.getTitle();
+        String actualTitle = testPost.getTitle();
 
-        assertNotNull(createdPost, "The created post should not be null");
+        assertNotNull(testPost, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
+        verify(postRepository, times(1)).findById(eq(1L));
     }
 }

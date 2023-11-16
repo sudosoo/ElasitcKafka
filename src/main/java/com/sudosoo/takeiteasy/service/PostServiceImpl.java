@@ -1,11 +1,9 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.RelatedPostRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
-import com.sudosoo.takeiteasy.repository.CategoryRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +21,7 @@ public class PostServiceImpl implements PostService {
 
     public Post creatPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
-        Post post = Post.getInstance(createPostRequestDto);
+        Post post = Post.of(createPostRequestDto);
 
         post.setMember(member);
         //카테고리ID가 있으면
@@ -33,7 +31,6 @@ public class PostServiceImpl implements PostService {
 
         return postRepository.save(post);
     }
-
 
     private Post createPostWithCategory(CreatePostRequestDto createPostRequestDto,Post post) {
         Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
