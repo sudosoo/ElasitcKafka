@@ -31,28 +31,23 @@ class HeartServiceImplTest {
     MemberService memberService = mock(MemberService.class);
     CommentService commentService = mock(CommentService.class);
     HeartService heartService = new HeartServiceImpl(heartRepository,memberService,postService,commentService);
-    Member mockMember = mock(Member.class);
-    Post mockPost = mock(Post.class);
-    Comment mockComment = mock(Comment.class);
 
     @BeforeEach
     void setUp() {
         when(memberService.getMemberByMemberId(anyLong())).thenReturn(Member.getInstance(createMemberRequestDto));
         when(postService.getPostByPostId(anyLong())).thenReturn(Post.getInstance(createPostRequestDto));
         when(commentService.getCommentByCommentId(anyLong())).thenReturn(Comment.of(createCommentRequestDto));
-
-        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mockPost,mockMember));
-        when(heartRepository.findByMemberAndPost(any(Member.class),any(Post.class)))
-                .thenReturn(Optional.ofNullable(Heart.getPostHeart(mockPost, mockMember)));
-        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mockComment,mockMember));
-        when(heartRepository.findByMemberAndComment(any(Member.class),any(Comment.class)))
-                .thenReturn(Optional.ofNullable(Heart.getCommentHeart(mockComment, mockMember)));
     }
 
     @Test
     @DisplayName("createdPostHeart")
     void createdPostHeart(){
         //given
+        Member mockMember = mock(Member.class);
+        Post mockPost = mock(Post.class);
+        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mockPost,mockMember));
+        when(heartRepository.findByMemberAndPost(any(Member.class),any(Post.class)))
+                .thenReturn(Optional.ofNullable(Heart.getPostHeart(mockPost, mockMember)));
         //when
         Heart heart = heartService.createdPostHeart(postHeartRequestDto);
         //then
@@ -65,6 +60,11 @@ class HeartServiceImplTest {
    @DisplayName("createdCommentHeart")
    void createdCommentHeart() throws Exception {
        //given
+       Member mockMember = mock(Member.class);
+       Comment mockComment = mock(Comment.class);
+       when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mockComment,mockMember));
+       when(heartRepository.findByMemberAndComment(any(Member.class),any(Comment.class)))
+               .thenReturn(Optional.ofNullable(Heart.getCommentHeart(mockComment, mockMember)));
        //when
        Heart heart = heartService.createdCommentHeart(commentHeartRequestDto);
        //then
@@ -77,9 +77,14 @@ class HeartServiceImplTest {
     @DisplayName("postDisHeart")
     void postDisHeart() throws Exception {
         //given
+        Member mockMember = mock(Member.class);
+        Post mockPost = mock(Post.class);
+        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mockPost,mockMember));
+        when(heartRepository.findByMemberAndPost(any(Member.class),any(Post.class)))
+                .thenReturn(Optional.ofNullable(Heart.getPostHeart(mockPost, mockMember)));
         //when
-        //then
         assertDoesNotThrow(() -> heartService.postDisHeart(postHeartRequestDto));
+        //then
         verify(heartRepository, times(1)).delete(any(Heart.class));
     }
 
@@ -87,9 +92,14 @@ class HeartServiceImplTest {
     @DisplayName("commentDisHeart")
     void commentDisHeart() throws Exception {
         //given
+        Member mockMember = mock(Member.class);
+        Comment mockComment = mock(Comment.class);
+        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mockComment,mockMember));
+        when(heartRepository.findByMemberAndComment(any(Member.class),any(Comment.class)))
+                .thenReturn(Optional.ofNullable(Heart.getCommentHeart(mockComment, mockMember)));
         //when
-        //then
         assertDoesNotThrow(() -> heartService.commentDisHeart(commentHeartRequestDto));
+        //then
         verify(heartRepository, times(1)).delete(any(Heart.class));
     }
 }
