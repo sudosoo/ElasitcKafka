@@ -18,9 +18,4 @@ public class SampleController {
         this.producer.sendMessage(message);
         return "success";
     }
-    
-    @PostMapping(value = "/errorMessage")
-    public void sendMessage() {
-        throw new IllegalArgumentException("에러테스트");
-    }
 }
