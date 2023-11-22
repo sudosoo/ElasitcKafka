@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 

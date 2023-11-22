@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/kafka/test")
 @RequiredArgsConstructor
 public class SampleController {
+
     private final KafkaProducer producer;
 
     @PostMapping(value = "/message")
@@ -18,7 +19,7 @@ public class SampleController {
         return "success";
     }
     
-    @PutMapping(value = "/message")
+    @PostMapping(value = "/errorMessage")
     public void sendMessage() {
         throw new IllegalArgumentException("에러테스트");
     }

@@ -1,28 +1,23 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.CreateCommentRequestDto;
-import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
-import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
-import com.sudosoo.takeiteasy.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class CommentServiceImplTest {
-    CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
     CommentRepository commentRepository = mock(CommentRepository.class);
     PostService postService = mock(PostService.class);
     MemberService memberService = mock(MemberService.class);
@@ -34,13 +29,14 @@ class CommentServiceImplTest {
         when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
 
         Post mockPost = mock(Post.class);
-        when(postService.getPostByPostId(createCommentRequestDto.getPostId())).thenReturn(mockPost);
+        when(postService.getPostByPostId(anyLong())).thenReturn(mockPost);
     }
 
     @Test
     @DisplayName("createdComment")
     void createComment() {
         //given
+        CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
         when(commentService.createComment(createCommentRequestDto)).thenReturn(Comment.of(createCommentRequestDto));
 
         //when
@@ -57,13 +53,14 @@ class CommentServiceImplTest {
 
     @Test
     void getCommentByCommentId() {
-        // given
+        //given
+        CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
         when(commentRepository.findById(any())).thenReturn(Optional.of(Comment.of(createCommentRequestDto)));
 
-        // when
+        //when
         Comment testComment = commentService.getCommentByCommentId(1L);
 
-        // then
+        //then
         String expectedCommentContent = createCommentRequestDto.getContent();
         String actualCommentContent = testComment.getContent();
 
