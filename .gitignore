@@ -36,5 +36,7 @@ replay_pid*
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
+*.lock
+*.bin
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle
