@@ -32,8 +32,12 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "parentPost")
     private List<Post> relatedPosts = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_post_id")
+    private Post parentPost;  // 부모 포스트를 참조하는 속성
 
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
