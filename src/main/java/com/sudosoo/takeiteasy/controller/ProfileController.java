@@ -17,7 +17,7 @@ public class ProfileController {
     @GetMapping("/exception")
     public ResponseEntity<Exception> exceptionServerStatus() {
         try {
-            throw new IllegalArgumentException("ExceptionTest");
+            throw new IllegalArgumentException("Exception Test");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new Exception(e.getMessage()));
         }
