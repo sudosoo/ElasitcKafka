@@ -13,10 +13,11 @@ public class ProfileController {
     public String checkServerStatus(){
         return "check";
     }
+
     @GetMapping("/exception")
     public ResponseEntity<Exception> exceptionServerStatus() {
         try {
-            throw new IllegalArgumentException("Exception Test");
+            throw new IllegalArgumentException("ExceptionTest");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new Exception(e.getMessage()));
         }
