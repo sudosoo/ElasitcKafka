@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.controller;
 
+import com.sudosoo.takeiteasy.common.AutoLogging;
 import com.sudosoo.takeiteasy.kafka.KafkaProducer;
 import com.sudosoo.takeiteasy.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +17,16 @@ public class TestController {
     private final MemberService memberService;
 
 
+    @AutoLogging
     @GetMapping("/hello")
     public void hello(@RequestParam(value = "name") String name) {
         kafkaLogger.info("name:{}", name);
     }
 
+    @AutoLogging
     @PostMapping( "/message")
     public String sendMessage(@RequestParam("message") String message) {
-        this.kafkaProducer.sendMessage(message);
+        kafkaProducer.sendMessage(message);
         return "success";
     }
 }

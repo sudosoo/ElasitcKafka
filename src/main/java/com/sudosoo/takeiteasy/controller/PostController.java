@@ -18,8 +18,6 @@ public class PostController {
     @PostMapping("/post")
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
         Post post = postService.createdPost(requestDto);
-        log.info("New post created: memberName {}, categoryId {}, postId {}",
-                post.getMemberName(), (post.getCategory() != null) ? post.getCategoryId() : null, post.getId());
         return ResponseEntity.ok().build();
     }
 

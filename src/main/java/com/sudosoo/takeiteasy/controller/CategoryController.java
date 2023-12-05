@@ -18,7 +18,6 @@ public class CategoryController {
     @PostMapping( "/category")
     public ResponseEntity<Void> createCategory(@Valid @RequestBody CreateCategoryRequestDto requestDto) {
         Category category = categoryService.creatCategory(requestDto);
-        log.info("New Category created :  categoryId {}", category.getId());
         return ResponseEntity.ok().build();
     }
 
