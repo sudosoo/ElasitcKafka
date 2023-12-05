@@ -15,7 +15,7 @@ public class SampleController {
 
     @PostMapping(value = "/message")
     public String sendMessage(@RequestParam("message") String message) {
-        this.producer.sendMessage(message);
+        producer.sendMessage(message);
         return "success";
     }
 }

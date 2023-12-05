@@ -20,7 +20,6 @@ public class CommnetController {
     @PostMapping("/comment")
     public ResponseEntity<Void> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto) {
         Comment comment = commentService.createComment(requestDto);
-        log.info("New Comment created :  memberName{} , CommentId {}",comment.getUserName(), comment.getId());
         return ResponseEntity.ok().build();
     }
 
