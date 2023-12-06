@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Slf4j
 public class PostController {
     private final PostService postService;
-    @PostMapping("/post")
+    @PostMapping(value = "/post")
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
-        Post post = postService.createdPost(requestDto);
+        postService.createdPost(requestDto);
         return ResponseEntity.ok().build();
     }
 

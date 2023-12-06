@@ -1,49 +1,70 @@
 package com.sudosoo.takeiteasy.aspect;
 
-
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
 
-@Component
 @Aspect
-@Slf4j
+@Component
+@RequiredArgsConstructor
 public class LoggingAspect {
 
-    private final String ANNOTATION_LOGGER_TARGET = "@annotation(com.sudosoo.takeiteasy.common.AutoLogging)";
+    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+    private final ObjectMapper objectMapper;
 
-    @Before(ANNOTATION_LOGGER_TARGET)
-    public void loggingBefore(JoinPoint joinPoint) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        log.info("## REQUEST [{}] {} {}, Payload: {}", request.getRemoteAddr(), request.getMethod(), request.getRequestURI(), getPayload(joinPoint));
-    }
+    // 모든 컨트롤러 && NotLogging 어노테이션 미설정 시 로그 수집
+    @Pointcut("within(*..*Controller) && !@annotation(com.sudosoo.takeiteasy.common.NotLogging)")
+    public void onRequest() {}
 
-    @AfterReturning(value = ANNOTATION_LOGGER_TARGET, returning = "result")
-    public void afterReturn(Object result) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        log.info("## RESPONSE [{}] {} {}, Result: {}", request.getRemoteAddr(), request.getMethod(), request.getRequestURI(), result.toString());
-    }
+    @Around("onRequest()")
+    public Object requestLogging(ProceedingJoinPoint joinPoint) throws Throwable {
 
-    @AfterThrowing(value = ANNOTATION_LOGGER_TARGET, throwing = "e")
-    public void loggingAfterThrowing(Exception e) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        log.info("## RESPONSE [{}] {} {}, Exception: {}", request.getRemoteAddr(), request.getMethod(), request.getRequestURI(), e.toString());
-    }
+        // API 요청 정보
+        final RequestApiInfo apiInfo = new RequestApiInfo(joinPoint, joinPoint.getTarget().getClass(), objectMapper);
 
-    private String getPayload(JoinPoint joinPoint) {
-        return Arrays.stream(joinPoint.getArgs())
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
+        // 로그 정보
+        final LogInfo logInfo = new LogInfo(
+                apiInfo.getUrl(),
+                apiInfo.getName(),
+                apiInfo.getMethod(),
+                apiInfo.getHeader(),
+                objectMapper.writeValueAsString(apiInfo.getParameters()),
+                objectMapper.writeValueAsString(apiInfo.getBody()),
+                apiInfo.getIpAddress()
+        );
+
+        try {
+            final Object result = joinPoint.proceed(joinPoint.getArgs());
+
+            // Method가 Get이 아닌 로그만 수집
+            if (!logInfo.getMethod().equals("GET")) {
+                final String logMessage = objectMapper.writeValueAsString(Map.entry("logInfo", logInfo));
+                logger.info(logMessage);
+            }
+
+            return result;
+        } catch (Exception e) {
+            final StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            final String exceptionAsString = sw.toString();
+
+            // 발생 Exception 설정
+            logInfo.setException(exceptionAsString);
+            final String logMessage = objectMapper.writeValueAsString(logInfo);
+            logger.error(logMessage);
+
+            throw e;
+        }
     }
 
 }
