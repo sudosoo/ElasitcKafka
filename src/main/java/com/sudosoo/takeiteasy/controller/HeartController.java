@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Slf4j
 public class HeartController {
     private final HeartService heartService;
 
     @PostMapping("/postHeart")
     public ResponseEntity<Void> PostHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
-        Heart heart = heartService.createdPostHeart(requestDto);
+        heartService.createdPostHeart(requestDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/commentHeart")
     public ResponseEntity<Void> CommentHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
-        Heart heart = heartService.createdCommentHeart(requestDto);
+        heartService.createdCommentHeart(requestDto);
         return ResponseEntity.ok().build();
     }
 

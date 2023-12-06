@@ -14,12 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Slf4j
 public class CommnetController {
     private final CommentService commentService;
     @PostMapping("/comment")
     public ResponseEntity<Void> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto) {
-        Comment comment = commentService.createComment(requestDto);
+        commentService.createComment(requestDto);
         return ResponseEntity.ok().build();
     }
 

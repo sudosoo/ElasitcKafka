@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Slf4j
 public class MemberController {
     private final MemberService memberService;
     @PostMapping( "/member")
     public ResponseEntity<Void> createdMember(@Valid @RequestBody CreateMemberRequestDto requestDto) {
-        Member member = memberService.createdMember(requestDto);
+        memberService.createdMember(requestDto);
         return ResponseEntity.ok().build();
     }
 }
