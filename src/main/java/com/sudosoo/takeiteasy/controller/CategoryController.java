@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    @PostMapping( "/category")
+    @PostMapping(value = "/createCategory" , name = "createCategory")
     public ResponseEntity<Void> createCategory(@Valid @RequestBody CreateCategoryRequestDto requestDto) {
         categoryService.creatCategory(requestDto);
         return ResponseEntity.ok().build();

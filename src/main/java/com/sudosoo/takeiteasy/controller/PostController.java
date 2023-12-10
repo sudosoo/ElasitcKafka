@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    @PostMapping(value = "/post")
+    @PostMapping(value = "/createPost" , name = "createPost")
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
         postService.createdPost(requestDto);
         return ResponseEntity.ok().build();
