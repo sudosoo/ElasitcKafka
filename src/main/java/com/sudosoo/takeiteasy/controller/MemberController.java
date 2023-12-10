@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    @PostMapping( "/member")
+    @PostMapping(value = "/member" , name = "createdMember")
     public ResponseEntity<Void> createdMember(@Valid @RequestBody CreateMemberRequestDto requestDto) {
         memberService.createdMember(requestDto);
         return ResponseEntity.ok().build();

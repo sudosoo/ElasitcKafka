@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CommnetController {
     private final CommentService commentService;
-    @PostMapping("/comment")
+    @PostMapping(value = "/createComment" , name = "createComment")
     public ResponseEntity<Void> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto) {
         commentService.createComment(requestDto);
         return ResponseEntity.ok().build();
