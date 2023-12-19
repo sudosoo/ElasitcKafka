@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.aspect;
+package com.sudosoo.takeiteasy.aspect.logging;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,9 +15,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
@@ -34,6 +38,26 @@ public class RequestApiInfo {
     private String ipAddress = null;
     private final String dateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+    public RequestApiInfo(JoinPoint joinPoint, Class clazz, ObjectMapper objectMapper) {
+        try {
+            setRequestDetails();
+            setApiInfo(joinPoint, clazz);
+            setInputStream(joinPoint, objectMapper);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setRequestDetails() {
+        try {
+            final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            setHeader(request);
+            setIpAddress(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // Request에서 Header 추출
     private void setHeader(HttpServletRequest request) {
@@ -95,25 +119,4 @@ public class RequestApiInfo {
             e.printStackTrace();
         }
     }
-
-    public RequestApiInfo(JoinPoint joinPoint, Class clazz, ObjectMapper objectMapper) {
-        try {
-            final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-            setHeader(request);
-            setIpAddress(request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            setApiInfo(joinPoint, clazz);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            setInputStream(joinPoint, objectMapper);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }

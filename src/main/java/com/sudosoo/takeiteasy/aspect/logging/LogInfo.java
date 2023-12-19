@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.aspect;
+package com.sudosoo.takeiteasy.aspect.logging;
 
 import lombok.Getter;
 import lombok.ToString;

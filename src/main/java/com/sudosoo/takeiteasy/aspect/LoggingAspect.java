@@ -1,6 +1,8 @@
 package com.sudosoo.takeiteasy.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sudosoo.takeiteasy.aspect.logging.LogInfo;
+import com.sudosoo.takeiteasy.aspect.logging.RequestApiInfo;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
