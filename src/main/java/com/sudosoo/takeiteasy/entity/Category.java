@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.CreateCategoryRequestDto;
+import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;

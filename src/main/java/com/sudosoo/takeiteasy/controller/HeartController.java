@@ -1,12 +1,10 @@
 package com.sudosoo.takeiteasy.controller;
 
-import com.sudosoo.takeiteasy.dto.CommentHeartRequestDto;
-import com.sudosoo.takeiteasy.dto.PostHeartRequestDto;
-import com.sudosoo.takeiteasy.entity.Heart;
+import com.sudosoo.takeiteasy.dto.heart.CommentHeartRequestDto;
+import com.sudosoo.takeiteasy.dto.heart.PostHeartRequestDto;
 import com.sudosoo.takeiteasy.service.HeartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
