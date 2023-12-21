@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class HeartServiceImpl implements HeartService {
 
     private final HeartRepository heartRepository;
@@ -23,6 +22,8 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
+
+    //TODO 좋아요 한번 누를시 작성 두번쨰 취소 ? 결정하기
     public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
@@ -61,7 +62,6 @@ public class HeartServiceImpl implements HeartService {
         heart.unHeartPost();
 
         heartRepository.delete(heart);
-        log.info("Deleted PostHeart : memberName {} , PostHeartId {}", member.getMemberName(),heart.getId());
     }
 
     public void commentDisHeart(CommentHeartRequestDto heartRequestDTO) {
@@ -72,7 +72,6 @@ public class HeartServiceImpl implements HeartService {
         heart.unHeartComment();
 
         heartRepository.delete(heart);
-        log.info("Deleted CommentHeart : memberName {} , CommentHeartId {}", member.getMemberName(),heart.getId());
     }
 
     private Heart findHeartByMemberAndPostOrComment(Member member, Object reference) {
