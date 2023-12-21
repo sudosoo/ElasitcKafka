@@ -1,13 +1,11 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +29,6 @@ public class Comment extends BaseEntity {
 
     @OneToMany(mappedBy = "comment")
     private List<Heart> hearts = new ArrayList<>();
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
-
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
 
     @Builder
     private Comment(String content, Member member, Post post, List<Heart> hearts) {
@@ -64,5 +55,9 @@ public class Comment extends BaseEntity {
             throw new IllegalArgumentException("사용자가 등록되어 있지 않습니다.");
         }
         return this.member.getMemberName();
+    }
+
+    public CommentResposeDto toResponseDto(){
+        return new CommentResposeDto(this.getId(),this.getUserName(),this.getContent(),this.getHearts().size());
     }
 }

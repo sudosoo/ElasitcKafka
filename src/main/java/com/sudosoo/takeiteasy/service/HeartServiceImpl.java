@@ -21,7 +21,7 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    //TODO 좋아요 한번 누를시 작성 두번쨰 취소 ? 결정하기
+    //TODO 좋아요 한번 누를시 생성 두번쨰 취소 ? 결정하기
     @Override
     public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
@@ -31,6 +31,7 @@ public class HeartServiceImpl implements HeartService {
         Heart heart = Heart.getPostHeart(post,member);
 
         return heartRepository.save(heart);
+
     }
 
     private void validateHeart(Member member, Post post) {
@@ -45,7 +46,7 @@ public class HeartServiceImpl implements HeartService {
 
         validateHeart(member, comment);
         Heart heart = Heart.getCommentHeart(comment,member);
-        
+
         return heartRepository.save(heart);
     }
 

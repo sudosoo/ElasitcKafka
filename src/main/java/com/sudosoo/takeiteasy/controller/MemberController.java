@@ -14,7 +14,9 @@ public class MemberController {
     private final MemberService memberService;
     @PostMapping(value = "/member" , name = "createdMember")
     public ResponseEntity<Void> createdMember(@Valid @RequestBody CreateMemberRequestDto requestDto) {
+
         memberService.createdMember(requestDto);
+
         return ResponseEntity.ok().build();
     }
 }

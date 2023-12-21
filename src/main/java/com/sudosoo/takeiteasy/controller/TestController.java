@@ -15,7 +15,9 @@ public class TestController {
 
     @PostMapping(value = "/message" , name = "카프카 테스트 API")
     public String sendMessage(@RequestParam("message") String message) {
+
         kafkaProducer.sendMessage(message);
+
         return "success";
     }
 }
