@@ -1,12 +1,15 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostListResponsetDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,13 +36,6 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "parentPost")
-    private List<Post> relatedPosts = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_post_id")
-    private Post parentPost;  // 부모 포스트를 참조하는 속성
-
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
 
@@ -48,15 +44,6 @@ public class Post extends BaseEntity {
 
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
-
-
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
-
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
 
     @Builder
     private Post(String title, String content, Category category, Member member,int viewCount, List<Heart> hearts) {
@@ -96,9 +83,13 @@ public class Post extends BaseEntity {
         return this.category.getId();
     }
 
-    public PostListResponsetDto toDto(){
-        return new PostListResponsetDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getMemberName());
+    public PostTitleDto toTitleOnlyDto(){
+        return new PostTitleDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getMemberName());
     }
 
+    public PostDetailResponsetDto toDetailDto(Page<CommentResposeDto> comments){
+        return new PostDetailResponsetDto(this.getId(), this.getTitle(),this.getContent()
+                , this.getHearts().size(),this.getMemberName(),comments);
+    }
 
 }

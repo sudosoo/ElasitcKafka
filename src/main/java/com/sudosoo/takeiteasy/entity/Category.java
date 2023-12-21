@@ -26,13 +26,6 @@ public class Category extends BaseEntity {
 
     private String categoryName;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
-
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
-
     @OneToMany(mappedBy = "category")
     private List<Post> posts = new ArrayList<>();
 

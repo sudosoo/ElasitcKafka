@@ -1,19 +1,22 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostListResponsetDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
 import com.sudosoo.takeiteasy.entity.Category;
+import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,25 +26,21 @@ public class PostServiceImpl implements PostService {
     private final CategoryService categoryService;
     private final MemberService memberService;
 
+
     @Override
     public Post createdPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
         Post post = Post.of(createPostRequestDto);
+        Category category = getCategory(createPostRequestDto.getCategoryId());
 
         post.setMember(member);
-        //카테고리ID가 있으면
-        if (createPostRequestDto.getCategoryId() != null){
-            return createPostWithCategory(createPostRequestDto, post);
-        }
+        post.setCategory(category);
 
         return postRepository.save(post);
     }
 
-    private Post createPostWithCategory(CreatePostRequestDto createPostRequestDto,Post post) {
-        Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
-        post.setCategory(category);
-
-        return postRepository.save(post);
+    private Category getCategory(Long categoryId) {
+        return categoryService.getCategoryByCategoryId(categoryId);
     }
 
     @Override
@@ -50,18 +49,27 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
     }
 
-    @Override
-    public List<PostListResponsetDto> getPostByCategoryId(Long categoryId,PageRequest pageRequest) {
-        List<PostListResponsetDto> postList = null;
-        List<Post> posts = postRepository.findAllByCategoryId(categoryId,pageRequest);
+   @Override
+   public List<PostTitleDto> getPostByCategoryId(Long categoryId, PageRequest pageRequest) {
+        List<Post> posts = postRepository.findAllByCategoryId(categoryId, pageRequest);
 
-        if (posts.isEmpty()){
+        if (posts.isEmpty()) {
             throw new IllegalArgumentException("해당 카테고리에 등록된 게시물이 없습니다.");
         }
-        for (Post p: posts) {
-            postList.add(p.toDto());
-        }
-        return postList;
+        return posts.stream().map(Post::toTitleOnlyDto).toList();
     }
 
+    @Override
+    public PostDetailResponsetDto getPostDetailByPostId(Long postId, PageRequest pageRequest) {
+        Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
+        List<Comment> comments = post.getComments();
+        List<CommentResposeDto> responseCommentDto = comments.stream().map(Comment::toResponseDto).toList();
+
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), responseCommentDto.size());
+        Page<CommentResposeDto> paginatedComment =
+                new PageImpl<>(responseCommentDto.subList(start, end), pageRequest, responseCommentDto.size());
+
+        return post.toDetailDto(paginatedComment);
+    }
 }

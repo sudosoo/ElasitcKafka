@@ -16,25 +16,33 @@ public class HeartController {
 
     @PostMapping(value = "/createPostHeart" , name = "createPostHeart")
     public ResponseEntity<Void> createPostHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
+
         heartService.createdPostHeart(requestDto);
+
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/createCommentHeart" , name = "createCommentHeart")
     public ResponseEntity<Void> createCommentHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
+
         heartService.createdCommentHeart(requestDto);
+
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/createPostDisHeart" , name = "createPostDisHeart")
     public ResponseEntity<Void> createPostDisHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
+
         heartService.postDisHeart(requestDto);
+
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/createCommentDisHeart" , name = "createCommentDisHeart")
     public ResponseEntity<Void> createCommentDisHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
+
         heartService.commentDisHeart(requestDto);
+
         return ResponseEntity.ok().build();
     }
 }

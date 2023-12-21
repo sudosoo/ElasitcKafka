@@ -34,12 +34,6 @@ public class Member  extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
-
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
 
     private Member(CreateMemberRequestDto createMemberRequestDto) {
         this.memberName = createMemberRequestDto.getMemberName();

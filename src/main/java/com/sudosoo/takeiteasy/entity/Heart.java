@@ -34,30 +34,29 @@ public class Heart extends BaseEntity {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdTime;
-
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
+    @Enumerated(EnumType.STRING)
+    private HeartType heartType;
 
     @Builder
-    public Heart(Member member, Post post, Comment comment) {
+    public Heart(Member member, Post post, Comment comment,HeartType heartType) {
         this.member = member;
         this.post = post;
         this.comment = comment;
+        this.heartType = heartType;
     }
 
     public static Heart getPostHeart(Post post , Member member){
         return Heart.builder()
                 .post(post)
                 .member(member)
+                .heartType(HeartType.POST)
                 .build();
     }
     public static Heart getCommentHeart(Comment comment , Member member){
         return Heart.builder()
                 .comment(comment)
                 .member(member)
+                .heartType(HeartType.COMMENT)
                 .build();
     }
 
