@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.CommentHeartRequestDto;
-import com.sudosoo.takeiteasy.dto.PostHeartRequestDto;
+import com.sudosoo.takeiteasy.dto.heart.CommentHeartRequestDto;
+import com.sudosoo.takeiteasy.dto.heart.PostHeartRequestDto;
 import com.sudosoo.takeiteasy.entity.Heart;
 
 public interface HeartService {

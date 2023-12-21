@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.dto;
+package com.sudosoo.takeiteasy.dto.heart;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CommentHeartRequestDto {
-    @NotNull(message = "멤버아이디를 입력해 주세요.")
+    @NotNull(message = "유저아이디를 입력해 주세요.")
     private Long memberId;
-    @NotNull(message = "댓글아이디를를 입력해 주세요.")
+    @NotNull(message = "댓글아이디를 입력해 주세요.")
     private Long commentId;
 }

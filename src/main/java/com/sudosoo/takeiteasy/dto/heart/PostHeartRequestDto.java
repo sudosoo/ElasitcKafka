@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.dto;
+package com.sudosoo.takeiteasy.dto.heart;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -11,5 +11,4 @@ public class PostHeartRequestDto {
     private Long memberId;
     @NotNull(message = "게시글아이디를 입력해 주세요.")
     private Long postId;
-
 }

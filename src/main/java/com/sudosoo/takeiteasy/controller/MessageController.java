@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.controller;
 
-import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.service.CategoryService;
+import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
+import com.sudosoo.takeiteasy.service.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class CategoryController {
-    private final CategoryService categoryService;
-    @PostMapping(value = "/createCategory" , name = "createCategory")
-    public ResponseEntity<Void> createCategory(@Valid @RequestBody CreateCategoryRequestDto requestDto) {
-        categoryService.creatCategory(requestDto);
+public class MessageController {
+    private final MessageService messageService;
+    @PostMapping(value = "/messageSend" , name = "messageSend")
+    public ResponseEntity<Void> messageSend(@Valid @RequestBody MessageSendRequestDto requestDto) {
+        messageService.messageSend(requestDto);
         return ResponseEntity.ok().build();
     }
 

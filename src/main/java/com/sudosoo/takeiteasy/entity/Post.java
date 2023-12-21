@@ -1,7 +1,8 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.post.PostListResponsetDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +49,8 @@ public class Post extends BaseEntity {
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
 
+
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdTime;
@@ -91,6 +94,10 @@ public class Post extends BaseEntity {
             throw new IllegalArgumentException("해당 포스트엔 카테고리가 등록되어 있지 않습니다.");
         }
         return this.category.getId();
+    }
+
+    public PostListResponsetDto toDto(){
+        return new PostListResponsetDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getMemberName());
     }
 
 
