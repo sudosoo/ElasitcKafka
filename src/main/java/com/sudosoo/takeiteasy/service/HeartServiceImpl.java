@@ -21,6 +21,7 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
+    //TODO 좋아요 한번 누를시 작성 두번쨰 취소 ? 결정하기
     @Override
     public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
