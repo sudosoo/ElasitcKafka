@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ProfileController {
 
-    @PostMapping(value = "/check" , name = "API Check")
+    @GetMapping(value = "/check" , name = "API Check")
     public String checkServerStatus(){
         return "check";
     }
 
-    @PostMapping(value = "/exception" , name = "API Exception test")
+    @GetMapping(value = "/exception" , name = "API Exception test")
     public IllegalArgumentException exceptionServerStatus() {
         return new IllegalArgumentException("Exception test");
     }
