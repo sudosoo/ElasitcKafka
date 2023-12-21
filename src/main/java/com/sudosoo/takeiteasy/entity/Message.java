@@ -18,12 +18,12 @@ public class Message {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "sender_id")
     @NotNull
     private Member sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "receiver_id")
     @NotNull
     private Member receiver;
 
