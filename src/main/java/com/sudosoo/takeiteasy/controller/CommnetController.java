@@ -1,13 +1,9 @@
 package com.sudosoo.takeiteasy.controller;
 
-import com.sudosoo.takeiteasy.dto.CreateCommentRequestDto;
-import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.entity.Comment;
+import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import com.sudosoo.takeiteasy.service.CommentService;
-import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

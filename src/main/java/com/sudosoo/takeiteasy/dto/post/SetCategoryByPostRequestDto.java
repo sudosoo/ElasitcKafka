@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.dto;
+package com.sudosoo.takeiteasy.dto.post;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

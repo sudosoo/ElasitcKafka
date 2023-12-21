@@ -33,7 +33,7 @@ public class DuplicateRequestAspect
             return joinPoint.proceed();
         }
 
-        String requestId = generateRequestId(joinPoint.getSignature().toLongString());
+        String requestId = joinPoint.getSignature().toLongString();
         if (requestSet.contains(requestId)) {
             // 중복 요청인 경우
             return handleDuplicateRequest();
@@ -47,12 +47,6 @@ public class DuplicateRequestAspect
             requestSet.remove(requestId);
         }
     }
-
-        private String generateRequestId(String methodSignature) {
-            // 적절한 방식으로 요청 ID를 생성
-            // 여기서는 간단히 메서드 시그니처를 사용한 예제
-            return methodSignature;
-        }
 
         private ResponseEntity<Object> handleDuplicateRequest() {
             // 중복 요청에 대한 응답 처리

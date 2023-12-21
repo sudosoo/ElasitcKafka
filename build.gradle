@@ -31,16 +31,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//
-//    // 엘라스틱서치
-//    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.15.0'
-//    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.2'
-//
-//    // 키바나
-//    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.15.0'
 
-//    // 로그스테시
-//    implementation 'co.elastic.logging:logstash-logback-encoder:6.6'
+    //postgresql
+    implementation 'org.postgresql:postgresql:42.6.0'
 
     //postgresql
     implementation group: 'org.postgresql', name:'postgresql', version: '42.2.19'

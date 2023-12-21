@@ -1,10 +1,8 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.CreateMemberRequestDto;
+import com.sudosoo.takeiteasy.dto.member.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.entity.Member;
-import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

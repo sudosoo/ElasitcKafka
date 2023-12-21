@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.dto;
+package com.sudosoo.takeiteasy.dto.category;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
