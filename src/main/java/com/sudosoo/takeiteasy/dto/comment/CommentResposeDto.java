@@ -1,5 +1,8 @@
 package com.sudosoo.takeiteasy.dto.comment;
 
+import lombok.Getter;
+
+@Getter
 public class CommentResposeDto {
 
     private Long commentId;

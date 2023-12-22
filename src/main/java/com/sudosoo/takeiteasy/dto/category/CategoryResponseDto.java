@@ -11,10 +11,10 @@ import java.util.List;
 public class CategoryResponseDto {
 
     private Long categoryId;
-    private Page<PostTitleDto> postResponseDto;
+    private Page<PostTitleDto> postResponseDtos;
 
     public CategoryResponseDto(Long categoryId, Page<PostTitleDto> postTitleDtos) {
         this.categoryId = categoryId;
-        this.postResponseDto = postTitleDtos;
+        this.postResponseDtos = postTitleDtos;
     }
 }

@@ -1,7 +1,9 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
+import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,4 +43,8 @@ public class Category extends BaseEntity {
     public static Category of(CreateCategoryRequestDto createCategoryRequestDto){
         return new Category(createCategoryRequestDto);
     }
+    public CategoryResponseDto toResponseDto(Long categoryId,Page<PostTitleDto> postTitleDtoPage){
+        return new CategoryResponseDto(categoryId,postTitleDtoPage);
+    }
+
 }
