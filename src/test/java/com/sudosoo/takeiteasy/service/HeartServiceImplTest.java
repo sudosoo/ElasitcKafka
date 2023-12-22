@@ -33,10 +33,8 @@ class HeartServiceImplTest {
     void setUp() {
         Member mockMember = mock(Member.class);
         Post mockPost = mock(Post.class);
-        Comment mockComment = mock(Comment.class);
         when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
         when(postService.getPostByPostId(anyLong())).thenReturn(mockPost);
-        when(commentService.getCommentByCommentId(anyLong())).thenReturn(mockComment);
     }
 
     @Test

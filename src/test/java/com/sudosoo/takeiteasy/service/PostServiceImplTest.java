@@ -1,14 +1,23 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.entity.Category;
-import com.sudosoo.takeiteasy.entity.Member;
-import com.sudosoo.takeiteasy.entity.Post;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
+import com.sudosoo.takeiteasy.entity.*;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,52 +26,38 @@ import static org.mockito.Mockito.*;
 
 class PostServiceImplTest {
     MemberService memberService = mock(MemberService.class);
-    PostRepository postRepository = mock(PostRepository.class);
     CategoryService categoryService = mock(CategoryService.class);
+    PostRepository postRepository = mock(PostRepository.class);
     PostService postService = new PostServiceImpl(postRepository,categoryService,memberService);
-    CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle","TestContent",1L,null);
+    CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
+    Member memberMock = mock(Member.class);
+    Heart heartMock = mock(Heart.class);
+    Category categoryMock = mock(Category.class);
+    Post testPost = Post.testOf(1L,"제목","내용",categoryMock,memberMock,0,List.of(heartMock));
+
     @BeforeEach
     void setUp() {
-        Member memberMock = mock(Member.class);
+
         when(memberService.getMemberByMemberId(createPostRequestDto.getMemberId())).thenReturn(memberMock);
-        when(postRepository.save(any(Post.class))).thenReturn(Post.of(createPostRequestDto));
+        when(postRepository.save(any(Post.class))).thenReturn(testPost);
+        when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
     }
 
     @Test
-    @DisplayName("createPostWithoutCategory")
-    void creatPost() {
+    @DisplayName("createPost")
+    void createPost() {
         //given
-        CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, null);
-
-        //when
-        Post testPost = postService.createdPost(createPostRequestDto);
-
-        //then
-        String expectedTitle = createPostRequestDto.getTitle();
-        String actualTitle = testPost.getTitle();
-
-        assertNotNull(testPost, "The created post should not be null");
-        assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(categoryService,never()).getCategoryByCategoryId(anyLong());
-        verify(postRepository, times(1)).save(any());
-    }
-
-    @Test
-    @DisplayName("createPostWithCategory")
-    void createPostWithCategory() {
-        //given
-        CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("TestTitle", "TestContent", 1L, 1L);
         Category categoryMock = mock(Category.class);
         when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
 
         //when
-        Post testPost = postService.createdPost(createPostRequestDto);
+        Post post = postService.createdPost(createPostRequestDto);
 
         //then
         String expectedTitle = createPostRequestDto.getTitle();
-        String actualTitle = testPost.getTitle();
+        String actualTitle = post.getTitle();
 
-        assertNotNull(testPost, "The created post should not be null");
+        assertNotNull(post, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
         verify(categoryService,times(1)).getCategoryByCategoryId(eq(1L));
         verify(postRepository, times(1)).save(any());
@@ -72,8 +67,7 @@ class PostServiceImplTest {
     @DisplayName("getPostByPostId")
     void getPostByPostId() {
         //given
-        when(postRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
+        when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
 
         //when
         Post testPost = postService.getPostByPostId(1L);
@@ -86,4 +80,27 @@ class PostServiceImplTest {
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
         verify(postRepository, times(1)).findById(eq(1L));
     }
+
+    @Test
+    @DisplayName("getPostDetailByPostId")
+    void getPostDetailByPostId() {
+        // given
+        Comment commentMock1 = mock(Comment.class);
+        Comment commentMock2 = mock(Comment.class);
+        Comment commentMock3 = mock(Comment.class);
+        Pageable pageRequest = PageRequest.of(0, 10);
+        Page<Comment> commentPage = new PageImpl<>(Arrays.asList(commentMock1,commentMock2,commentMock3));
+        when(postRepository.findById(1L)).thenReturn(Optional.ofNullable(testPost));
+        when(postRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage);
+
+        // when
+        PostDetailResponsetDto result = postService.getPostDetailByPostId(1L, PageRequest.of(0, 10));
+
+        // then
+        assertEquals(testPost.getId(), result.getPostId());
+        assertEquals(testPost.getTitle(), result.getTitle());
+        assertEquals(testPost.getContent(), result.getContent());
+        assertEquals(commentPage.getSize(), result.getCommentsResposeDto().getSize());
+    }
+
 }

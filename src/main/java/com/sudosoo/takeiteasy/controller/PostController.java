@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +26,14 @@ public class PostController {
     }
 
     @GetMapping(value = "/getPostDetail" , name = "getPostDetail")
-    public ResponseEntity<Page<PostDetailResponsetDto>> getPostDetail
+    public ResponseEntity<PostDetailResponsetDto> getPostDetail
             (@RequestParam Long postId,
              @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
-        PageRequest pageRequest = PageRequest.of(pageNo,10);
+        Pageable pageRequest = PageRequest.of(pageNo,10);
 
-        postService.getPostDetailByPostId(postId,pageRequest);
+        return new ResponseEntity<>(postService.getPostDetailByPostId(postId,pageRequest), HttpStatus.OK);
 
-        return ResponseEntity.ok().build();
     }
 
 

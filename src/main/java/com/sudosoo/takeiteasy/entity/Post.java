@@ -7,11 +7,8 @@ import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,13 +43,25 @@ public class Post extends BaseEntity {
     private int viewCount = 0;
 
     @Builder
-    private Post(String title, String content, Category category, Member member,int viewCount, List<Heart> hearts) {
+    private Post(Long id,String title, String content, Category category, Member member,int viewCount, List<Heart> hearts) {
+        this.id= id;
         this.title = title;
         this.content = content;
         this.category = category;
         this.member = member;
         this.viewCount = viewCount;
         this.hearts = hearts;
+    }
+    public static Post testOf(Long id,String title, String content, Category category, Member member, int viewCount, List<Heart> hearts){
+        return Post.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .category(category)
+                .member(member)
+                .viewCount(viewCount)
+                .hearts(hearts)
+                .build();
     }
     public static Post of(CreatePostRequestDto createPostRequestDto){
         return  Post.builder()
@@ -61,9 +70,18 @@ public class Post extends BaseEntity {
                 .viewCount(0)
                 .build();
     }
+
+    public void setHearts(Heart heart) {
+        this.hearts.add(heart);
+        heart.setPost(this);
+    }
     public void setCategory(Category category) {
         this.category = category;
         category.getPosts().add(this);
+    }
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setPost(this);
     }
     public void setMember(Member member) {
         this.member = member;
@@ -88,8 +106,7 @@ public class Post extends BaseEntity {
     }
 
     public PostDetailResponsetDto toDetailDto(Page<CommentResposeDto> comments){
-        return new PostDetailResponsetDto(this.getId(), this.getTitle(),this.getContent()
-                , this.getHearts().size(),this.getMemberName(),comments);
+        return new PostDetailResponsetDto(this.getId(), this.getTitle(),this.getContent(),this.getMemberName(),comments);
     }
 
 }
