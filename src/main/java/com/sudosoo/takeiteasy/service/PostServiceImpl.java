@@ -50,6 +50,7 @@ public class PostServiceImpl implements PostService {
     public PostDetailResponsetDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
         Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
 
+        post.incrementViewCount();
         Page<Comment> comments = postRepository.findCommentsByPostId(postId,pageRequest);
         List<CommentResposeDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
 

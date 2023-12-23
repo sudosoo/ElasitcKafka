@@ -94,15 +94,12 @@ public class Post extends BaseEntity {
         }
         return this.member.getMemberName();
     }
-    public Long getCategoryId(){
-        if(this.category == null){
-            throw new IllegalArgumentException("해당 포스트엔 카테고리가 등록되어 있지 않습니다.");
-        }
-        return this.category.getId();
+    public void incrementViewCount() {
+        this.viewCount++;
     }
 
     public PostTitleDto toTitleOnlyDto(){
-        return new PostTitleDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getMemberName());
+        return new PostTitleDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getViewCount(),this.getMemberName());
     }
 
     public PostDetailResponsetDto toDetailDto(Page<CommentResposeDto> comments){

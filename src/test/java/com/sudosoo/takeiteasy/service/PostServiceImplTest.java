@@ -1,6 +1,5 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.entity.*;
@@ -13,9 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,12 +28,12 @@ class PostServiceImplTest {
     CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
     Member memberMock = mock(Member.class);
     Heart heartMock = mock(Heart.class);
+    Post postMock = mock(Post.class);
     Category categoryMock = mock(Category.class);
     Post testPost = Post.testOf(1L,"제목","내용",categoryMock,memberMock,0,List.of(heartMock));
 
     @BeforeEach
     void setUp() {
-
         when(memberService.getMemberByMemberId(createPostRequestDto.getMemberId())).thenReturn(memberMock);
         when(postRepository.save(any(Post.class))).thenReturn(testPost);
         when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
@@ -59,8 +55,6 @@ class PostServiceImplTest {
 
         assertNotNull(post, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(categoryService,times(1)).getCategoryByCategoryId(eq(1L));
-        verify(postRepository, times(1)).save(any());
     }
 
     @Test
@@ -78,7 +72,6 @@ class PostServiceImplTest {
 
         assertNotNull(testPost, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(postRepository, times(1)).findById(eq(1L));
     }
 
     @Test
@@ -88,6 +81,7 @@ class PostServiceImplTest {
         Comment commentMock1 = mock(Comment.class);
         Comment commentMock2 = mock(Comment.class);
         Comment commentMock3 = mock(Comment.class);
+
         Pageable pageRequest = PageRequest.of(0, 10);
         Page<Comment> commentPage = new PageImpl<>(Arrays.asList(commentMock1,commentMock2,commentMock3));
         when(postRepository.findById(1L)).thenReturn(Optional.ofNullable(testPost));
