@@ -4,17 +4,14 @@ import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 public class CategoryResponseDto {
 
-    private Long categoryId;
+    private String categoryName;
     private Page<PostTitleDto> postResponseDtos;
 
-    public CategoryResponseDto(Long categoryId, Page<PostTitleDto> postTitleDtos) {
-        this.categoryId = categoryId;
+    public CategoryResponseDto(String categoryName, Page<PostTitleDto> postTitleDtos) {
+        this.categoryName = categoryName;
         this.postResponseDtos = postTitleDtos;
     }
 }

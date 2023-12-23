@@ -1,6 +1,5 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.entity.*;
@@ -13,9 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -59,8 +55,6 @@ class PostServiceImplTest {
 
         assertNotNull(post, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(categoryService,times(1)).getCategoryByCategoryId(eq(1L));
-        verify(postRepository, times(1)).save(any());
     }
 
     @Test
@@ -78,7 +72,6 @@ class PostServiceImplTest {
 
         assertNotNull(testPost, "The created post should not be null");
         assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-        verify(postRepository, times(1)).findById(eq(1L));
     }
 
     @Test

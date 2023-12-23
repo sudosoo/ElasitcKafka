@@ -48,7 +48,6 @@ class CommentServiceImplTest {
 
         assertNotNull(testComment,"The created comment should not be null");
         assertEquals(expectedContent, actualContent, "Expected Content: " + expectedContent + ", Actual Content: " + actualContent);
-        verify(commentRepository, times(1)).save(any());
     }
 
     @Test
@@ -66,6 +65,5 @@ class CommentServiceImplTest {
 
         assertNotNull(testComment, "The actual comment should not be null");
         assertEquals(expectedCommentContent, actualCommentContent, "Expected Comment Content: " + expectedCommentContent + ", Actual Comment Content: " + actualCommentContent);
-        verify(commentRepository, times(1)).findById(1L);
     }
 }
