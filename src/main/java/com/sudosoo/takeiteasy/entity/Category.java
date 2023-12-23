@@ -36,15 +36,15 @@ public class Category extends BaseEntity {
         this.posts.add(post);
         post.setCategory(this);
     }
-    private Category(CreateCategoryRequestDto createCategoryRequestDto) {
-        this.categoryName = createCategoryRequestDto.getCategoryName();
+    private Category(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public static Category of(CreateCategoryRequestDto createCategoryRequestDto){
-        return new Category(createCategoryRequestDto);
+        return new Category(createCategoryRequestDto.getCategoryName());
     }
-    public CategoryResponseDto toResponseDto(Long categoryId,Page<PostTitleDto> postTitleDtoPage){
-        return new CategoryResponseDto(categoryId,postTitleDtoPage);
+    public CategoryResponseDto toResponseDto(Category category,Page<PostTitleDto> postTitleDtoPage){
+        return new CategoryResponseDto(category.getCategoryName(),postTitleDtoPage);
     }
 
 }

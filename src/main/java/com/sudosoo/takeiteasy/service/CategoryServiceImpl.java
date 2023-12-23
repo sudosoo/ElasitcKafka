@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         Page<Post> paginatedPost = categoryRepository.findPostsByCategoryId(categoryId, pageable);
         List<PostTitleDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();
 
-        return category.toResponseDto(categoryId, new PageImpl<>(responsePosts));
+        return category.toResponseDto(category, new PageImpl<>(responsePosts));
 
     }
 

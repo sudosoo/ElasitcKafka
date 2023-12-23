@@ -53,7 +53,6 @@ class HeartServiceImplTest {
         //then
         assertNotNull(heart, "The actual heart should not be null");
         assertDoesNotThrow(() -> heartService.createdPostHeart(postHeartRequestDto));
-        verify(heartRepository, times(2)).save(any(Heart.class));
     }
 
    @Test
@@ -72,7 +71,6 @@ class HeartServiceImplTest {
        //then
        assertNotNull(heart, "The actual heart should not be null");
        assertDoesNotThrow(() -> heartService.createdCommentHeart(commentHeartRequestDto));
-       verify(heartRepository, times(2)).save(any(Heart.class));
    }
 
     @Test

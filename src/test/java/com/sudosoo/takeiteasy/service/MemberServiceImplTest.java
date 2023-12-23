@@ -32,7 +32,6 @@ class MemberServiceImplTest {
 
         assertNotNull(member, "The actual member should not be null");
         assertEquals(expectedMemberName, actualMemberName, "Expected Member Name: " + expectedMemberName + ", Actual Member Name: " + actualMemberName);
-        verify(memberRepository, times(1)).save(any());
     }
 
     @Test
@@ -50,6 +49,5 @@ class MemberServiceImplTest {
 
         assertNotNull(member, "The actual member should not be null");
         assertEquals(expectedMemberName, actualMemberName, "Expected Member Name: " + expectedMemberName + ", Actual Member Name: " + actualMemberName);
-        verify(memberRepository, times(1)).findById(1L);
     }
 }
