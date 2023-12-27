@@ -13,11 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/post")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    @PostMapping(value = "/createPost" , name = "createPost")
+    @PostMapping(value = "/create" , name = "createPost")
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
 
         postService.createdPost(requestDto);
@@ -25,7 +25,7 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/getPostDetail" , name = "getPostDetail")
+    @GetMapping(value = "/getDetail" , name = "getPostDetail")
     public ResponseEntity<PostDetailResponsetDto> getPostDetail
             (@RequestParam Long postId,
              @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {

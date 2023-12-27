@@ -13,21 +13,28 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Coupon extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
+    private String couponName;
 
     @Column(nullable = false)
-    private String title;
+    private LocalDateTime couponDeadline;
 
-    @Column(nullable = false)
-    private Long quantity;
+    private int discountRate;
 
-    @Column(nullable = false)
-    private Long issuedQuantity;
+    private int discountPrice;
 
-
+    private Boolean useCheck = false;
+    @Builder
+    public Coupon(Long id, String couponName, LocalDateTime couponDeadline, int discountRate, int discountPrice) {
+        this.id = id;
+        this.couponName = couponName;
+        this.couponDeadline = couponDeadline;
+        this.discountRate = discountRate;
+        this.discountPrice = discountPrice;
+    }
 }

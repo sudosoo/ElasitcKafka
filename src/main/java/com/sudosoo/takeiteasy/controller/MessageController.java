@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/message")
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageService messageService;
-    @PostMapping(value = "/messageSend" , name = "messageSend")
+    @PostMapping(value = "/send" , name = "messageSend")
     public ResponseEntity<Void> messageSend(@Valid @RequestBody MessageSendRequestDto requestDto) {
 
         messageService.messageSend(requestDto);
