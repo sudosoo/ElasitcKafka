@@ -1,10 +1,8 @@
 package com.sudosoo.takeiteasy.entity;
 
+import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +15,8 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String eventName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -28,5 +28,23 @@ public class Event {
     private int couponQuantity;
 
     private LocalDateTime eventDeadline;
+
+    @Builder
+    private Event(String eventName, Member member, Coupon coupon, int couponQuantity, LocalDateTime eventDeadline) {
+        this.eventName = eventName;
+        this.member = member;
+        this.coupon = coupon;
+        this.couponQuantity = couponQuantity;
+        this.eventDeadline = eventDeadline;
+    }
+    public static Event of(CreateEventRequestDto requestDto,LocalDateTime eventDeadline, Coupon coupon){
+        return Event.builder()
+                .eventName(requestDto.getEventName())
+                .coupon(coupon)
+                .eventDeadline(eventDeadline)
+                .couponQuantity(requestDto.getCouponQuantity())
+                .build();
+
+    }
 
 }
