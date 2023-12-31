@@ -8,7 +8,7 @@ import lombok.*;
 import org.springframework.lang.Nullable;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class CreatePostRequestDto {
     @NotNull(message = "제목을 입력해 주세요.")

@@ -46,5 +46,24 @@ public class Event {
                 .build();
 
     }
+    public boolean isDeadlineExpired() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        return eventDeadline.isBefore(currentDateTime);
+    }
+
+    public synchronized void decreaseCouponQuantity() {
+        if (couponQuantity > 0) {
+            couponQuantity--;
+        } else {
+            throw new IllegalStateException("남은 쿠폰 수량이 없습니다.");
+        }
+    }
+
+    public void setMember(Member member){
+        this.member = member;
+        member.addEvent(this);
+    }
+
+
 
 }

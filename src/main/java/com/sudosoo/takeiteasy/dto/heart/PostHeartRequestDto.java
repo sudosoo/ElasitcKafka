@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class PostHeartRequestDto {
     @NotNull(message = "유저아이디를 입력해 주세요.")

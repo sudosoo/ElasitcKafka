@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SetCategoryByPostRequestDto {
     @NotNull(message = "카테고리아이디를 입력해 주세요.")
     private Long categoryId ;
