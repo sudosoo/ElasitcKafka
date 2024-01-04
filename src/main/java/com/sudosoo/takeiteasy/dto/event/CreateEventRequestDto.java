@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 public class CreateEventRequestDto {
 
     @NotNull(message = "제목을 입력해 주세요.")
@@ -28,4 +27,20 @@ public class CreateEventRequestDto {
     private int discountRate;
 
     private long discountPrice;
+
+    public CreateEventRequestDto(String eventName, String eventDeadline, String couponDeadline, int couponQuantity, long discountPrice) {
+        this.eventName = eventName;
+        this.eventDeadline = eventDeadline;
+        this.couponDeadline = couponDeadline;
+        this.couponQuantity = couponQuantity;
+        this.discountPrice = discountPrice;
+    }
+
+    public CreateEventRequestDto(String eventName, String eventDeadline, String couponDeadline, int couponQuantity, int discountRate) {
+        this.eventName = eventName;
+        this.eventDeadline = eventDeadline;
+        this.couponDeadline = couponDeadline;
+        this.couponQuantity = couponQuantity;
+        this.discountRate = discountRate;
+    }
 }

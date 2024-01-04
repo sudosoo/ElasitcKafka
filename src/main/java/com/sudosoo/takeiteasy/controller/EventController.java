@@ -26,7 +26,6 @@ public class EventController {
 
     @PostMapping(value = "/couponIssuance" , name = "couponIssuance")
     public ResponseEntity<Void> couponIssuance(@Valid @RequestBody CouponIssuanceRequestDto requestDto) {
-
         eventService.couponIssuance(requestDto);
 
         return ResponseEntity.ok().build();

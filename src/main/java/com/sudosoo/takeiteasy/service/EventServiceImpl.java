@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.border.BevelBorder;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
@@ -51,15 +50,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(timeout = 5)
     public void couponIssuance(CouponIssuanceRequestDto requestDto) {
-        Event event = eventRepository.findById(requestDto.getEventId())
+        Event event = eventRepository.findByEventIdForUpdate(requestDto.getEventId())
                 .orElseThrow(() -> new IllegalArgumentException("Event is not found"));
         Member member = memberService.getMemberByMemberId(requestDto.getMemberId()) ;
-
+        /* 이벤트 종료 시점은 프론트 or 앞단에서 처리 해 준다.
         if (event.isDeadlineExpired()) {
             System.out.println("이벤트가 종료되었습니다.");
         }
-
+        */
         event.decreaseCouponQuantity();
         event.setMember(member);
         eventRepository.save(event);
