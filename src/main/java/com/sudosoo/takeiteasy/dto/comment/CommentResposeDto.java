@@ -1,8 +1,11 @@
 package com.sudosoo.takeiteasy.dto.comment;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentResposeDto {
 
     private Long commentId;

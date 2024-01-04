@@ -12,7 +12,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -34,11 +36,19 @@ public class Member  extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Event> events = new HashSet<>();
+
+
 
     private Member(CreateMemberRequestDto createMemberRequestDto) {
         this.memberName = createMemberRequestDto.getMemberName();
     }
     public static Member of(CreateMemberRequestDto createMemberRequestDto){
         return new Member(createMemberRequestDto);
+    }
+
+    public void addEvent(Event event){
+        this.events.add(event);
     }
 }

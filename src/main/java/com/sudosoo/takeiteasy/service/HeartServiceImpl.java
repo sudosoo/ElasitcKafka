@@ -27,14 +27,14 @@ public class HeartServiceImpl implements HeartService {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
-        validateHeart(member, post);
+        exsistHeart(member, post);
         Heart heart = Heart.getPostHeart(post,member);
 
         return heartRepository.save(heart);
 
     }
 
-    private void validateHeart(Member member, Post post) {
+    private void exsistHeart(Member member, Post post) {
         heartRepository.findByMemberAndPost(member, post)
                 .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
     }
@@ -44,13 +44,13 @@ public class HeartServiceImpl implements HeartService {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
-        validateHeart(member, comment);
+        exsistHeart(member, comment);
         Heart heart = Heart.getCommentHeart(comment,member);
 
         return heartRepository.save(heart);
     }
 
-    private void validateHeart(Member member, Comment comment) {
+    private void exsistHeart(Member member, Comment comment) {
         heartRepository.findByMemberAndComment(member, comment)
                 .orElseThrow(()-> new IllegalArgumentException("Duplicated Like !"));
     }

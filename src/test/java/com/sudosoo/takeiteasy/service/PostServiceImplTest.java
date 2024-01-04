@@ -28,12 +28,12 @@ class PostServiceImplTest {
     CreatePostRequestDto createPostRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
     Member memberMock = mock(Member.class);
     Heart heartMock = mock(Heart.class);
+    Post postMock = mock(Post.class);
     Category categoryMock = mock(Category.class);
     Post testPost = Post.testOf(1L,"제목","내용",categoryMock,memberMock,0,List.of(heartMock));
 
     @BeforeEach
     void setUp() {
-
         when(memberService.getMemberByMemberId(createPostRequestDto.getMemberId())).thenReturn(memberMock);
         when(postRepository.save(any(Post.class))).thenReturn(testPost);
         when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
@@ -81,6 +81,7 @@ class PostServiceImplTest {
         Comment commentMock1 = mock(Comment.class);
         Comment commentMock2 = mock(Comment.class);
         Comment commentMock3 = mock(Comment.class);
+
         Pageable pageRequest = PageRequest.of(0, 10);
         Page<Comment> commentPage = new PageImpl<>(Arrays.asList(commentMock1,commentMock2,commentMock3));
         when(postRepository.findById(1L)).thenReturn(Optional.ofNullable(testPost));

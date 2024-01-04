@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/category")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    @PostMapping(value = "/createCategory" , name = "createCategory")
+    @PostMapping(value = "/create" , name = "createCategory")
     public ResponseEntity<Void> createCategory(@Valid @RequestBody CreateCategoryRequestDto requestDto) {
 
         categoryService.creatCategory(requestDto);
