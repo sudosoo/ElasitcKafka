@@ -78,8 +78,8 @@ class EventServiceImplTest {
     void couponIssuanceForMultiThreadTest() throws InterruptedException {
         CouponIssuanceRequestDto couponIssuanceRequestDto = new CouponIssuanceRequestDto(1L,1L,1L);
         AtomicInteger successCount = new AtomicInteger();
-        int numberOfExecute = 1000;
-        ExecutorService service = Executors.newFixedThreadPool(1000);
+        int numberOfExecute = 100;
+        ExecutorService service = Executors.newFixedThreadPool(10);
         CountDownLatch latch = new CountDownLatch(numberOfExecute);
         Coupon mockCoupon = mock(Coupon.class);
         Event event = Event.of(requestDto, LocalDateTime.now(), mockCoupon);

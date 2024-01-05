@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -29,4 +31,11 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findMemberByMemberName(memberName)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found member name :" + memberName));
     }
+
+    @Override
+    public List<Member> findAllMembers() {
+        return memberRepository.findAll();
+    }
+
+
 }

@@ -9,14 +9,18 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class MessageSendRequestDto {
 
     private Long memberId;
     @NotNull(message = "상대방 이름을 작성해 주세요.")
-    private String targetMemberName;
+    private Long targetMemberName;
     @NotNull(message = "내용을 입력해 주세요.")
     private String content;
-    @NotNull
-    private MessageType messageType = MessageType.MESSAGE ;
+    private final MessageType messageType = MessageType.MESSAGE ;
+
+    public MessageSendRequestDto(Long memberId, Long targetMemberName, String content) {
+        this.memberId = memberId;
+        this.targetMemberName = targetMemberName;
+        this.content = content;
+    }
 }

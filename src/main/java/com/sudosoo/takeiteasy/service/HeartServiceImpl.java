@@ -21,20 +21,19 @@ public class HeartServiceImpl implements HeartService {
     private final PostService postService;
     private final CommentService commentService;
 
-    //TODO 좋아요 한번 누를시 생성 두번쨰 취소 ? 결정하기
     @Override
     public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
-        exsistHeart(member, post);
+        existHeart(member, post);
         Heart heart = Heart.getPostHeart(post,member);
 
         return heartRepository.save(heart);
 
     }
 
-    private void exsistHeart(Member member, Post post) {
+    private void existHeart(Member member, Post post) {
         heartRepository.findByMemberAndPost(member, post)
                 .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
     }
@@ -44,13 +43,13 @@ public class HeartServiceImpl implements HeartService {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
-        exsistHeart(member, comment);
+        existHeart(member, comment);
         Heart heart = Heart.getCommentHeart(comment,member);
 
         return heartRepository.save(heart);
     }
 
-    private void exsistHeart(Member member, Comment comment) {
+    private void existHeart(Member member, Comment comment) {
         heartRepository.findByMemberAndComment(member, comment)
                 .orElseThrow(()-> new IllegalArgumentException("Duplicated Like !"));
     }
