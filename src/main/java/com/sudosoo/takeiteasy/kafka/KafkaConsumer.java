@@ -14,13 +14,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-    @Value("${devsoo.kafkalogging.topic}")
+    @Value("${devsoo.kafka.notice.topic}")
     private String kafkaTopic;
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @KafkaListener(topics = "${devsoo.kafkalogging.topic}", groupId = "${spring.kafka.consumer.group-id}")
-    public Object messageConsume(Object message) {
-        return message;
-    }
 }

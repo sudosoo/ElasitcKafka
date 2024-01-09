@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.kafka;
 
 import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
+import com.sudosoo.takeiteasy.dto.notice.NoticeRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +17,11 @@ public class KafkaProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendNotice(MessageSendRequestDto requestDto) {
-        kafkaTemplate.send(kafkaNoticeTopic, requestDto);
+    public void sendNotice(String memberName, String requestMessage) {
+        kafkaTemplate.send(kafkaNoticeTopic, memberName ,requestMessage);
     }
+
     public void sendTest(String message) {
-        kafkaTemplate.send(kafkaTopic, message);
+        kafkaTemplate.send("TestKafka", message);
     }
 }

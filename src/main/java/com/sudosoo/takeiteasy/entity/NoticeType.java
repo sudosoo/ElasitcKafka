@@ -1,5 +1,5 @@
 package com.sudosoo.takeiteasy.entity;
 
-public enum MessageType {
+public enum NoticeType {
     MESSAGE,MENTION
 }
