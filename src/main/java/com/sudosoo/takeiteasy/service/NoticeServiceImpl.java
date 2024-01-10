@@ -26,9 +26,9 @@ public class NoticeServiceImpl implements NoticeService{
 
 
     @KafkaListener(topics = "${devsoo.kafka.notice.topic}")
-    public void kafkaSend(ConsumerRecord<String, String> record) {
+    public void kafkaSend(ConsumerRecord<String, Object> record) {
         String receiverMemberName = record.key();
-        String messageContent = record.value();
+        String messageContent = record.value().toString();
 
         //SSE 로 클라이언트로 보내기
         send(receiverMemberName,messageContent);

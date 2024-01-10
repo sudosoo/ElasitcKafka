@@ -31,7 +31,7 @@ public class Notice {
     private String content;
 
     @Column(nullable = false)
-    private Boolean isRead;
+    private boolean isRead = false;
 
     @CreatedDate
     @Column(updatable = false)

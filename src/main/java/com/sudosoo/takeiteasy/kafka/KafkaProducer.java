@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class KafkaProducer {
-
     @Value("${devsoo.kafka.notice.topic}")
     private String kafkaNoticeTopic;
 

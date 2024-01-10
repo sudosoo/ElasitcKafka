@@ -19,4 +19,6 @@ public class KafkaConsumer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
+
+
 }
