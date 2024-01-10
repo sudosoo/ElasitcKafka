@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.controller;
 
+import com.sudosoo.takeiteasy.common.CustomNotify;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.service.PostService;
@@ -25,6 +26,7 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @CustomNotify
     @GetMapping(value = "/getDetail" , name = "getPostDetail")
     public ResponseEntity<PostDetailResponsetDto> getPostDetail
             (@RequestParam Long postId,
@@ -33,10 +35,6 @@ public class PostController {
         Pageable pageRequest = PageRequest.of(pageNo,10);
 
         return new ResponseEntity<>(postService.getPostDetailByPostId(postId,pageRequest), HttpStatus.OK);
-
     }
-
-
-
 
 }

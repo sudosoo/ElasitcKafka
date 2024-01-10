@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
     private final MessageService messageService;
     @PostMapping(value = "/send" , name = "messageSend")
-    public ResponseEntity<Void> messageSend(@Valid @RequestBody MessageSendRequestDto requestDto) {
+    public ResponseEntity<Void> messageSend(@RequestBody MessageSendRequestDto requestDto) {
 
         messageService.messageSend(requestDto);
 

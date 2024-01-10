@@ -1,48 +1,49 @@
 package com.sudosoo.takeiteasy.entity;
 
+import com.sudosoo.takeiteasy.dto.notice.NoticeRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.aspectj.weaver.ast.Not;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Message {
+public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
-    @NotNull
-    private Member sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id")
-    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member receiver;
 
     @NotNull
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private MessageType messageType;
+    @Column(nullable = false)
+    private boolean isRead = false;
 
     @CreatedDate
     @Column(updatable = false)
     private final LocalDateTime sendTime = LocalDateTime.now();
 
-    @Builder
-    private Message(Member sender, Member receiver, String content, MessageType messageType) {
-        this.sender = sender;
-        this.receiver = receiver;
+    private Notice(Member member ,String content) {
+        this.receiver = member;
         this.content = content;
-        this.messageType = messageType;
     }
+
+    public static Notice of(Member member, String content){
+        return new Notice(member,content);
+    }
+
 }
