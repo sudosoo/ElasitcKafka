@@ -10,11 +10,11 @@
 - [🎮 멀티스레드 환경 동시성 문제 해결 Link](https://soobysu.tistory.com/127) 
 
 ### ELK + filebeat 를 활용한 로그적재 
-![KibanaLog](/images/KibanaLog.png)
+<img src="/images/KibanaLog.png" width="700" >
 - [🐨 ELK Stack 로그적재 Link](https://soobysu.tistory.com/category/%EA%B0%9C-%EB%B0%9C/Infra?page=3) 
 
 ### 젠킨스 + NginX + Docker CICD 무중단 배포
-![Jenkins Status](/images/jenkinsStatus.png)
+<img src="/images/jenkinsStatus.png" width="700" >
 - [🐻‍❄️ 멀티스레드 환경 동시성 문제 해결 Link](https://soobysu.tistory.com/122) 
 
 ### TDD 기반 테스트코드 작성 
@@ -27,8 +27,8 @@
 
 <details><summary>Infra Structure
 </summary>
-![InfraStructure](/images/InfraStructure.png)
-![InfraStructureDetail](/images/InfraStructureDetail.png)
+  <img src="/images/InfraStructure.png" width="700" >
+  <img src="/images/InfraStructureDetail.png" width="700" >
 </details>
 
 
