@@ -15,13 +15,16 @@
 
 ### ELK + filebeat 를 활용한 로그적재 
 <img src="/images/KibanaLog.png" width="700" >
+
 - [🐨 ELK Stack 로그적재 Link](https://soobysu.tistory.com/category/%EA%B0%9C-%EB%B0%9C/Infra?page=3) 
 
 ### 젠킨스 + NginX + Docker CICD 무중단 배포
 <img src="/images/jenkinsStatus.png" width="700" >
+
 - [🐻‍❄️ 멀티스레드 환경 동시성 문제 해결 Link](https://soobysu.tistory.com/122) 
 
 ### TDD 기반 테스트코드 작성 
+
 - [🐯 Test Code Link](https://github.com/sudosoo/TakeItEasy/blob/b6244135e89647f393f643c0b79e5476b97f9423/src/test/java/com/sudosoo/takeiteasy/service/EventServiceImplTest.java#L76-L107) 
 
 ### TODO
