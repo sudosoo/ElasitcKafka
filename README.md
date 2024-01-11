@@ -4,14 +4,14 @@
 #### [ AOP Flow ] 
 <img src="/images/AOPFlow.png" width="700" >
 
-- [🚗 중복요청방지 Link](https://soobysu.tistory.com/125)
+- [🚗 중복요청방지 Link(https://soobysu.tistory.com/125)]
 
-- [🐰 실시간 알림 Link](https://soobysu.tistory.com/130)   
+- [🐰 실시간 알림 Link(https://soobysu.tistory.com/130)]   
 
-- [🐻 AOP로깅 Code](https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71)   
+- [🐻 AOP로깅 Code(https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71)]   
 
 ### 선착순 쿠폰 발행 ( 동시성 문제 )
-- [🎮 멀티스레드 환경 동시성 문제 해결 Link](https://soobysu.tistory.com/127) 
+- [🎮 멀티스레드 환경 동시성 문제 해결 Link(https://soobysu.tistory.com/127)]
 
 ### ELK + filebeat 를 활용한 로그적재 
 <img src="/images/KibanaLog.png" width="700" >
