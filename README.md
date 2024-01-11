@@ -34,7 +34,7 @@
 
 <details><summary>Infra Structure
 </summary>
-  <img src="/images/InfraStructure.png" width="700" >
+  <img src="" width="700" >
   <img src="/images/InfraStructureDetail.png" width="700" >
 </details>
  
