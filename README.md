@@ -1,7 +1,7 @@
 # Toy Project
 
 ### AOP 로깅 / 중복 요청 방지 / 실시간 알림 ( SSE+ kafka)
-<img src="/images/AOPFlow.png" width="200" height="200">
+<img src="/images/AOPFlow.png" width="200" >
 - [🚗 중복요청방지 Link](https://soobysu.tistory.com/125)   
 - [🐰 실시간 알림 Link](https://soobysu.tistory.com/130)   
 - [🐻 AOP로깅 Code](https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71)   
