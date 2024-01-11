@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.CreateCommentRequestDto;
+import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
@@ -16,13 +16,20 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostService postService;
     private final MemberService memberService;
-    public void createComment(CreateCommentRequestDto createCommentRequestDto){
+
+    @Override
+    public Comment createComment(CreateCommentRequestDto createCommentRequestDto){
         Member member = memberService.getMemberByMemberId(createCommentRequestDto.getMemberId());
         Post post = postService.getPostByPostId(createCommentRequestDto.getPostId());
-        Comment comment = Comment.buildEntityFromDto(member, createCommentRequestDto.getContent());
+        Comment comment = Comment.of(createCommentRequestDto);
+
         comment.setPost(post);
-        commentRepository.save(comment);
+        comment.setMember(member);
+
+        return commentRepository.save(comment);
     }
+
+    @Override
     public Comment getCommentByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found comment id : " + commentId));

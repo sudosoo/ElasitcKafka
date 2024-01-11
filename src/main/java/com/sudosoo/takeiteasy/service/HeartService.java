@@ -1,14 +1,16 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.HeartRequestDto;
+import com.sudosoo.takeiteasy.dto.heart.CommentHeartRequestDto;
+import com.sudosoo.takeiteasy.dto.heart.PostHeartRequestDto;
+import com.sudosoo.takeiteasy.entity.Heart;
 
-public interface HeartService {
+public interface
+HeartService {
 
-    void postLike(HeartRequestDto heartRequestDTO);
-    void commentLike(HeartRequestDto heartRequestDTO);
-
-    void postDisLike(HeartRequestDto heartRequestDTO);
-    void commentDisLike(HeartRequestDto heartRequestDTO);
+    Heart createdPostHeart(PostHeartRequestDto heartRequestDTO);
+    Heart createdCommentHeart(CommentHeartRequestDto heartRequestDTO);
+    void postDisHeart(PostHeartRequestDto heartRequestDTO);
+    void commentDisHeart(CommentHeartRequestDto heartRequestDTO);
 
 
 }

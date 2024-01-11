@@ -1,74 +1,59 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
+import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.entity.Category;
+import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
-import com.sudosoo.takeiteasy.entity.RelatedPost;
 import com.sudosoo.takeiteasy.repository.PostRepository;
-import com.sudosoo.takeiteasy.repository.RelatedPostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
-    private final RelatedPostRepository relatedpostRepository;
-    private final MemberService memberService;
     private final CategoryService categoryService;
+    private final MemberService memberService;
 
-    /**
-     * 게시물 생성dto 받아 게시물을 저장하고,
-     * requestDto에 카테고리가 있다면 카테고리에 넣어준다.
-     * requestDto에 연관관계를 맺어야 할 게시물이 있다면 연관관계를 맺아준다.
-     * */
-    public void creatPost(CreatePostRequestDto createPostRequestDto) {
+
+    @Override
+    public Post createdPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
-        Post post = Post.buildEntityFromDto(createPostRequestDto.getTitle(), createPostRequestDto.getContent(), member);
+        Post post = Post.of(createPostRequestDto);
+        Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
 
-        if (createPostRequestDto.getCategoryId() != null) {
-            Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
-            post.setCategory(category);
-        }
-        Post mainpost = postRepository.save(post);
+        post.setMember(member);
+        post.setCategory(category);
 
-        if (createPostRequestDto.getRelatedPostId() != null) {
-            relatedMainPostByRelatedPostId(mainpost.getId(), createPostRequestDto.getRelatedPostId());
-        }
+        return postRepository.save(post);
     }
 
-    /**
-     * 게시물 id를 받아 게시물엔티티를 반환해주는 메소드
-     * */
+
+    @Override
     public Post getPostByPostId(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
     }
-    public RelatedPost getRelatedPostByPostId(Long postId) {
-        return relatedpostRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
-    }
 
-    /**
-     * 게시물 id를 받아 게시물 끼리 연관관계 맺아주는 메소드
-     * */
-    private void relatedMainPostByRelatedPostId(Long mainPostId,Long relatedPostId) {
-        Post mainPost = getPostByPostId(mainPostId);
-        Post relatedPost = getPostByPostId(relatedPostId);
-        RelatedPost resultPost = RelatedPost.createRelatePost(mainPost,relatedPost);
-        relatedpostRepository.save(resultPost);
-    }
-    /**
-     * 게시물 id를 받아 게시물 끼리 연관관계 끊어주는 메소드
-     * */
-    private void removeRelatedMainPostByRelatedPostId(Long mainPostId,Long relatedPostId) {
-        Post post = getPostByPostId(mainPostId);
-        RelatedPost relatedPost = getRelatedPostByPostId(relatedPostId);
-        post.getRelatedPosts().remove(relatedPost);
-        postRepository.save(post);
-    }
+    @Override
+    @Transactional(readOnly = true)
+    public PostDetailResponsetDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
+        Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
 
+        post.incrementViewCount();
+        Page<Comment> comments = postRepository.findCommentsByPostId(postId,pageRequest);
+        List<CommentResposeDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
+
+        return post.toDetailDto(new PageImpl<>(responseCommentDtos));
+    }
 }

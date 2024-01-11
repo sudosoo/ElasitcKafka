@@ -1,11 +1,13 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.SetCategoryByPostRequestDto;
+import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
+import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
+import org.springframework.data.domain.Pageable;
+
 
 public interface CategoryService {
-    void creatCategory(CreateCategoryRequestDto createCategoryRequestDto);
-    void setCategorytByPost(SetCategoryByPostRequestDto setCategoryByPostRequestDto);
+    Category creatCategory(CreateCategoryRequestDto createCategoryRequestDto);
     Category getCategoryByCategoryId(Long categoryId);
+    CategoryResponseDto getPostsByCategoryId(Long categoryId, Pageable pageable);
 }
