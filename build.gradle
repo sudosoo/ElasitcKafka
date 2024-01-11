@@ -34,13 +34,12 @@ dependencies {
 
     //postgresql
     implementation 'org.postgresql:postgresql:42.6.0'
-
-    //postgresql
-    implementation group: 'org.postgresql', name:'postgresql', version: '42.2.19'
+    implementation group: 'org.postgresql', name:'postgresql', version: '42.6.0'
     implementation 'org.postgresql:postgresql'
 
     // 카프카
     implementation 'org.springframework.kafka:spring-kafka'
+
     // logback-kafka-appender 관련 설정
     implementation "com.github.danielwegener:logback-kafka-appender:0.1.0"
     implementation 'net.logstash.logback:logstash-logback-encoder:5.2'
