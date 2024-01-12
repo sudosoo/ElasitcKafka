@@ -21,7 +21,7 @@
 ### 젠킨스 + NginX + Docker CICD 무중단 배포
 <img src="/images/jenkinsStatus.png" width="700" >
 
-- [🐻‍❄️ 멀티스레드 환경 동시성 문제 해결 Link(https://soobysu.tistory.com/122)] 
+- [🐻‍❄️ 젠킨스 + NginX + Docker CICD 무중단 배포 Link(https://soobysu.tistory.com/122)] 
 
 ### TDD 기반 테스트코드 작성 
 
