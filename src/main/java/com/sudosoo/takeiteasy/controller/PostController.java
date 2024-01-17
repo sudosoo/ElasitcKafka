@@ -1,12 +1,11 @@
 package com.sudosoo.takeiteasy.controller;
 
 import com.sudosoo.takeiteasy.common.CustomNotify;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class PostController {
 
     @CustomNotify
     @GetMapping(value = "/getDetail" , name = "getPostDetail")
-    public ResponseEntity<PostDetailResponsetDto> getPostDetail
+    public ResponseEntity<PostDetailResponseDto> getPostDetail
             (@RequestParam Long postId,
              @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);

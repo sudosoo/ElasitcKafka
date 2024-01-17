@@ -2,34 +2,33 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
 import com.sudosoo.takeiteasy.entity.Category;
-import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 class CategoryServiceImplTest {
 
     CategoryRepository categoryRepository = mock(CategoryRepository.class);
-    CategoryService categoryService = new CategoryServiceImpl(categoryRepository);
+    PostRepository postRepository = mock(PostRepository.class);
+
+    CategoryService categoryService = new CategoryServiceImpl(categoryRepository,postRepository);
     CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test카테고리");
     Category testCategory = Category.of(createCategoryRequestDto);
 
@@ -75,7 +74,7 @@ class CategoryServiceImplTest {
         Pageable pageRequest = PageRequest.of(0, 10);
         Page<Post> postsPage = new PageImpl<>(Arrays.asList(postMock1,postMock2,postMock3));
         when(categoryRepository.findById(1L)).thenReturn(Optional.ofNullable(testCategory));
-        when(categoryRepository.findPostsByCategoryId(1L, pageRequest)).thenReturn(postsPage);
+        when(postRepository.findPostsPaginationByCategoryId(1L, pageRequest)).thenReturn(postsPage);
 
         //when
         CategoryResponseDto result = categoryService.getPostsByCategoryId(1L, PageRequest.of(0, 10));

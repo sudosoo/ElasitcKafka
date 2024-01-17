@@ -5,6 +5,7 @@ import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,9 @@ import static org.mockito.Mockito.*;
 
 class CommentServiceImplTest {
     CommentRepository commentRepository = mock(CommentRepository.class);
-    PostService postService = mock(PostService.class);
+    PostRepository postRepository = mock(PostRepository.class);
     MemberService memberService = mock(MemberService.class);
-    CommentService commentService = new CommentServiceImpl(commentRepository,postService,memberService);
+    CommentService commentService = new CommentServiceImpl(commentRepository,postRepository,memberService);
 
     @BeforeEach
     void setUp() {
@@ -29,7 +30,7 @@ class CommentServiceImplTest {
         when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
 
         Post mockPost = mock(Post.class);
-        when(postService.getPostByPostId(anyLong())).thenReturn(mockPost);
+        when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockPost));
     }
 
     @Test

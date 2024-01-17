@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommentResposeDto {
+public class CommentResponseDto {
 
     private Long commentId;
     private String writerName;
     private String content;
     private int likeCount = 0;
 
-    public CommentResposeDto(Long commentId, String writerName, String content, int likeCount) {
+    public CommentResponseDto(Long commentId, String writerName, String content, int likeCount) {
         this.commentId = commentId;
         this.writerName = writerName;
         this.content = content;
