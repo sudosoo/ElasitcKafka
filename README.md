@@ -25,7 +25,19 @@
 
 ### TDD 기반 테스트코드 작성 
 
-- [🐯 Test Code Link(https://github.com/sudosoo/TakeItEasy/blob/b6244135e89647f393f643c0b79e5476b97f9423/src/test/java/com/sudosoo/takeiteasy/service/EventServiceImplTest.java#L76-L107)]
+- [🐯 Test Code (https://github.com/sudosoo/TakeItEasy/blob/b6244135e89647f393f643c0b79e5476b97f9423/src/test/java/com/sudosoo/takeiteasy/service/EventServiceImplTest.java#L76-L107)]
+
+### Spring Batch ( Bulk insert ) 
+#### 10만건 db insert [ 28분 -> 28초 성능개선 ]  
+<img src="/images/defaultInSert.png" width="700" >
+<img src="/images/batchInSert.png" width="700" >
+
+- [🐥 Spring Batch ( Bulk insert )  Link(https://soobysu.tistory.com/131)
+(https://github.com/sudosoo/TakeItEasy/blob/23a67017267ed0e9166b0fe0d1eeb87bff194c5d/src/main/java/com/sudosoo/takeiteasy/batch/BatchLauncherService.java#L34-L86)]
+
+### 테이블 index 전략 ( 검색 최적화 )
+
+- [🐷 테이블 index 전략 (검색 최적화) Link(https://soobysu.tistory.com/115) ]
 
 ### TODO
 - 모듈 분리 (멀티모듈) 
