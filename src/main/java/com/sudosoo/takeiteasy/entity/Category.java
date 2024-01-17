@@ -29,13 +29,6 @@ public class Category extends BaseEntity {
 
     private String categoryName;
 
-    @OneToMany(mappedBy = "category")
-    private List<Post> posts = new ArrayList<>();
-
-    public void addPost(Post post){
-        this.posts.add(post);
-        post.setCategory(this);
-    }
     private Category(String categoryName) {
         this.categoryName = categoryName;
     }

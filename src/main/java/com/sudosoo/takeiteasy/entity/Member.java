@@ -27,20 +27,6 @@ public class Member  extends BaseEntity {
 
     private String memberName;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Heart> hearts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Event> events = new HashSet<>();
-
-
-
     private Member(CreateMemberRequestDto createMemberRequestDto) {
         this.memberName = createMemberRequestDto.getMemberName();
     }
@@ -48,7 +34,4 @@ public class Member  extends BaseEntity {
         return new Member(createMemberRequestDto);
     }
 
-    public void addEvent(Event event){
-        this.events.add(event);
-    }
 }

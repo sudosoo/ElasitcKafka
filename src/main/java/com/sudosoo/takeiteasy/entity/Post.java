@@ -1,9 +1,9 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
+import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +16,9 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "post", indexes = {
+        @Index(name = "idx_title", columnList = "title")
+})
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,8 +39,6 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments = new ArrayList<>();
 
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
@@ -71,29 +72,26 @@ public class Post extends BaseEntity {
                 .build();
     }
 
-    public void setHearts(Heart heart) {
+    public void setHeart(Heart heart) {
         this.hearts.add(heart);
         heart.setPost(this);
     }
+
     public void setCategory(Category category) {
         this.category = category;
-        category.getPosts().add(this);
     }
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-        comment.setPost(this);
-    }
+
     public void setMember(Member member) {
         this.member = member;
-        member.getPosts().add(this);
     }
 
     public String getMemberName(){
         if(this.member == null){
-            throw new IllegalArgumentException("해당 포스트엔 유저가 등록되어 있지 않습니다.");
+            throw new IllegalArgumentException("해당 게시물에 유저가 등록 되어 있지 않습니다.");
         }
         return this.member.getMemberName();
     }
+
     public void incrementViewCount() {
         this.viewCount++;
     }
@@ -102,8 +100,8 @@ public class Post extends BaseEntity {
         return new PostTitleDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getViewCount(),this.getMemberName());
     }
 
-    public PostDetailResponsetDto toDetailDto(Page<CommentResposeDto> comments){
-        return new PostDetailResponsetDto(this.getId(), this.getTitle(),this.getContent(),this.getMemberName(),comments);
+    public PostDetailResponseDto toDetailDto(Page<CommentResponseDto> comments){
+        return new PostDetailResponseDto(this.getId(), this.getTitle(),this.getContent(),this.getMemberName(),comments);
     }
 
 }

@@ -12,8 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Long>{
-    List<Post> findAllByCategoryId(Long categoryId, PageRequest pageRequest);
+    @Query("SELECT p FROM Post p WHERE p.category.id = :categoryId")
+    Page<Post> findPostsPaginationByCategoryId(@Param("categoryId")Long categoryId, Pageable pageRequest);
 
-    @Query("SELECT c FROM Post p JOIN p.comments c WHERE c.id = :postId")
-    Page<Comment> findCommentsByPostId(@Param("postId") Long postId, Pageable pageable);
 }

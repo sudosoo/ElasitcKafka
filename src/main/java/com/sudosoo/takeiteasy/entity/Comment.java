@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
+import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,6 +17,7 @@ public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +48,6 @@ public class Comment extends BaseEntity {
     }
     public void setPost(Post post) {
         this.post = post;
-        post.getComments().add(this);
     }
 
     public String getUserName() {
@@ -57,7 +57,8 @@ public class Comment extends BaseEntity {
         return this.member.getMemberName();
     }
 
-    public CommentResposeDto toResponseDto(){
-        return new CommentResposeDto(this.getId(),this.getUserName(),this.getContent(),this.getHearts().size());
+    public CommentResponseDto toResponseDto(){
+        return new CommentResponseDto(this.getId(),this.getUserName(),this.getContent(),this.getHearts().size());
     }
+
 }

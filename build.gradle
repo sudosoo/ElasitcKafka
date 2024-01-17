@@ -32,6 +32,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+
+    //Spring Batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    testImplementation 'org.springframework.batch:spring-batch-test'
+
     //postgresql
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation group: 'org.postgresql', name:'postgresql', version: '42.6.0'
