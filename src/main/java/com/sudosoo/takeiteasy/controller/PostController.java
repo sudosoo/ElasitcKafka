@@ -1,8 +1,8 @@
 package com.sudosoo.takeiteasy.controller;
 
 import com.sudosoo.takeiteasy.common.CustomNotify;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

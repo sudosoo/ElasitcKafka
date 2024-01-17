@@ -1,6 +1,7 @@
-package com.sudosoo.takeiteasy.service;
+package com.sudosoo.takeiteasy.batch;
 
 import com.sudosoo.takeiteasy.entity.Post;
+import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.*;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @Service
 @RequiredArgsConstructor
@@ -65,11 +66,9 @@ public class BatchLauncherService {
             con.commit();
 
         } catch (Exception e) {
-            e.printStackTrace();
             try {
                 con.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
+            } catch (SQLException ignored) {;
             }
         } finally {
             if (pstmt != null) try {

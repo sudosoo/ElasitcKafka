@@ -1,6 +1,7 @@
-package com.sudosoo.takeiteasy.service;
+package com.sudosoo.takeiteasy.batch;
 
 import com.sudosoo.takeiteasy.entity.Post;
+import com.sudosoo.takeiteasy.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

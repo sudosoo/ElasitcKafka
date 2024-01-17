@@ -9,7 +9,6 @@ public interface PostService {
     Post createdPost(CreatePostRequestDto createPostRequestDto);
     Post getPostByPostId(Long postId);
     PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest);
-
     void createDefaultPosts(int count);
     Post createBatchPosts(int count);
 }
