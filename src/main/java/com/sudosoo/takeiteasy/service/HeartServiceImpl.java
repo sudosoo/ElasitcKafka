@@ -7,6 +7,7 @@ import com.sudosoo.takeiteasy.entity.Heart;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.HeartRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +19,14 @@ public class HeartServiceImpl implements HeartService {
 
     private final HeartRepository heartRepository;
     private final MemberService memberService;
-    private final PostService postService;
     private final CommentService commentService;
+    private final PostRepository postRepository;
 
     @Override
     public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
-        Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
+        Post post = postRepository.findById(heartRequestDTO.getPostId()).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
+
 
         existHeart(member, post);
         Heart heart = Heart.getPostHeart(post,member);
@@ -57,7 +59,7 @@ public class HeartServiceImpl implements HeartService {
     @Override
     public void postDisHeart(PostHeartRequestDto heartRequestDTO) {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
-        Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
+        Post post = postRepository.findById(heartRequestDTO.getPostId()).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
         Heart heart = findHeartByMemberAndPostOrComment(member,post);
 
         heart.unHeartPost();

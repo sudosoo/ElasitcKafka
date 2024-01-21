@@ -3,6 +3,7 @@ package com.sudosoo.takeiteasy.service;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
@@ -44,15 +45,9 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Post getPostByPostId(Long postId) {
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
-        Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
+        Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다"));
 
         post.incrementViewCount();
 
@@ -60,6 +55,20 @@ public class PostServiceImpl implements PostService {
         List<CommentResponseDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
 
         return post.toDetailDto(new PageImpl<>(responseCommentDtos));
+    }
+
+    @Override
+    public List<PostTitleOnlyResponseDto> getPaginationPostTitle(String title, Pageable pageRequest) {
+        Page<Post> posts = postRepository.findByTitle(title,pageRequest);
+        if(posts.getContent().isEmpty()){
+            throw new IllegalArgumentException("해당 게시물이 존재 하지 않습니다");
+        }
+        List<PostTitleOnlyResponseDto> responseDtos = new ArrayList<>();
+        for (Post post: posts) {
+            responseDtos.add(post.toTitleOnlyDto());
+        }
+
+        return responseDtos;
     }
 
     @Override
@@ -74,12 +83,19 @@ public class PostServiceImpl implements PostService {
 
         postRepository.saveAll(postsToSave);
     }
+
     @Override
     public Post createBatchPosts(int i) {
         Member member = memberService.getMemberByMemberId(2L);
         Category category = categoryService.getCategoryByCategoryId(2L);
 
         return createDummyPost(i, member, category);
+    }
+
+    @Override
+    public PostTitleOnlyResponseDto getPostByContent(String content) {
+        Post p = postRepository.findByContent(content).orElseThrow(()->new IllegalArgumentException("검색한 게시물이 존재 하지 않습니다"));
+        return p.toTitleOnlyDto();
     }
 
     private Post createDummyPost(int i , Member m , Category c) {
@@ -92,6 +108,8 @@ public class PostServiceImpl implements PostService {
     }
 
     private CreatePostRequestDto createDummyPostRequest(int i) {
-        return new CreatePostRequestDto("Title 1-" + i, "Content1-" + i, 2L, 2L);
+        return new CreatePostRequestDto("Title 3-" + i, "Content3-" + i, 2L, 2L);
     }
+
+
 }

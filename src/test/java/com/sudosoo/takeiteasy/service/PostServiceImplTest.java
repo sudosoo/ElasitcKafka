@@ -62,23 +62,6 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("getPostByPostId")
-    void getPostByPostId() {
-        //given
-        when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(Post.of(createPostRequestDto)));
-
-        //when
-        Post testPost = postService.getPostByPostId(1L);
-
-        //then
-        String expectedTitle = createPostRequestDto.getTitle();
-        String actualTitle = testPost.getTitle();
-
-        assertNotNull(testPost, "The created post should not be null");
-        assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-    }
-
-    @Test
     @DisplayName("getPostDetailByPostId")
     void getPostDetailByPostId() {
         // given

@@ -3,13 +3,6 @@ package com.sudosoo.takeiteasy.entity;
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -19,7 +12,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Heart extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = LAZY)

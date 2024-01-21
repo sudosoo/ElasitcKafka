@@ -3,6 +3,8 @@ package com.sudosoo.takeiteasy.controller;
 import com.sudosoo.takeiteasy.common.CustomNotify;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
+import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/post")
@@ -25,6 +29,17 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+
+    @GetMapping(value = "/getPostsByTitle" , name = "getPostsByTitle")
+    public ResponseEntity<List<PostTitleOnlyResponseDto>> getPostsByTitleV1
+            (@RequestParam String title,
+             @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
+        pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
+        Pageable pageRequest = PageRequest.of(pageNo,10);
+
+        return new ResponseEntity<>(postService.getPaginationPostTitle(title,pageRequest), HttpStatus.OK);
+    }
+
     @CustomNotify
     @GetMapping(value = "/getDetail" , name = "getPostDetail")
     public ResponseEntity<PostDetailResponseDto> getPostDetail
@@ -35,5 +50,7 @@ public class PostController {
 
         return new ResponseEntity<>(postService.getPostDetailByPostId(postId,pageRequest), HttpStatus.OK);
     }
+
+
 
 }

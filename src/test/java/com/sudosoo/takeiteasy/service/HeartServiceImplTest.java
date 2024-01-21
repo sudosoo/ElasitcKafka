@@ -7,6 +7,7 @@ import com.sudosoo.takeiteasy.entity.Heart;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.HeartRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,17 +25,17 @@ class HeartServiceImplTest {
     PostHeartRequestDto postHeartRequestDto = new PostHeartRequestDto(1L,1L);
     CommentHeartRequestDto commentHeartRequestDto = new CommentHeartRequestDto(1L,1L);
     HeartRepository heartRepository = mock(HeartRepository.class);
-    PostService postService = mock(PostService.class);
+    PostRepository postRepository = mock(PostRepository.class);
     MemberService memberService = mock(MemberService.class);
     CommentService commentService = mock(CommentService.class);
-    HeartService heartService = new HeartServiceImpl(heartRepository,memberService,postService,commentService);
+    HeartService heartService = new HeartServiceImpl(heartRepository,memberService,commentService,postRepository);
 
     @BeforeEach
     void setUp() {
         Member mockMember = mock(Member.class);
         Post mockPost = mock(Post.class);
         when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
-        when(postService.getPostByPostId(anyLong())).thenReturn(mockPost);
+        when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockPost));
     }
 
     @Test

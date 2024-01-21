@@ -2,13 +2,10 @@ package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
-import io.micrometer.core.instrument.util.AbstractPartition;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,12 +14,13 @@ import java.util.List;
 public class Coupon extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
+    @Column(nullable = false,name = "coupon_name")
     private String couponName;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "coupon_deadline")
     private LocalDateTime couponDeadline;
 
     private int discountRate;
