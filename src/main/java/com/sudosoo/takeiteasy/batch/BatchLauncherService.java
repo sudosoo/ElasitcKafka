@@ -62,11 +62,13 @@ public class BatchLauncherService {
                     con.commit();
                 }
             }
+            //남아있는 Batch 실행
             pstmt.executeBatch();
             con.commit();
-
+            pstmt.clearBatch();
         } catch (Exception e) {
             try {
+                //실패시 rollback
                 con.rollback();
             } catch (SQLException ignored) {;
             }

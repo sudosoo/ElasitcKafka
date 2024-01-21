@@ -56,6 +56,7 @@ public class BatchJobService {
                 }
             }
         };
+
     }
 
     public ItemWriter<Post> writer(DataSource dataSource) {

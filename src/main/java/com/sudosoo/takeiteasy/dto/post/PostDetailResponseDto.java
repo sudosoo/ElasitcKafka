@@ -6,7 +6,7 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 @Getter
-public class PostDetailResponseDto implements NotifyInfo {
+public class PostDetailResponseDto {
 
     private Long postId;
     private String title;
@@ -21,16 +21,6 @@ public class PostDetailResponseDto implements NotifyInfo {
         this.postContent = content;
         this.writerName = writerName;
         this.commentsResponseDto = comments;
-    }
-
-    @Override
-    public String getReceiverName() {
-        return getWriterName();
-    }
-
-    @Override
-    public String getContent(){
-        return getPostContent();
     }
 
 }

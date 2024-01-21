@@ -4,7 +4,7 @@ import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ import java.util.List;
 })
 public class Post extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -38,7 +38,6 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
-
 
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
@@ -96,8 +95,8 @@ public class Post extends BaseEntity {
         this.viewCount++;
     }
 
-    public PostTitleDto toTitleOnlyDto(){
-        return new PostTitleDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getViewCount(),this.getMemberName());
+    public PostTitleOnlyResponseDto toTitleOnlyDto(){
+        return new PostTitleOnlyResponseDto(this.getId(), this.getTitle(), this.getHearts().size(),this.getViewCount(),this.getMemberName());
     }
 
     public PostDetailResponseDto toDetailDto(Page<CommentResponseDto> comments){

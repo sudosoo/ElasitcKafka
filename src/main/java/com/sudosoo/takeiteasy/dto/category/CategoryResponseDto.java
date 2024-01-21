@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.dto.category;
 
-import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +11,9 @@ import org.springframework.data.domain.Page;
 public class CategoryResponseDto {
 
     private String categoryName;
-    private Page<PostTitleDto> postResponseDtos;
+    private Page<PostTitleOnlyResponseDto> postResponseDtos;
 
-    public CategoryResponseDto(String categoryName, Page<PostTitleDto> postTitleDtos) {
+    public CategoryResponseDto(String categoryName, Page<PostTitleOnlyResponseDto> postTitleDtos) {
         this.categoryName = categoryName;
         this.postResponseDtos = postTitleDtos;
     }

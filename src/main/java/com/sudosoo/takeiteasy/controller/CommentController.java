@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/comment")
 @RequiredArgsConstructor
-public class CommnetController {
+public class CommentController {
     private final CommentService commentService;
-    @PostMapping(value = "/createComment" , name = "createComment")
+    @PostMapping(value = "/create" , name = "createComment")
     public ResponseEntity<Void> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto) {
         commentService.createComment(requestDto);
 

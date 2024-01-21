@@ -18,7 +18,6 @@ public class  MessageServiceImpl implements MessageService{
     private final MemberService memberService;
     private final KafkaProducer kafkaProducer;
     private final MessageRepository messageRepository;
-    private final NoticeService noticeService;
 
     @Override
     public void messageSend(MessageSendRequestDto requestDto) {

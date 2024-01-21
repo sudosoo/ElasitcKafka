@@ -3,16 +3,15 @@ package com.sudosoo.takeiteasy.entity;
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,7 +20,7 @@ import org.springframework.data.domain.Page;
 public class Category extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String categoryName;
@@ -33,7 +32,7 @@ public class Category extends BaseEntity {
     public static Category of(CreateCategoryRequestDto createCategoryRequestDto){
         return new Category(createCategoryRequestDto.getCategoryName());
     }
-    public CategoryResponseDto toResponseDto(Category category,Page<PostTitleDto> postTitleDtoPage){
+    public CategoryResponseDto toResponseDto(Category category,Page<PostTitleOnlyResponseDto> postTitleDtoPage){
         return new CategoryResponseDto(category.getCategoryName(),postTitleDtoPage);
     }
 

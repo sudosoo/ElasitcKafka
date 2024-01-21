@@ -3,7 +3,7 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new IllegalArgumentException("해당 카테고리가 존재하지 않습니다"));
 
         Page<Post> paginatedPost = postRepository.findPostsPaginationByCategoryId(categoryId, pageable);
-        List<PostTitleDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();
+        List<PostTitleOnlyResponseDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();
 
         return category.toResponseDto(category, new PageImpl<>(responsePosts));
 
