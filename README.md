@@ -49,7 +49,6 @@
   <img src="/images/InfraStructure.png" width="700" >
   <img src="/images/InfraStructureDetail.png" width="700" >
 </details>
- 
 
 <details><summary>Project Structure tree
 </summary>
