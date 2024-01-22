@@ -53,8 +53,8 @@ public class LoggingAspect {
                 final String logMessage = objectMapper.writeValueAsString(Map.entry("logInfo", logInfo)).replace("\\","").replace("\"","");
                 logger.info(logMessage);
             }
-
             return result;
+
         } catch (Exception e) {
             final StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
