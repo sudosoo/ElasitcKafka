@@ -12,12 +12,12 @@ public class LogInfo {
     private final String apiName;
     private final String method;
     private final Map<String, String> header;
-    private final String parameters;
-    private final String body;
+    private final Map<String, String> parameters;
+    private final Map<String, String> body;
     private final String ipAddress;
     private String exception;
 
-    public LogInfo(String url, String apiName, String method, Map<String, String> header, String parameters, String body, String ipAddress) {
+    public LogInfo(String url, String apiName, String method, Map<String, String> header, Map<String, String> parameters, Map<String, String> body, String ipAddress) {
         this.url = url;
         this.apiName = apiName;
         this.method = method;
