@@ -35,8 +35,8 @@ public class RequestApiInfo {
     private String url = null;
     private String name = null;
     private final Map<String, String> header = new HashMap<>();
-    private final Map<String, String> parameters = new HashMap<>();
     private Map<String, String> body = new HashMap<>();
+    private final Map<String, String> parameters = new HashMap<>();
     private String ipAddress = null;
     private final String dateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -123,4 +123,6 @@ public class RequestApiInfo {
             e.printStackTrace();
         }
     }
+
+
 }
