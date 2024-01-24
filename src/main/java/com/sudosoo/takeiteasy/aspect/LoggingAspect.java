@@ -40,8 +40,8 @@ public class LoggingAspect {
                 apiInfo.getName(),
                 apiInfo.getMethod(),
                 apiInfo.getHeader(),
-                objectMapper.writeValueAsString(apiInfo.getParameters()),
-                objectMapper.writeValueAsString(apiInfo.getBody()),
+                apiInfo.getParameters(),
+                apiInfo.getBody(),
                 apiInfo.getIpAddress()
         );
 
