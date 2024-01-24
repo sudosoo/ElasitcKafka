@@ -40,8 +40,8 @@ public class LoggingAspect {
                 apiInfo.getName(),
                 apiInfo.getMethod(),
                 apiInfo.getHeader(),
-                apiInfo.getParameters(),
-                apiInfo.getBody(),
+                objectMapper.writeValueAsString(apiInfo.getParameters()),
+                objectMapper.writeValueAsString(apiInfo.getBody()),
                 apiInfo.getIpAddress()
         );
 
@@ -50,7 +50,7 @@ public class LoggingAspect {
 
             // Method가 Get이 아닌 로그만 수집
             if (!logInfo.getMethod().equals("GET")) {
-                final String logMessage = objectMapper.writeValueAsString(Map.entry("logInfo", logInfo));
+                final String logMessage = objectMapper.writeValueAsString(Map.entry("logInfo", logInfo)).replace("\\","");
                 logger.info(logMessage);
             }
             return result;
