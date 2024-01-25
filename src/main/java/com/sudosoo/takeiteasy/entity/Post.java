@@ -7,6 +7,8 @@ import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 
