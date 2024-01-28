@@ -37,5 +37,11 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findAll();
     }
 
+    @Override
+    public void disableByMemberId(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 회원을 찾을 수 없습니다"));
+        member.disableMember();
+    }
+
 
 }

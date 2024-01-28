@@ -27,7 +27,7 @@ public class Coupon extends BaseEntity {
 
     private long discountPrice;
 
-    private Boolean useCheck = false;
+    private boolean useCheck = false;
 
     @Builder
     private Coupon(String couponName, LocalDateTime couponDeadline, int discountRate, long discountPrice, Boolean useCheck) {

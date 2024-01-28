@@ -1,5 +1,6 @@
-package com.sudosoo.takeiteasy.common;
+package com.sudosoo.takeiteasy.common.annotation;
 
+import com.sudosoo.takeiteasy.common.DateTimeFormatValidator;
 import jakarta.validation.Constraint;
 
 import java.lang.annotation.ElementType;

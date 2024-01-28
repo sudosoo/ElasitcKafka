@@ -3,6 +3,8 @@ package com.sudosoo.takeiteasy.entity;
 import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +20,7 @@ public class Event {
     @Column(name = "event_name")
     private String eventName;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
