@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Transactional
 @Service
 public class CouponServiceImpl implements CouponService {
+
     private final CouponRepository couponRepository;
 
 

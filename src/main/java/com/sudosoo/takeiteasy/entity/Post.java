@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Entity
 @Getter
 @EqualsAndHashCode(callSuper=false)
@@ -33,15 +35,14 @@ public class Post extends BaseEntity {
     private boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post",orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = ALL)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @OneToMany(mappedBy = "post",orphanRemoval = true, cascade = ALL)
     private List<Heart> hearts = new ArrayList<>();
 
     @Column(name = "view_count", nullable = false)

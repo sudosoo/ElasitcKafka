@@ -11,6 +11,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Getter
 @EqualsAndHashCode(callSuper=false)
@@ -28,11 +30,11 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = ALL)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @OneToMany(mappedBy = "comment",orphanRemoval = true)
+    @OneToMany(mappedBy = "comment",orphanRemoval = true , cascade = ALL)
     private List<Heart> hearts = new ArrayList<>();
 
     @Builder
