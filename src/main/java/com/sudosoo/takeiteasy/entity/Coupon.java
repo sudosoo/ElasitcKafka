@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @EqualsAndHashCode(callSuper=false)
@@ -16,6 +18,10 @@ public class Coupon extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(fetch = LAZY)
+    @JoinColumn(name = "event_id")
+    private Event event;
 
     @Column(nullable = false,name = "coupon_name")
     private String couponName;
@@ -27,7 +33,7 @@ public class Coupon extends BaseEntity {
 
     private long discountPrice;
 
-    private Boolean useCheck = false;
+    private boolean useCheck = false;
 
     @Builder
     private Coupon(String couponName, LocalDateTime couponDeadline, int discountRate, long discountPrice, Boolean useCheck) {
@@ -37,6 +43,7 @@ public class Coupon extends BaseEntity {
         this.discountPrice = discountPrice;
         this.useCheck = useCheck;
     }
+
     public static Coupon priceOf(CreateEventRequestDto requestDto,LocalDateTime couponDeadline){
         return Coupon.builder()
                 .couponName(requestDto.getEventName()+requestDto.getDiscountPrice())
@@ -44,12 +51,17 @@ public class Coupon extends BaseEntity {
                 .discountPrice(requestDto.getDiscountPrice())
                 .build();
     }
+
     public static Coupon rateOf(CreateEventRequestDto requestDto,LocalDateTime couponDeadline){
         return Coupon.builder()
                 .couponName(requestDto.getEventName()+requestDto.getDiscountRate())
                 .couponDeadline(couponDeadline)
                 .discountRate(requestDto.getDiscountRate())
                 .build();
+    }
+
+    public void addEvent(Event event){
+        this.event = event;
     }
 
 }

@@ -19,4 +19,12 @@ public class MemberController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping(value = "/disable" , name = "deletedMember")
+    public ResponseEntity<Void> disableMember(@RequestParam(name = "id") Long id) {
+
+        memberService.disableByMemberId(id);
+
+        return ResponseEntity.ok().build();
+    }
 }

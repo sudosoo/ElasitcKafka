@@ -37,7 +37,8 @@ public class EventServiceImpl implements EventService {
             coupon = couponService.priceCouponCreate(requestDto);
         }
 
-        Event event = Event.of(requestDto,eventDeadLine, coupon);
+        Event event = Event.of(requestDto,eventDeadLine);
+        coupon.addEvent(event);
         eventRepository.save(event);
         return new EventResponseDto(event.getId(),coupon.getId());
     }
@@ -53,7 +54,7 @@ public class EventServiceImpl implements EventService {
     @Transactional(timeout = 5)
     public void couponIssuance(CouponIssuanceRequestDto requestDto) {
         Event event = eventRepository.findByEventIdForUpdate(requestDto.getEventId())
-                .orElseThrow(() -> new IllegalArgumentException("Event is not found"));
+                .orElseThrow(() -> new IllegalArgumentException("이벤트를 찾을 수 없습니다."));
         Member member = memberService.getMemberByMemberId(requestDto.getMemberId()) ;
 
         event.decreaseCouponQuantity();

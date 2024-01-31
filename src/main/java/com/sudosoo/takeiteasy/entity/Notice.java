@@ -30,8 +30,9 @@ public class Notice {
     @NotNull
     private String content;
 
-    @Column(nullable = false)
     private boolean isRead = false;
+
+    private boolean isDeleted = false;
 
     @CreatedDate
     @Column(updatable = false)

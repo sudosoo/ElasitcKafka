@@ -1,11 +1,8 @@
 package com.sudosoo.takeiteasy.common;
 
+import com.sudosoo.takeiteasy.common.annotation.CustomDateTimeFormat;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class DateTimeFormatValidator implements ConstraintValidator<CustomDateTimeFormat, String> {
     private String pattern;

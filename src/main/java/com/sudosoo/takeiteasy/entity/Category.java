@@ -24,6 +24,7 @@ public class Category extends BaseEntity {
     private Long id;
 
     private String categoryName;
+    private boolean isDeleted = false;
 
     private Category(String categoryName) {
         this.categoryName = categoryName;

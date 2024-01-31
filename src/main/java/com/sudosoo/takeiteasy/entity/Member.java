@@ -22,11 +22,17 @@ public class Member  extends BaseEntity {
 
     private String memberName;
 
+    private boolean isDeleted = false;
+
     private Member(CreateMemberRequestDto createMemberRequestDto) {
         this.memberName = createMemberRequestDto.getMemberName();
     }
     public static Member of(CreateMemberRequestDto createMemberRequestDto){
         return new Member(createMemberRequestDto);
+    }
+
+    public void disableMember() {
+        this.isDeleted = true;
     }
 
 }

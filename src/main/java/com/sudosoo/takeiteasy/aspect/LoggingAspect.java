@@ -25,7 +25,7 @@ public class LoggingAspect {
     private final ObjectMapper objectMapper;
 
     // 모든 컨트롤러 && NotLogging 어노테이션 미설정 시 로그 수집
-    @Pointcut("within(*..*Controller) && !@annotation(com.sudosoo.takeiteasy.common.NotLogging)")
+    @Pointcut("within(*..*Controller) && !@annotation(com.sudosoo.takeiteasy.common.annotation.NotLogging)")
     public void onRequest() {}
 
     @Around("onRequest()")

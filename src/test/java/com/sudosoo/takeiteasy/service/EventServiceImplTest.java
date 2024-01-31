@@ -81,8 +81,7 @@ class EventServiceImplTest {
         int numberOfExecute = 100;
         ExecutorService service = Executors.newFixedThreadPool(10);
         CountDownLatch latch = new CountDownLatch(numberOfExecute);
-        Coupon mockCoupon = mock(Coupon.class);
-        Event event = Event.of(requestDto, LocalDateTime.now(), mockCoupon);
+        Event event = Event.of(requestDto, LocalDateTime.now());
         when(eventRepository.findByEventIdForUpdate(anyLong())).thenReturn(Optional.ofNullable(event));
 
         for (int i = 0; i < numberOfExecute; i++) {

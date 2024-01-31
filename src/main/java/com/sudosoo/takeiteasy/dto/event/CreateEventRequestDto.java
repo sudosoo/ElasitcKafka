@@ -1,10 +1,10 @@
 package com.sudosoo.takeiteasy.dto.event;
 
-import com.sudosoo.takeiteasy.common.CustomDateTimeFormat;
+import com.sudosoo.takeiteasy.common.annotation.CustomDateTimeFormat;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +24,7 @@ public class CreateEventRequestDto {
 
     private int couponQuantity;
 
+    @Column(length = 100)
     private int discountRate;
 
     private long discountPrice;

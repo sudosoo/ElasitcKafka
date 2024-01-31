@@ -10,4 +10,5 @@ public interface MemberService {
     Member getMemberByMemberId(Long memberId);
     Member getMemberByMemberName(String targetMemberName);
     List<Member> findAllMembers();
+    void disableByMemberId(Long id);
 }
