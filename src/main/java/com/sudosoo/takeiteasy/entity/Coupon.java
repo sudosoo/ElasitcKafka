@@ -36,26 +36,25 @@ public class Coupon extends BaseEntity {
     private boolean useCheck = false;
 
     @Builder
-    private Coupon(String couponName, LocalDateTime couponDeadline, int discountRate, long discountPrice, Boolean useCheck) {
+    private Coupon(String couponName, LocalDateTime couponDeadline, int discountRate, long discountPrice) {
         this.couponName = couponName;
         this.couponDeadline = couponDeadline;
         this.discountRate = discountRate;
         this.discountPrice = discountPrice;
-        this.useCheck = useCheck;
     }
 
-    public static Coupon priceOf(CreateEventRequestDto requestDto,LocalDateTime couponDeadline){
+    public static Coupon priceOf(CreateEventRequestDto requestDto,LocalDateTime deadline){
         return Coupon.builder()
                 .couponName(requestDto.getEventName()+requestDto.getDiscountPrice())
-                .couponDeadline(couponDeadline)
+                .couponDeadline(deadline)
                 .discountPrice(requestDto.getDiscountPrice())
                 .build();
     }
 
-    public static Coupon rateOf(CreateEventRequestDto requestDto,LocalDateTime couponDeadline){
+    public static Coupon rateOf(CreateEventRequestDto requestDto,LocalDateTime deadline){
         return Coupon.builder()
                 .couponName(requestDto.getEventName()+requestDto.getDiscountRate())
-                .couponDeadline(couponDeadline)
+                .couponDeadline(deadline)
                 .discountRate(requestDto.getDiscountRate())
                 .build();
     }

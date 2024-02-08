@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.dto.event;
 
-import com.sudosoo.takeiteasy.common.annotation.CustomDateTimeFormat;
+import com.sudosoo.takeiteasy.common.annotation.CustomDateFormatValidator;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,10 +16,10 @@ public class CreateEventRequestDto {
     @Size(max = 100,message = "제목은 100자를 넘을 수 없습니다.")
     private String eventName;
 
-    @CustomDateTimeFormat
+    @CustomDateFormatValidator
     private String eventDeadline;
 
-    @CustomDateTimeFormat
+    @CustomDateFormatValidator
     private String couponDeadline;
 
     private int couponQuantity;
@@ -44,4 +44,6 @@ public class CreateEventRequestDto {
         this.couponQuantity = couponQuantity;
         this.discountRate = discountRate;
     }
+
+
 }
