@@ -9,6 +9,9 @@ import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -19,13 +22,19 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class CommentServiceImplTest {
-    CommentRepository commentRepository = mock(CommentRepository.class);
-    PostRepository postRepository = mock(PostRepository.class);
-    MemberService memberService = mock(MemberService.class);
-    CommentService commentService = new CommentServiceImpl(commentRepository,postRepository,memberService);
+    @Mock
+    private CommentRepository commentRepository;
+    @Mock
+    private PostRepository postRepository;
+    @Mock
+    private MemberService memberService;
+    @InjectMocks
+    private CommentService commentService;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.initMocks(this);
+
         Member mockMember = mock(Member.class);
         when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
 

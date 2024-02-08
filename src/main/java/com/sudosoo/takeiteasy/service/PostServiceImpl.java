@@ -108,7 +108,7 @@ public class PostServiceImpl implements PostService {
     }
 
     private CreatePostRequestDto createDummyPostRequest(int i) {
-        return new CreatePostRequestDto("Title 3-" + i, "Content3-" + i, 2L, 2L);
+        return new CreatePostRequestDto("Title 1-" + i, "Content 1-" + i, 2L, 2L);
     }
 
 

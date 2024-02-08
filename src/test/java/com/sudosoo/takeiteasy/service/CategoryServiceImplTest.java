@@ -3,11 +3,16 @@ package com.sudosoo.takeiteasy.service;
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
+import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,16 +30,22 @@ import static org.mockito.Mockito.when;
 
 class CategoryServiceImplTest {
 
-    CategoryRepository categoryRepository = mock(CategoryRepository.class);
-    PostRepository postRepository = mock(PostRepository.class);
+    @Mock
+    private CategoryRepository categoryRepository;
+    @Mock
+    private PostRepository postRepository;
+    @InjectMocks
+    private CategoryService categoryService;
+    private CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
+    private Category testCategory = Category.of(createCategoryRequestDto);
 
-    CategoryService categoryService = new CategoryServiceImpl(categoryRepository,postRepository);
-    CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test카테고리");
-    Category testCategory = Category.of(createCategoryRequestDto);
-
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
     @Test
-    @DisplayName("creatCategory")
-    void creatCategory() throws Exception {
+    @DisplayName("createCategory")
+    void createCategory() throws Exception {
         //given
         Category categoryMock = mock(Category.class);
         when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
@@ -52,6 +63,7 @@ class CategoryServiceImplTest {
     @Test
     @DisplayName("getCategoryByCategoryId")
     void getCategoryByCategoryId() {
+        //given
         when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
 
         //when

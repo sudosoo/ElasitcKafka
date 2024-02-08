@@ -37,7 +37,7 @@ public class EventServiceImpl implements EventService {
             coupon = couponService.priceCouponCreate(requestDto);
         }
 
-        Event event = Event.of(requestDto,eventDeadLine);
+        Event event = Event.of(requestDto);
         coupon.addEvent(event);
         eventRepository.save(event);
         return new EventResponseDto(event.getId(),coupon.getId());
