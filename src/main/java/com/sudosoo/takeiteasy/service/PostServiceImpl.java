@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-
 public class PostServiceImpl implements PostService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
@@ -45,7 +44,6 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    @Transactional(readOnly = true)
     public PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
         Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다"));
 
@@ -111,6 +109,16 @@ public class PostServiceImpl implements PostService {
         return new CreatePostRequestDto("Title 1-" + i, "Content 1-" + i, 2L, 2L);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageRequest) {
+        List<PostTitleOnlyResponseDto> responseDtos = new ArrayList<>();
+        Page<Post> paginationPost = postRepository.findAllPagination(pageRequest);
 
+        for (Post post : paginationPost ) {
+            responseDtos.add(post.toTitleOnlyDto());
+        }
+        return responseDtos;
+    }
 
 }

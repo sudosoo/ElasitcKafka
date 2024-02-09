@@ -13,8 +13,7 @@ public interface PostRepository extends JpaRepository<Post,Long>{
 
     @Query("SELECT p FROM Post p WHERE p.category.id = :categoryId")
     Page<Post> findPostsPaginationByCategoryId(@Param("categoryId")Long categoryId, Pageable pageRequest);
-
     Page<Post> findByTitle(String title , Pageable pageRequest);
-
     Optional<Post> findByContent(String content);
+    Page<Post> findAllPagination(Pageable pageable);
 }

@@ -15,4 +15,5 @@ public interface PostService {
     void createDefaultPosts(int count);
     Post createBatchPosts(int count);
     PostTitleOnlyResponseDto getPostByContent(String content);
+    List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageRequest);
 }

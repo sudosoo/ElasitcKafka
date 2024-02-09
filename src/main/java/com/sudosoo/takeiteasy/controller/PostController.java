@@ -50,6 +50,12 @@ public class PostController {
         return new ResponseEntity<>(postService.getPostDetailByPostId(postId,pageRequest), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/get" , name = "getPaginationPost")
+    public ResponseEntity<List<PostTitleOnlyResponseDto>> getPaginationPost(@RequestParam(required = false, defaultValue = "0", value = "page")int pageNo ) {
+        pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
+        Pageable pageRequest = PageRequest.of(pageNo,10);
 
+        return new ResponseEntity<>(postService.getPaginationPost(pageRequest), HttpStatus.OK);
+    }
 
 }
