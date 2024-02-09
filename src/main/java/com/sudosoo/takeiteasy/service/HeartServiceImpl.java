@@ -27,17 +27,17 @@ public class HeartServiceImpl implements HeartService {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postRepository.findById(heartRequestDTO.getPostId()).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
 
-
-        existHeart(member, post);
+        if (existPostHeart(member, post)){
+            throw new IllegalArgumentException("Duplicated Like !");
+        }
         Heart heart = Heart.getPostHeart(post,member);
 
         return heartRepository.save(heart);
 
     }
 
-    private void existHeart(Member member, Post post) {
-        heartRepository.findByMemberAndPost(member, post)
-                .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
+    private boolean existPostHeart(Member member, Post post) {
+        return heartRepository.findByMemberAndPost(member, post).isPresent();
     }
 
     @Override
@@ -45,15 +45,17 @@ public class HeartServiceImpl implements HeartService {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
-        existHeart(member, comment);
+        if (existCommentHeart(member, comment)){
+            throw new IllegalArgumentException("Duplicated Like !");
+        }
         Heart heart = Heart.getCommentHeart(comment,member);
 
         return heartRepository.save(heart);
     }
 
-    private void existHeart(Member member, Comment comment) {
-        heartRepository.findByMemberAndComment(member, comment)
-                .orElseThrow(()-> new IllegalArgumentException("Duplicated Like !"));
+    private boolean existCommentHeart(Member member, Comment comment) {
+        return heartRepository.findByMemberAndComment(member, comment)
+                .isPresent();
     }
 
     @Override

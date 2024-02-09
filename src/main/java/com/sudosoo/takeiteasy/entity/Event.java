@@ -37,10 +37,10 @@ public class Event {
         this.couponQuantity = couponQuantity;
         this.eventDeadline = eventDeadline;
     }
-    public static Event of(CreateEventRequestDto requestDto,LocalDateTime eventDeadline){
+    public static Event of(CreateEventRequestDto requestDto){
         return Event.builder()
                 .eventName(requestDto.getEventName())
-                .eventDeadline(eventDeadline)
+                .eventDeadline(LocalDateTime.parse(requestDto.getEventDeadline()))
                 .couponQuantity(requestDto.getCouponQuantity())
                 .build();
 
