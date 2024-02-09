@@ -58,6 +58,4 @@ public class PostController {
         return new ResponseEntity<>(postService.getPaginationPost(pageRequest), HttpStatus.OK);
     }
 
-
-
 }

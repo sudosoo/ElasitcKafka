@@ -2,6 +2,7 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.entity.*;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -87,5 +89,31 @@ class PostServiceImplTest {
         assertEquals(testPost.getTitle(), result.getTitle());
         assertEquals(testPost.getContent(), result.getPostContent());
         assertEquals(commentPage.getSize(), result.getCommentsResponseDto().getSize());
+    }
+
+    @Test
+    @DisplayName("getPaginationPost")
+    void getPaginationPost() throws Exception {
+        //given
+        Pageable pageRequest = PageRequest.of(0,10);
+        List<Post> testPostList = new ArrayList<>();
+        Post testPost1 = Post.testOf(1L, "제목1", "내용1", categoryMock, memberMock, 0, List.of(heartMock));
+        Post testPost2 = Post.testOf(2L, "제목2", "내용2", categoryMock, memberMock, 0, List.of(heartMock));
+        Post testPost3 = Post.testOf(3L, "제목3", "내용3", categoryMock, memberMock, 0, List.of(heartMock));
+        testPostList.add(testPost1);
+        testPostList.add(testPost2);
+        testPostList.add(testPost3);
+
+        Page<Post> paginationPost = new PageImpl(testPostList);
+        when(postRepository.findAllPagination(pageRequest)).thenReturn(paginationPost);
+
+        //when
+        List<PostTitleOnlyResponseDto> actualPost= postService.getPaginationPost(pageRequest);
+
+        //then
+        assertEquals(3, actualPost.size());
+        assertEquals("제목1", actualPost.get(0).getTitle());
+
+        verify(postRepository, times(1)).findAllPagination(pageRequest);
     }
 }
