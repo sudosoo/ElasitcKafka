@@ -91,7 +91,7 @@ public class Post extends BaseEntity {
     }
 
     public String getMemberName(){
-        if(this.member == null){
+        if (this.member == null){
             throw new IllegalArgumentException("해당 게시물에 유저가 등록 되어 있지 않습니다.");
         }
         return this.member.getMemberName();

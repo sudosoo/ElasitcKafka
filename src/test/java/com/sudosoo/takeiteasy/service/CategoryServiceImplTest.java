@@ -3,7 +3,6 @@ package com.sudosoo.takeiteasy.service;
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
@@ -36,22 +35,24 @@ class CategoryServiceImplTest {
     private PostRepository postRepository;
     @InjectMocks
     private CategoryService categoryService;
-    private CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
-    private Category testCategory = Category.of(createCategoryRequestDto);
+    private Category testCategory;
 
     @BeforeEach
     void setUp() {
+        CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
+        testCategory = Category.of(createCategoryRequestDto);
         MockitoAnnotations.initMocks(this);
     }
     @Test
     @DisplayName("createCategory")
     void createCategory() throws Exception {
         //given
+        CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
         Category categoryMock = mock(Category.class);
         when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
 
         //when
-        Category category = categoryService.creatCategory(createCategoryRequestDto);
+        Category category = categoryService.createCategory(createCategoryRequestDto);
 
         //then
         String expectedTitle = createCategoryRequestDto.getCategoryName();

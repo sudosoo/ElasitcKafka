@@ -6,8 +6,8 @@ import com.sudosoo.takeiteasy.entity.Heart;
 
 public interface HeartService {
 
-    Heart createdPostHeart(PostHeartRequestDto heartRequestDTO);
-    Heart createdCommentHeart(CommentHeartRequestDto heartRequestDTO);
+    Heart createPostHeart(PostHeartRequestDto heartRequestDTO);
+    Heart createCommentHeart(CommentHeartRequestDto heartRequestDTO);
     void postDisHeart(PostHeartRequestDto heartRequestDTO);
     void commentDisHeart(CommentHeartRequestDto heartRequestDTO);
 

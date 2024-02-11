@@ -23,7 +23,7 @@ public class PostController {
     @PostMapping(value = "/create" , name = "createPost")
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
 
-        postService.createdPost(requestDto);
+        postService.createPost(requestDto);
 
         return ResponseEntity.ok().build();
     }

@@ -46,7 +46,7 @@ class EventServiceImplTest {
 
     @Test
     @DisplayName("EventCreateTestToRateCoupon")
-    void createdEventByRateCoupon() {
+    void createEventByRateCoupon() {
         Coupon mockRateCoupon = mock(Coupon.class);
         when(couponService.rateCouponCreate(any())).thenReturn(mockRateCoupon);
 
@@ -63,7 +63,7 @@ class EventServiceImplTest {
     }
     @Test
     @DisplayName("EventCreateTestToPriceCoupon")
-    void createdEventByPriceCoupon() {
+    void createEventByPriceCoupon() {
         Coupon mockPriceCoupon = mock(Coupon.class);
         when(couponService.priceCouponCreate(any())).thenReturn(mockPriceCoupon);
 

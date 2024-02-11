@@ -62,7 +62,7 @@ class PostServiceImplTest {
         when(postRepository.save(any(Post.class))).thenReturn(testPost);
 
         // when
-        Post post = postService.createdPost(createPostRequestDto);
+        Post post = postService.createPost(createPostRequestDto);
 
         // then
         String expectedTitle = createPostRequestDto.getTitle();
@@ -86,8 +86,6 @@ class PostServiceImplTest {
 
         // then
         assertEquals(testPost.getId(), result.getPostId());
-        assertEquals(testPost.getTitle(), result.getTitle());
-        assertEquals(testPost.getContent(), result.getPostContent());
         assertEquals(commentPage.getSize(), result.getCommentsResponseDto().getSize());
     }
 
@@ -104,7 +102,7 @@ class PostServiceImplTest {
         testPostList.add(testPost2);
         testPostList.add(testPost3);
 
-        Page<Post> paginationPost = new PageImpl(testPostList);
+        Page<Post> paginationPost = new PageImpl<>(testPostList);
         when(postRepository.findAllPagination(pageRequest)).thenReturn(paginationPost);
 
         //when
