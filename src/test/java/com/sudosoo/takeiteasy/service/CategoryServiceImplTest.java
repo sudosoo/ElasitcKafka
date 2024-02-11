@@ -23,8 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class CategoryServiceImplTest {
@@ -34,32 +33,27 @@ class CategoryServiceImplTest {
     @Mock
     private PostRepository postRepository;
     @InjectMocks
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
     private Category testCategory;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.initMocks(this);
         CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
         testCategory = Category.of(createCategoryRequestDto);
-        MockitoAnnotations.initMocks(this);
     }
     @Test
     @DisplayName("createCategory")
     void createCategory() throws Exception {
         //given
         CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
-        Category categoryMock = mock(Category.class);
-        when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
+        when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
 
         //when
-        Category category = categoryService.createCategory(createCategoryRequestDto);
+        categoryService.createCategory(createCategoryRequestDto);
 
         //then
-        String expectedTitle = createCategoryRequestDto.getCategoryName();
-        String actualTitle = category.getCategoryName();
-
-        assertNotNull(category, "The created post should not be null");
-        assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
+        verify(categoryRepository,times(1)).save(testCategory);
     }
     @Test
     @DisplayName("getCategoryByCategoryId")

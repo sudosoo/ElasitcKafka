@@ -31,7 +31,7 @@ class CouponServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
     @Test
-    @DisplayName("priceCouponCreate")
+    @DisplayName("가격할인 쿠폰 생성")
     void priceCouponCreate() throws Exception {
         //given
         CreateEventRequestDto priceRequestDto = new CreateEventRequestDto("TestEvent","2024-12-25 00:00","2024-12-25 00:00",10,35000L);
@@ -48,7 +48,7 @@ class CouponServiceImplTest {
     }
 
     @Test
-    @DisplayName("rateCouponCreate")
+    @DisplayName("할인율 쿠폰 생성")
     void rateCouponCreate() throws Exception {
         //given
         CreateEventRequestDto rateRequestDto = new CreateEventRequestDto("TestEvent","2024-12-25 00:00","2024-12-25 00:00",10,10);
