@@ -23,7 +23,7 @@ public class HeartServiceImpl implements HeartService {
     private final PostRepository postRepository;
 
     @Override
-    public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
+    public Heart createPostHeart(PostHeartRequestDto heartRequestDTO){
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Post post = postRepository.findById(heartRequestDTO.getPostId()).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
 
@@ -41,9 +41,10 @@ public class HeartServiceImpl implements HeartService {
     }
 
     @Override
-    public Heart createdCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
+    public Heart createCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
         Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
+
 
         if (existCommentHeart(member, comment)){
             throw new IllegalArgumentException("Duplicated Like !");
@@ -54,8 +55,7 @@ public class HeartServiceImpl implements HeartService {
     }
 
     private boolean existCommentHeart(Member member, Comment comment) {
-        return heartRepository.findByMemberAndComment(member, comment)
-                .isPresent();
+        return heartRepository.existsByMemberAndComment(member, comment);
     }
 
     @Override
@@ -80,15 +80,17 @@ public class HeartServiceImpl implements HeartService {
         heartRepository.delete(heart);
     }
 
+
     private Heart findHeartByMemberAndPostOrComment(Member member, Object reference) {
+        assert reference instanceof Post || reference instanceof Comment : "Unsupported reference type";
+
         if (reference instanceof Post) {
-            return getPostHeart(member,(Post)reference);
-        } else if (reference instanceof Comment) {
-            return getCommentHeart(member,(Comment)reference);
+            return getPostHeart(member, (Post) reference);
         } else {
-            throw new IllegalArgumentException("Unsupported reference type");
+            return getCommentHeart(member, (Comment) reference);
         }
     }
+
     private Heart getPostHeart(Member m ,Post p){
         return heartRepository.findByMemberAndPost(m,p)
                 .orElseThrow(() -> new IllegalArgumentException("Could not find PostHeart id"));

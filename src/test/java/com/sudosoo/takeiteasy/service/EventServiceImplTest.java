@@ -45,8 +45,8 @@ class EventServiceImplTest {
     }
 
     @Test
-    @DisplayName("EventCreateTestToRateCoupon")
-    void createdEventByRateCoupon() {
+    @DisplayName("할인율 쿠폰 이벤트 생성")
+    void createEventByRateCoupon() {
         Coupon mockRateCoupon = mock(Coupon.class);
         when(couponService.rateCouponCreate(any())).thenReturn(mockRateCoupon);
 
@@ -58,12 +58,13 @@ class EventServiceImplTest {
         eventService.createdEvent(rateRequestDto);
 
         // Then
+        verify(couponService, times(0)).priceCouponCreate(any());
         verify(couponService, times(1)).rateCouponCreate(rateRequestDto);
         verify(eventRepository, times(1)).save(any(Event.class));
     }
     @Test
-    @DisplayName("EventCreateTestToPriceCoupon")
-    void createdEventByPriceCoupon() {
+    @DisplayName("가격 쿠폰 이벤트 생성")
+    void createEventByPriceCoupon() {
         Coupon mockPriceCoupon = mock(Coupon.class);
         when(couponService.priceCouponCreate(any())).thenReturn(mockPriceCoupon);
 
@@ -75,6 +76,7 @@ class EventServiceImplTest {
         eventService.createdEvent(priceRequestDto);
 
         // Then
+        verify(couponService, times(0)).rateCouponCreate(any());
         verify(couponService, times(1)).priceCouponCreate(priceRequestDto);
         verify(eventRepository, times(1)).save(any(Event.class));
     }

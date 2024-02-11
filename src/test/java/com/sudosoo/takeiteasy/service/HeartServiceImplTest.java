@@ -50,30 +50,30 @@ class HeartServiceImplTest {
     }
 
     @Test
-    @DisplayName("createdPostHeart")
-    void createdPostHeart(){
+    @DisplayName("createPostHeart")
+    void createPostHeart(){
         //given
         when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mock(Post.class), mock(Member.class)));
-        when(heartRepository.findByMemberAndPost(any(Member.class), any(Post.class)))
-                .thenReturn(Optional.empty());
+        when(heartRepository.existsByMemberAndPost(mock(Member.class),mock(Post.class)))
+                .thenReturn(false);
 
         //when
-        Heart heart = heartService.createdPostHeart(postHeartRequestDto);
+        Heart heart = heartService.createPostHeart(postHeartRequestDto);
 
         //then
         assertNotNull(heart, "The actual heart should not be null");
     }
 
     @Test
-    @DisplayName("createdCommentHeart")
-    void createdCommentHeart() throws Exception {
+    @DisplayName("createCommentHeart")
+    void createCommentHeart() throws Exception {
         //given
         when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mock(Comment.class), mock(Member.class)));
-        when(heartRepository.findByMemberAndComment(any(Member.class), any(Comment.class)))
-                .thenReturn(Optional.empty());
+        when(heartRepository.existsByMemberAndComment(mock(Member.class),mock(Comment.class)))
+                .thenReturn(false);
 
         //when
-        Heart heart = heartService.createdCommentHeart(commentHeartRequestDto);
+        Heart heart = heartService.createCommentHeart(commentHeartRequestDto);
 
         //then
         assertNotNull(heart, "The actual heart should not be null");
@@ -110,4 +110,5 @@ class HeartServiceImplTest {
         //then
         verify(heartRepository, times(1)).delete(any(Heart.class));
     }
+
 }

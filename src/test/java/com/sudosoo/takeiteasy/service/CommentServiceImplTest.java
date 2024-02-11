@@ -29,8 +29,10 @@ class CommentServiceImplTest {
     @Mock
     private MemberService memberService;
     @InjectMocks
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
+    private CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
 
+    private Comment testComment = Comment.of(createCommentRequestDto);
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -40,40 +42,37 @@ class CommentServiceImplTest {
 
         Post mockPost = mock(Post.class);
         when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockPost));
+
+
     }
 
     @Test
-    @DisplayName("createdComment")
+    @DisplayName("createComment")
     void createComment() {
         //given
-        CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
-        when(commentService.createComment(createCommentRequestDto)).thenReturn(Comment.of(createCommentRequestDto));
+        when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
 
         //when
-        Comment testComment = commentService.createComment(createCommentRequestDto);
+        Comment resultComment = commentService.createComment(createCommentRequestDto);
 
         //then
-        String expectedContent = createCommentRequestDto.getContent();
-        String actualContent = testComment.getContent();
-
-        assertNotNull(testComment,"The created comment should not be null");
-        assertEquals(expectedContent, actualContent, "Expected Content: " + expectedContent + ", Actual Content: " + actualContent);
+        verify(commentRepository,times(1)).save(any(Comment.class));
+        assertEquals(testComment.getId(),resultComment.getId());
     }
 
     @Test
     void getCommentByCommentId() {
         //given
-        CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
-        when(commentRepository.findById(any())).thenReturn(Optional.of(Comment.of(createCommentRequestDto)));
+        when(commentRepository.findById(any())).thenReturn(Optional.of(testComment));
 
         //when
-        Comment testComment = commentService.getCommentByCommentId(1L);
+        Comment resultComment = commentService.getCommentByCommentId(1L);
 
         //then
         String expectedCommentContent = createCommentRequestDto.getContent();
-        String actualCommentContent = testComment.getContent();
+        String actualCommentContent = resultComment.getContent();
 
-        assertNotNull(testComment, "The actual comment should not be null");
+        verify(commentRepository,times(1)).findById(1L);
         assertEquals(expectedCommentContent, actualCommentContent, "Expected Comment Content: " + expectedCommentContent + ", Actual Comment Content: " + actualCommentContent);
     }
 }

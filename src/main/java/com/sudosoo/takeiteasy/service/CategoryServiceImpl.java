@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final PostRepository postRepository;
 
     @Override
-    public Category creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
+    public Category createCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         Category category = Category.of(createCategoryRequestDto);
 
         return categoryRepository.save(category);

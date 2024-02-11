@@ -2,7 +2,6 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.member.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.entity.Member;
-import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,14 +31,14 @@ class MemberServiceImplTest {
 
 
     @Test
-    @DisplayName("createdMember")
-    void createdMember() {
+    @DisplayName("createMember")
+    void createMember() {
         //given
         Member member = Member.of(createMemberRequestDto);
         when(memberRepository.save(any(Member.class))).thenReturn(member);
 
         //when
-        Member ActualMember = memberService.createdMember(createMemberRequestDto);
+        Member ActualMember = memberService.createMember(createMemberRequestDto);
 
         //then
         String expectedMemberName = createMemberRequestDto.getMemberName();

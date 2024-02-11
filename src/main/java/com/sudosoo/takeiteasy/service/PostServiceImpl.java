@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Post createdPost(CreatePostRequestDto createPostRequestDto) {
+    public Post createPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
         Post post = Post.of(createPostRequestDto);
         Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
@@ -90,11 +90,6 @@ public class PostServiceImpl implements PostService {
         return createDummyPost(i, member, category);
     }
 
-    @Override
-    public PostTitleOnlyResponseDto getPostByContent(String content) {
-        Post p = postRepository.findByContent(content).orElseThrow(()->new IllegalArgumentException("검색한 게시물이 존재 하지 않습니다"));
-        return p.toTitleOnlyDto();
-    }
 
     private Post createDummyPost(int i , Member m , Category c) {
         Post post = Post.of(createDummyPostRequest(i));

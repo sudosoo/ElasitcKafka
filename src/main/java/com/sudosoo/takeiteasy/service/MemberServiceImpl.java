@@ -15,7 +15,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     @Override
-    public Member createdMember(CreateMemberRequestDto createMemberRequestDto){
+    public Member createMember(CreateMemberRequestDto createMemberRequestDto){
         Member member = Member.of(createMemberRequestDto);
         return memberRepository.save(member);
     }
