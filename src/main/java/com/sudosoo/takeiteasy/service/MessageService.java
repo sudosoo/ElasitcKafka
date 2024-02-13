@@ -4,5 +4,5 @@ import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
 
 public interface MessageService {
 
-    void messageSend(MessageSendRequestDto requestDto);
+    void send(MessageSendRequestDto requestDto);
 }

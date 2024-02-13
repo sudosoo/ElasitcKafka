@@ -103,7 +103,7 @@ class PostServiceImplTest {
         testPostList.add(testPost3);
 
         Page<Post> paginationPost = new PageImpl<>(testPostList);
-        when(postRepository.findAllPagination(pageRequest)).thenReturn(paginationPost);
+        when(postRepository.findAll(pageRequest)).thenReturn(paginationPost);
 
         //when
         List<PostTitleOnlyResponseDto> actualPost= postService.getPaginationPost(pageRequest);
@@ -112,6 +112,6 @@ class PostServiceImplTest {
         assertEquals(3, actualPost.size());
         assertEquals("제목1", actualPost.get(0).getTitle());
 
-        verify(postRepository, times(1)).findAllPagination(pageRequest);
+        verify(postRepository, times(1)).findAll(pageRequest);
     }
 }

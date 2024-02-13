@@ -1,16 +1,13 @@
 package com.sudosoo.takeiteasy.kafka;
 
-import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
-import com.sudosoo.takeiteasy.dto.notice.NoticeRequestDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KafkaProducer {
+public class KafkaNoticeProducer {
     @Value("${devsoo.kafka.notice.topic}")
     private String kafkaNoticeTopic;
 
