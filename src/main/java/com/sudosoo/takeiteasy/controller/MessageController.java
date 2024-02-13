@@ -2,7 +2,6 @@ package com.sudosoo.takeiteasy.controller;
 
 import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
 import com.sudosoo.takeiteasy.service.MessageService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ public class MessageController {
     @PostMapping(value = "/send" , name = "messageSend")
     public ResponseEntity<Void> messageSend(@RequestBody MessageSendRequestDto requestDto) {
 
-        messageService.messageSend(requestDto);
+        messageService.send(requestDto);
 
         return ResponseEntity.ok().build();
     }

@@ -29,7 +29,6 @@ public class PostServiceImpl implements PostService {
     private final CategoryService categoryService;
     private final MemberService memberService;
 
-
     @Override
     public Post createPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
@@ -108,7 +107,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageRequest) {
         List<PostTitleOnlyResponseDto> responseDtos = new ArrayList<>();
-        Page<Post> paginationPost = postRepository.findAllPagination(pageRequest);
+        Page<Post> paginationPost = postRepository.findAll(pageRequest);
 
         for (Post post : paginationPost ) {
             responseDtos.add(post.toTitleOnlyDto());
