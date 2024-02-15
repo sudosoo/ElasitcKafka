@@ -2,7 +2,6 @@ package com.sudosoo.takeiteasy.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sudosoo.takeiteasy.dto.KafkaRequestMember;
 import com.sudosoo.takeiteasy.dto.RequestMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KafkaNoticeProducer {
+public class KafkaProducer {
     @Value("${devsoo.kafka.notice.topic}")
     private String kafkaNoticeTopic;
 
@@ -22,18 +21,17 @@ public class KafkaNoticeProducer {
         kafkaTemplate.send(kafkaNoticeTopic, memberName ,requestMessage);
     }
 
-    public void send(Object requestMessage) {
-        kafkaTemplate.send(kafkaNoticeTopic, requestMessage);
+    public void send(ProducerRecord<String, String> dataValue) {
+        kafkaTemplate.send(kafkaNoticeTopic, dataValue);
     }
 
 
-    public void sendCreatePostRequest(KafkaRequestMember data) {
+    public void produceDtoToKafka(String targetMethod,Object data) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String requestData = objectMapper.writeValueAsString(new RequestMessage("createPost", data));
+            String requestData = objectMapper.writeValueAsString(new RequestMessage(targetMethod, data));
             ProducerRecord<String, String> record = new ProducerRecord<>(kafkaNoticeTopic, requestData);
-
-
+            send(record);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

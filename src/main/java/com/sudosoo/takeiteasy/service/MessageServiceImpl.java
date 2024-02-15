@@ -3,7 +3,7 @@ package com.sudosoo.takeiteasy.service;
 import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Message;
-import com.sudosoo.takeiteasy.kafka.KafkaNoticeProducer;
+import com.sudosoo.takeiteasy.kafka.KafkaProducer;
 import com.sudosoo.takeiteasy.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class  MessageServiceImpl implements MessageService{
     private final MemberService memberService;
     private final MessageRepository messageRepository;
-    private final KafkaNoticeProducer kafkaNoticeProducer;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public void send(MessageSendRequestDto requestDto) {
@@ -27,7 +27,7 @@ public class  MessageServiceImpl implements MessageService{
                 .receiver(receiver)
                 .messageType(requestDto.getMessageType())
                 .build();
-        kafkaNoticeProducer.sendNotice(receiver.getMemberName(),message.getContent());
+        kafkaProducer.sendNotice(receiver.getMemberName(),message.getContent());
         messageRepository.save(message);
     }
 
