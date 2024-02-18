@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.sudosoo.takeiteasy.dto.KafkaRequestMember;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
@@ -8,12 +9,15 @@ import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
+import com.sudosoo.takeiteasy.kafka.KafkaProducer;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +32,13 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final CategoryService categoryService;
     private final MemberService memberService;
-
+    private final KafkaProducer kafkaProducer;
     @Override
     public Post createPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
+        kafkaProducer.produceDtoToKafka("createPost",new KafkaRequestMember(createPostRequestDto.getMemberId()));
+
+
         Post post = Post.of(createPostRequestDto);
         Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
 
