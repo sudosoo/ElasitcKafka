@@ -36,6 +36,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post createPost(CreatePostRequestDto createPostRequestDto) {
         Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
+        kafkaProducer.produceDtoToKafka("createPost",new KafkaRequestMember(createPostRequestDto.getMemberId()));
+
+
         Post post = Post.of(createPostRequestDto);
         Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
 

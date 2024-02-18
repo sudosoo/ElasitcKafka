@@ -37,7 +37,5 @@ public class KafkaProducer {
         }
     }
 
-    public void sendTest(String message) {
-        kafkaTemplate.send("TestKafka", message);
-    }
+
 }
