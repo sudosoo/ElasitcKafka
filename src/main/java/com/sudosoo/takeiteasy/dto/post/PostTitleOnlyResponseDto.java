@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostTitleDto {
+public class PostTitleOnlyResponseDto {
 
     private Long postId;
     private String title;
@@ -14,7 +14,7 @@ public class PostTitleDto {
     private int viewCount;
     private String writerName;
 
-    public PostTitleDto(Long postId, String title, int likeCount,int viewCount, String writerName) {
+    public PostTitleOnlyResponseDto(Long postId, String title, int likeCount, int viewCount, String writerName) {
         this.postId = postId;
         this.title = title;
         this.likeCount = likeCount;

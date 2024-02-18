@@ -1,6 +1,8 @@
 package com.sudosoo.takeiteasy.aspect.logging;
 
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +35,8 @@ public class RequestApiInfo {
     private String url = null;
     private String name = null;
     private final Map<String, String> header = new HashMap<>();
-    private final Map<String, String> parameters = new HashMap<>();
     private Map<String, String> body = new HashMap<>();
+    private final Map<String, String> parameters = new HashMap<>();
     private String ipAddress = null;
     private final String dateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -104,6 +106,7 @@ public class RequestApiInfo {
 
     // Body와 Parameters 추출
     private void setInputStream(JoinPoint joinPoint, ObjectMapper objectMapper) {
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         try {
             final CodeSignature codeSignature = (CodeSignature) joinPoint.getSignature();
             final String[] parameterNames = codeSignature.getParameterNames();
@@ -112,11 +115,14 @@ public class RequestApiInfo {
                 if (parameterNames[i].equals("request")) {
                     this.body = objectMapper.convertValue(args[i],new TypeReference<Map<String, String>>(){});
                 } else {
-                    this.parameters.put(parameterNames[i], objectMapper.writeValueAsString(args[i]));
+                    String json = objectMapper.writeValueAsString(args[i]);
+                    this.parameters.put(parameterNames[i], json);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 }

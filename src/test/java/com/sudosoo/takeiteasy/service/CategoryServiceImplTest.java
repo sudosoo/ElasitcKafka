@@ -5,6 +5,7 @@ import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,44 +20,45 @@ import org.springframework.data.domain.Pageable;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 
 class CategoryServiceImplTest {
+
     @Mock
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
+    @Mock
+    private PostRepository postRepository;
     @InjectMocks
-    CategoryServiceImpl categoryService;
+    private CategoryServiceImpl categoryService;
+
     private final CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test카테고리");
-    Category testCategory = Category.of(createCategoryRequestDto);
+    private Category testCategory = Category.of(createCategoryRequestDto);
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
     @Test
-    @DisplayName("creatCategory")
-    void creatCategory() throws Exception {
+    @DisplayName("createCategory")
+    void createCategory() throws Exception {
         //given
-        Category categoryMock = mock(Category.class);
-        when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
+        CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
+        when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
 
         //when
-        Category category = categoryService.creatCategory(createCategoryRequestDto);
+        categoryService.createCategory(createCategoryRequestDto);
 
         //then
-        String expectedTitle = createCategoryRequestDto.getCategoryName();
-        String actualTitle = category.getCategoryName();
-
-        assertNotNull(category, "The created post should not be null");
-        assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
+        verify(categoryRepository,times(1)).save(testCategory);
     }
     @Test
     @DisplayName("getCategoryByCategoryId")
     void getCategoryByCategoryId() {
+        //given
         when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
 
         //when
@@ -79,7 +81,7 @@ class CategoryServiceImplTest {
         Pageable pageRequest = PageRequest.of(0, 10);
         Page<Post> postsPage = new PageImpl<>(Arrays.asList(postMock1,postMock2,postMock3));
         when(categoryRepository.findById(1L)).thenReturn(Optional.ofNullable(testCategory));
-        when(categoryRepository.findPostsByCategoryId(1L, pageRequest)).thenReturn(postsPage);
+        when(postRepository.findPostsPaginationByCategoryId(1L, pageRequest)).thenReturn(postsPage);
 
         //when
         CategoryResponseDto result = categoryService.getPostsByCategoryId(1L, PageRequest.of(0, 10));

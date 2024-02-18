@@ -3,8 +3,12 @@ package com.sudosoo.takeiteasy.service;
 import com.sudosoo.takeiteasy.dto.member.CreateMemberRequestDto;
 import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -13,22 +17,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class MemberServiceImplTest {
-    MemberRepository memberRepository = mock(MemberRepository.class);
-    MemberService memberService = new MemberServiceImpl(memberRepository);
-    CreateMemberRequestDto createMemberRequestDto = new CreateMemberRequestDto("TestMember");
+    @Mock
+    private MemberRepository memberRepository;
+    @InjectMocks
+    private MemberServiceImpl memberService;
+    private CreateMemberRequestDto createMemberRequestDto;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        createMemberRequestDto = new CreateMemberRequestDto("TestMember");
+     }
+
 
     @Test
-    @DisplayName("createdMember")
-    void createdMember() {
+    @DisplayName("createMember")
+    void createMember() {
         //given
-        when(memberRepository.save(any(Member.class))).thenReturn(Member.of(createMemberRequestDto));
+        Member member = Member.of(createMemberRequestDto);
+        when(memberRepository.save(any(Member.class))).thenReturn(member);
 
         //when
-        Member member = memberService.createdMember(createMemberRequestDto);
+        Member ActualMember = memberService.createMember(createMemberRequestDto);
 
         //then
         String expectedMemberName = createMemberRequestDto.getMemberName();
-        String actualMemberName = member.getMemberName();
+        String actualMemberName = ActualMember.getMemberName();
 
         assertNotNull(member, "The actual member should not be null");
         assertEquals(expectedMemberName, actualMemberName, "Expected Member Name: " + expectedMemberName + ", Actual Member Name: " + actualMemberName);

@@ -25,7 +25,7 @@ public class LoggingAspect {
     private final ObjectMapper objectMapper;
 
     // 모든 컨트롤러 && NotLogging 어노테이션 미설정 시 로그 수집
-    @Pointcut("within(*..*Controller) && !@annotation(com.sudosoo.takeiteasy.common.NotLogging)")
+    @Pointcut("within(*..*Controller) && !@annotation(com.sudosoo.takeiteasy.common.annotation.NotLogging)")
     public void onRequest() {}
 
     @Around("onRequest()")
@@ -40,8 +40,8 @@ public class LoggingAspect {
                 apiInfo.getName(),
                 apiInfo.getMethod(),
                 apiInfo.getHeader(),
-                objectMapper.writeValueAsString(apiInfo.getParameters()),
-                objectMapper.writeValueAsString(apiInfo.getBody()),
+                objectMapper.writeValueAsString(apiInfo.getParameters()).replace("\\",""),
+                objectMapper.writeValueAsString(apiInfo.getBody()).replace("\\",""),
                 apiInfo.getIpAddress()
         );
 
@@ -53,8 +53,8 @@ public class LoggingAspect {
                 final String logMessage = objectMapper.writeValueAsString(Map.entry("logInfo", logInfo));
                 logger.info(logMessage);
             }
-
             return result;
+
         } catch (Exception e) {
             final StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));

@@ -1,13 +1,10 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
-import com.sudosoo.takeiteasy.dto.notice.NoticeRequestDto;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Message;
 import com.sudosoo.takeiteasy.kafka.KafkaProducer;
 import com.sudosoo.takeiteasy.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +16,7 @@ public class  MessageServiceImpl implements MessageService{
     private final MessageRepository messageRepository;
 
     @Override
-    public void messageSend(MessageSendRequestDto requestDto) {
+    public void send(MessageSendRequestDto requestDto) {
         //TODO MemberSetting
         Long senderId = requestDto.getMemberId();
         Long receiverId = requestDto.getTargetMemberId();

@@ -2,7 +2,6 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
 import com.sudosoo.takeiteasy.entity.Coupon;
-import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CouponRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class CouponServiceImplTest {

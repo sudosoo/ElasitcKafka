@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.dto.post;
 
 import com.sudosoo.takeiteasy.aspect.notice.NotifyInfo;
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
+import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
@@ -12,10 +12,10 @@ public class PostDetailResponseDto implements NotifyInfo {
     private String title;
     private String content;
     private String writerName;
-    private Page<CommentResposeDto> commentsResponseDto;
+    private Page<CommentResponseDto> commentsResponseDto;
 
     public PostDetailResponseDto(Long postId, String title, String content,
-                                 String writerName, Page<CommentResposeDto> comments) {
+                                 String writerName, Page<CommentResponseDto> comments) {
         this.postId = postId;
         this.title = title;
         this.content = content;

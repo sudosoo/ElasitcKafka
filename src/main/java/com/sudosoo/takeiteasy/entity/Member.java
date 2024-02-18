@@ -2,19 +2,14 @@ package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.member.CreateMemberRequestDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -22,24 +17,12 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member  extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String memberName;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Heart> hearts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Event> events = new HashSet<>();
-
-
+    private boolean isDeleted = false;
 
     private Member(CreateMemberRequestDto createMemberRequestDto) {
         this.memberName = createMemberRequestDto.getMemberName();
@@ -48,7 +31,8 @@ public class Member  extends BaseEntity {
         return new Member(createMemberRequestDto);
     }
 
-    public void addEvent(Event event){
-        this.events.add(event);
+    public void disableMember() {
+        this.isDeleted = true;
     }
+
 }

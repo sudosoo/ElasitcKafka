@@ -3,6 +3,7 @@ package com.sudosoo.takeiteasy.service;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.entity.*;
+import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +28,8 @@ class PostServiceImplTest {
     CategoryService categoryService;
     @Mock
     PostRepository postRepository;
+    @Mock
+    CommentRepository commentRepository;
     @InjectMocks
     PostServiceImpl postService;
     private final CreatePostRequestDto testRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
@@ -48,7 +51,7 @@ class PostServiceImplTest {
         when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
 
         //when
-        Post post = postService.createdPost(testRequestDto);
+        Post post = postService.createPost(testRequestDto);
 
         //then
         String expectedTitle = testRequestDto.getTitle();
@@ -82,7 +85,7 @@ class PostServiceImplTest {
         Comment commentMock3 = mock(Comment.class);
         Pageable pageRequest = PageRequest.of(0, 10);
         Page<Comment> commentPage = new PageImpl<>(Arrays.asList(commentMock1,commentMock2,commentMock3));
-        when(postRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage);
+        when(commentRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage);
 
         // when
         PostDetailResponseDto result = postService.getPostDetailByPostId(1L, PageRequest.of(0, 10));

@@ -1,17 +1,14 @@
 package com.sudosoo.takeiteasy.entity;
 
-import com.sudosoo.takeiteasy.dto.notice.NoticeRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.aspectj.weaver.ast.Not;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-
-import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -19,7 +16,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long receiverId;
@@ -27,8 +24,9 @@ public class Notice {
     @NotNull
     private String content;
 
-    @Column(nullable = false)
     private boolean isRead = false;
+
+    private boolean isDeleted = false;
 
     @CreatedDate
     @Column(updatable = false)

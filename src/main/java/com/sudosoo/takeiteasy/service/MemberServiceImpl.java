@@ -15,7 +15,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     @Override
-    public Member createdMember(CreateMemberRequestDto createMemberRequestDto){
+    public Member createMember(CreateMemberRequestDto createMemberRequestDto){
         Member member = Member.of(createMemberRequestDto);
         return memberRepository.save(member);
     }
@@ -35,6 +35,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Member> findAllMembers() {
         return memberRepository.findAll();
+    }
+
+    @Override
+    public void disableByMemberId(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 회원을 찾을 수 없습니다"));
+        member.disableMember();
     }
 
 

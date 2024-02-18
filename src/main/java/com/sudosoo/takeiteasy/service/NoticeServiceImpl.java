@@ -23,13 +23,12 @@ public class NoticeServiceImpl implements NoticeService{
     private final EmitterRepository emitterRepository;
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
-
     @KafkaListener(topics = "${devsoo.kafka.notice.topic}")
     public void kafkaSend(ConsumerRecord<String, Object> record) {
         String receiverMemberName = record.key();
         String messageContent = record.value().toString();
 
-        //SSE 로 클라이언트로 보내기
+        //SSE로 클라이언트에 전송
         send(receiverMemberName,messageContent);
     }
 
@@ -40,7 +39,7 @@ public class NoticeServiceImpl implements NoticeService{
         emitter.onCompletion(() -> emitterRepository.deleteByEmitterCreatedTimeWithMemberName(emitterCreatedTimeByMemberName));
         emitter.onTimeout(() -> emitterRepository.deleteByEmitterCreatedTimeWithMemberName(emitterCreatedTimeByMemberName));
 
-        // 503 에러를 방지하기 위한 더미 이벤트 전송
+        //더미 이벤트 전송 (연결때 아무것도 보내지 않으면 503 에러)
         String eventId = makeTimeIncludeMemberName(memberName);
         sendNotification(emitter, eventId, emitterCreatedTimeByMemberName, "EventStream Created. [memberName=" + memberName + "]");
 

@@ -1,9 +1,10 @@
 package com.sudosoo.takeiteasy.kafka;
 
-import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
-import com.sudosoo.takeiteasy.dto.notice.NoticeRequestDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sudosoo.takeiteasy.dto.RequestMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,21 @@ public class KafkaProducer {
         kafkaTemplate.send(kafkaNoticeTopic, memberId ,requestMessage);
     }
 
-    public void sendTest(String message) {
-        kafkaTemplate.send("TestKafka", message);
+    public void send(ProducerRecord<String, String> dataValue) {
+        kafkaTemplate.send(kafkaNoticeTopic, dataValue);
     }
+
+
+    public void produceDtoToKafka(String targetMethod,Object data) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String requestData = objectMapper.writeValueAsString(new RequestMessage(targetMethod, data));
+            ProducerRecord<String, String> record = new ProducerRecord<>(kafkaNoticeTopic, requestData);
+            send(record);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
+import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -50,7 +50,7 @@ public class Comment extends BaseEntity {
         post.getComments().add(this);
     }
 
-    public CommentResposeDto toResponseDto(){
-        return new CommentResposeDto(this.id,this.writerName,this.content,this.getHearts().size());
+    public CommentResponseDto toResponseDto(){
+        return new CommentResponseDto(this.id,this.writerName,this.content,this.getHearts().size());
     }
 }

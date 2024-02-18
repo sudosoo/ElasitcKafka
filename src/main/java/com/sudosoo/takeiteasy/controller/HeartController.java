@@ -17,7 +17,7 @@ public class HeartController {
     @PostMapping(value = "/createPostHeart" , name = "createPostHeart")
     public ResponseEntity<Void> createPostHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
 
-        heartService.createdPostHeart(requestDto);
+        heartService.createPostHeart(requestDto);
 
         return ResponseEntity.ok().build();
     }
@@ -25,7 +25,7 @@ public class HeartController {
     @PostMapping(value = "/createCommentHeart" , name = "createCommentHeart")
     public ResponseEntity<Void> createCommentHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
 
-        heartService.createdCommentHeart(requestDto);
+        heartService.createCommentHeart(requestDto);
 
         return ResponseEntity.ok().build();
     }

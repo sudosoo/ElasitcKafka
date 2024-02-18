@@ -1,13 +1,11 @@
 package com.sudosoo.takeiteasy.kafka;
 
-import com.sudosoo.takeiteasy.dto.message.MessageSendRequestDto;
+import com.sudosoo.takeiteasy.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +17,7 @@ public class KafkaConsumer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-
-
+    @KafkaListener(topics = "${devsoo.kafka.restapi.topic}")
+    public void getMember(ConsumerRecord<String, Object> record) {
+    }
 }

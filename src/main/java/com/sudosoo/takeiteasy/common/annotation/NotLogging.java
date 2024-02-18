@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.common;
+package com.sudosoo.takeiteasy.common.annotation;
 
 import java.lang.annotation.*;
 

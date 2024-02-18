@@ -3,10 +3,11 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CategoryRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,9 +22,10 @@ import java.util.List;
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final PostRepository postRepository;
 
     @Override
-    public Category creatCategory(CreateCategoryRequestDto createCategoryRequestDto) {
+    public Category createCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         Category category = Category.of(createCategoryRequestDto);
 
         return categoryRepository.save(category);
@@ -40,8 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponseDto getPostsByCategoryId(Long categoryId, Pageable pageable) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new IllegalArgumentException("해당 카테고리가 존재하지 않습니다"));
 
-        Page<Post> paginatedPost = categoryRepository.findPostsByCategoryId(categoryId, pageable);
-        List<PostTitleDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();
+        Page<Post> paginatedPost = postRepository.findPostsPaginationByCategoryId(categoryId, pageable);
+        List<PostTitleOnlyResponseDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();
 
         return category.toResponseDto(category, new PageImpl<>(responsePosts));
 

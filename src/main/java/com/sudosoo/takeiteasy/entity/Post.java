@@ -1,10 +1,10 @@
 package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
+import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleDto;
+import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -16,14 +16,19 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "post", indexes = {
+        @Index(name = "idx_title", columnList = "title")
+})
 public class Post extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
 
     private String content;
+
+    private boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -61,7 +66,6 @@ public class Post extends BaseEntity {
 
     public void setCategory(Category category) {
         this.category = category;
-        category.getPosts().add(this);
     }
     public void setMember(Long memberId) {
         this.memberId = memberId;
@@ -71,11 +75,11 @@ public class Post extends BaseEntity {
         this.viewCount++;
     }
 
-    public PostTitleDto toTitleOnlyDto(){
-        return new PostTitleDto(this.id, this.title, this.getHearts().size(),this.viewCount,this.writerName);
+    public PostTitleOnlyResponseDto toTitleOnlyDto(){
+        return new PostTitleOnlyResponseDto(this.id, this.title, this.getHearts().size(),this.viewCount,this.writerName);
     }
 
-    public PostDetailResponseDto toDetailDto(Page<CommentResposeDto> comments){
+    public PostDetailResponseDto toDetailDto(Page<CommentResponseDto> comments){
         return new PostDetailResponseDto(this.id, this.title,this.content,this.writerName,comments);
     }
 

@@ -21,10 +21,10 @@ public class HeartServiceImpl implements HeartService {
     private final CommentService commentService;
 
     @Override
-    public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
+    public Heart createPostHeart(PostHeartRequestDto requestDto){
         //TODO MemberSetting
-        Long memberId = heartRequestDTO.getMemberId();
-        Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
+        Long memberId = requestDto.getMemberId();
+        Post post = postService.getPostByPostId(requestDto.getPostId());
 
         if( heartRepository.existByMemberIdAndPost(memberId, post)){
             throw new IllegalArgumentException("Duplicated Like !");
@@ -36,10 +36,10 @@ public class HeartServiceImpl implements HeartService {
     }
 
     @Override
-    public Heart createdCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
+    public Heart createCommentHeart(CommentHeartRequestDto requestDto)  {
         //TODO MemberSetting
-        Long memberId = heartRequestDTO.getMemberId();
-        Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
+        Long memberId = requestDto.getMemberId();
+        Comment comment  = commentService.getCommentByCommentId(requestDto.getCommentId());
 
         if(heartRepository.existByMemberIdAndComment(memberId, comment)){
             throw new IllegalArgumentException("Duplicated Like !");
