@@ -19,9 +19,8 @@ public class Comment extends BaseEntity {
     private Long id;
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private Long memberId;
+    private String writerName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -31,9 +30,10 @@ public class Comment extends BaseEntity {
     private List<Heart> hearts = new ArrayList<>();
 
     @Builder
-    private Comment(String content, Member member, Post post, List<Heart> hearts) {
+    private Comment(String content, Long memberId,String writerName, Post post, List<Heart> hearts) {
         this.content = content;
-        this.member = member;
+        this.memberId = memberId;
+        this.writerName = writerName;
         this.post = post;
         this.hearts = hearts;
     }
@@ -42,22 +42,15 @@ public class Comment extends BaseEntity {
                 .content(createCommentRequestDto.getContent())
                 .build();
     }
-    public void setMember(Member member){
-        this.member = member;
+    public void setMember(Long memberId){
+        this.memberId = memberId;
     }
     public void setPost(Post post) {
         this.post = post;
         post.getComments().add(this);
     }
 
-    public String getUserName() {
-        if(this.member == null){
-            throw new IllegalArgumentException("사용자가 등록되어 있지 않습니다.");
-        }
-        return this.member.getMemberName();
-    }
-
     public CommentResposeDto toResponseDto(){
-        return new CommentResposeDto(this.getId(),this.getUserName(),this.getContent(),this.getHearts().size());
+        return new CommentResposeDto(this.id,this.writerName,this.content,this.getHearts().size());
     }
 }

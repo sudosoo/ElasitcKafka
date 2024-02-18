@@ -19,7 +19,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 public class NoticeServiceImpl implements NoticeService{
-    private final MemberService memberService;
     private final NoticeRepository noticeRepository;
     private final EmitterRepository emitterRepository;
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
@@ -81,8 +80,9 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     public void send(String receiverName, String content) {
-        Member receiver = memberService.getMemberByMemberName(receiverName);
-        Notice notification = noticeRepository.save(createNotification(receiver, content));
+        //TODO 유저 이름으로 유저 id 받아오기 (매직 넘버 수정)
+        Long receiverId = 1L;
+        Notice notification = noticeRepository.save(createNotification(receiverId, content));
 
         String eventCreatedTime = receiverName + "_" + System.currentTimeMillis();
         Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(receiverName);
@@ -94,8 +94,8 @@ public class NoticeServiceImpl implements NoticeService{
         );
     }
 
-    private Notice createNotification(Member receiver , String content) {
-        return Notice.of(receiver,content);
+    private Notice createNotification(Long receiverId , String content) {
+        return Notice.of(receiverId,content);
     }
 
 

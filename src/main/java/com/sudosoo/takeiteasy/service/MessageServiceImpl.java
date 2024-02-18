@@ -15,22 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class  MessageServiceImpl implements MessageService{
-    private final MemberService memberService;
     private final KafkaProducer kafkaProducer;
     private final MessageRepository messageRepository;
-    private final NoticeService noticeService;
 
     @Override
     public void messageSend(MessageSendRequestDto requestDto) {
-        Member sender = memberService.getMemberByMemberId(requestDto.getMemberId());
-        Member receiver = memberService.getMemberByMemberId(requestDto.getTargetMemberId());
+        //TODO MemberSetting
+        Long senderId = requestDto.getMemberId();
+        Long receiverId = requestDto.getTargetMemberId();
         Message message = Message.builder()
                 .content(requestDto.getContent())
-                .sender(sender)
-                .receiver(receiver)
+                .senderId(senderId)
+                .receiverId(receiverId)
                 .messageType(requestDto.getMessageType())
                 .build();
-        kafkaProducer.sendNotice(receiver.getMemberName(),message.getContent());
+        //TODO MemberSetting 유저이름 넣기
+        kafkaProducer.sendNotice(receiverId.toString(),message.getContent());
         messageRepository.save(message);
     }
 

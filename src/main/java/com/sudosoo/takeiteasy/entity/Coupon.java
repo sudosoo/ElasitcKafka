@@ -19,6 +19,7 @@ public class Coupon extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false)
     private String couponName;
 
@@ -39,17 +40,17 @@ public class Coupon extends BaseEntity {
         this.discountPrice = discountPrice;
         this.useCheck = useCheck;
     }
-    public static Coupon priceOf(CreateEventRequestDto requestDto,LocalDateTime couponDeadline){
+    public static Coupon priceOf(CreateEventRequestDto requestDto){
         return Coupon.builder()
                 .couponName(requestDto.getEventName()+requestDto.getDiscountPrice())
-                .couponDeadline(couponDeadline)
+                .couponDeadline(LocalDateTime.parse(requestDto.getCouponDeadline()))
                 .discountPrice(requestDto.getDiscountPrice())
                 .build();
     }
-    public static Coupon rateOf(CreateEventRequestDto requestDto,LocalDateTime couponDeadline){
+    public static Coupon rateOf(CreateEventRequestDto requestDto){
         return Coupon.builder()
                 .couponName(requestDto.getEventName()+requestDto.getDiscountRate())
-                .couponDeadline(couponDeadline)
+                .couponDeadline(LocalDateTime.parse(requestDto.getCouponDeadline()))
                 .discountRate(requestDto.getDiscountRate())
                 .build();
     }

@@ -22,10 +22,7 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Member receiver;
+    private Long receiverId;
 
     @NotNull
     private String content;
@@ -37,13 +34,13 @@ public class Notice {
     @Column(updatable = false)
     private final LocalDateTime sendTime = LocalDateTime.now();
 
-    private Notice(Member member ,String content) {
-        this.receiver = member;
+    private Notice(Long receiverId ,String content) {
+        this.receiverId = receiverId;
         this.content = content;
     }
 
-    public static Notice of(Member member, String content){
-        return new Notice(member,content);
+    public static Notice of(Long receiverId, String content){
+        return new Notice(receiverId,content);
     }
 
 }

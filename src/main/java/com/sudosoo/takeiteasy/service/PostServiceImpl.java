@@ -2,10 +2,9 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponsetDto;
+import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +22,13 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final CategoryService categoryService;
-    private final MemberService memberService;
-
 
     @Override
-    public Post createdPost(CreatePostRequestDto createPostRequestDto) {
-        Member member = memberService.getMemberByMemberId(createPostRequestDto.getMemberId());
-        Post post = Post.of(createPostRequestDto);
-        Category category = categoryService.getCategoryByCategoryId(createPostRequestDto.getCategoryId());
+    public Post createdPost(CreatePostRequestDto requestDto) {
+        //TODO MemberSetting
+        Long member = requestDto.getMemberId();
+        Post post = Post.of(requestDto);
+        Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
 
         post.setMember(member);
         post.setCategory(category);
@@ -47,13 +45,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public PostDetailResponsetDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
+    public PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
         Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
-
         post.incrementViewCount();
         Page<Comment> comments = postRepository.findCommentsByPostId(postId,pageRequest);
-        List<CommentResposeDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
 
+        //TODO MemberSetting 각 코멘트의 유저이름을 찾아와서 넣어주기
+        List<CommentResposeDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
         return post.toDetailDto(new PageImpl<>(responseCommentDtos));
     }
 }

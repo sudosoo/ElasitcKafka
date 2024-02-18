@@ -9,24 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
-
-
     @Override
     public Coupon priceCouponCreate(CreateEventRequestDto requestDto) {
-        LocalDateTime couponDeadLine = LocalDateTime.parse(requestDto.getCouponDeadline());
-        Coupon coupon = Coupon.priceOf(requestDto,couponDeadLine);
+        Coupon coupon = Coupon.priceOf(requestDto);
         return couponRepository.save(coupon);
     }
 
     @Override
     public Coupon rateCouponCreate(CreateEventRequestDto requestDto) {
-        LocalDateTime couponDeadLine = LocalDateTime.parse(requestDto.getCouponDeadline());
-        Coupon coupon = Coupon.rateOf(requestDto,couponDeadLine);
+        Coupon coupon = Coupon.rateOf(requestDto);
         return couponRepository.save(coupon);
     }
 }

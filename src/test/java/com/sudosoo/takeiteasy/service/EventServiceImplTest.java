@@ -10,6 +10,9 @@ import com.sudosoo.takeiteasy.repository.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.dao.PessimisticLockingFailureException;
 
 import java.time.LocalDateTime;
@@ -25,15 +28,15 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class EventServiceImplTest {
-    MemberService memberService = mock(MemberService.class);
-    EventRepository eventRepository = mock(EventRepository.class);
-    CouponService couponService = mock(CouponServiceImpl.class);
-    EventService eventService = new EventServiceImpl(eventRepository,memberService,couponService);
-    CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent",LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10);
+    @Mock
+    EventRepository eventRepository;
+    @Mock
+    CouponService couponService;
+    @InjectMocks EventServiceImpl eventService;
+    private final CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent",LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10);
     @BeforeEach
-    void setUp() {
-        Member mockMember = mock(Member.class);
-        when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

@@ -16,8 +16,8 @@ public class KafkaProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendNotice(String memberName, String requestMessage) {
-        kafkaTemplate.send(kafkaNoticeTopic, memberName ,requestMessage);
+    public void sendNotice(String memberId, String requestMessage) {
+        kafkaTemplate.send(kafkaNoticeTopic, memberId ,requestMessage);
     }
 
     public void sendTest(String message) {

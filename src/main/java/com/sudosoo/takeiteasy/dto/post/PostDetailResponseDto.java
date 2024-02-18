@@ -5,34 +5,31 @@ import com.sudosoo.takeiteasy.dto.comment.CommentResposeDto;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
-import java.lang.reflect.Member;
-import java.util.List;
-
 @Getter
-public class PostDetailResponsetDto implements NotifyInfo {
+public class PostDetailResponseDto implements NotifyInfo {
 
     private Long postId;
     private String title;
     private String content;
     private String writerName;
-    private Page<CommentResposeDto> commentsResposeDto;
+    private Page<CommentResposeDto> commentsResponseDto;
 
-    public PostDetailResponsetDto(Long postId, String title,String content,
-                                  String writerName,Page<CommentResposeDto> comments) {
+    public PostDetailResponseDto(Long postId, String title, String content,
+                                 String writerName, Page<CommentResposeDto> comments) {
         this.postId = postId;
         this.title = title;
         this.content = content;
         this.writerName = writerName;
-        this.commentsResposeDto = comments;
+        this.commentsResponseDto = comments;
     }
 
     @Override
     public String getReceiverName() {
-        return getWriterName();
+        return this.writerName;
     }
 
     @Override
-    public String getContent() {
-        return getContent();
+    public String getNotifyContent() {
+        return this.content;
     }
 }

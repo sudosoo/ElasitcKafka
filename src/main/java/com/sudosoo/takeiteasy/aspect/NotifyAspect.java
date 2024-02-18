@@ -32,7 +32,7 @@ public class NotifyAspect {
             if (body instanceof NotifyInfo notifyProxy) {
                 noticeService.send(
                         notifyProxy.getReceiverName(),
-                        notifyProxy.getContent()
+                        notifyProxy.getNotifyContent()
                 );
             }
         }

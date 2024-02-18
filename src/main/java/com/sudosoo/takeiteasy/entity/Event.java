@@ -18,9 +18,7 @@ public class Event {
 
     private String eventName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
@@ -31,9 +29,9 @@ public class Event {
     private LocalDateTime eventDeadline;
 
     @Builder
-    private Event(String eventName, Member member, Coupon coupon, int couponQuantity, LocalDateTime eventDeadline) {
+    private Event(String eventName, Long memberId, Coupon coupon, int couponQuantity, LocalDateTime eventDeadline) {
         this.eventName = eventName;
-        this.member = member;
+        this.memberId = memberId;
         this.coupon = coupon;
         this.couponQuantity = couponQuantity;
         this.eventDeadline = eventDeadline;
@@ -67,9 +65,8 @@ public class Event {
 //            throw new IllegalStateException("남은 쿠폰 수량이 없습니다.");
 //        }
 //    }
-    public void setMember(Member member){
-        this.member = member;
-        member.addEvent(this);
+    public void setMember(Long memberId){
+        this.memberId = memberId;
     }
 
 

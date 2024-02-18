@@ -15,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostService postService;
-    private final MemberService memberService;
 
     @Override
     public Comment createComment(CreateCommentRequestDto createCommentRequestDto){
-        Member member = memberService.getMemberByMemberId(createCommentRequestDto.getMemberId());
+        //TODO MemberSetting
+        Long memberId = createCommentRequestDto.getMemberId();
         Post post = postService.getPostByPostId(createCommentRequestDto.getPostId());
         Comment comment = Comment.of(createCommentRequestDto);
 
         comment.setPost(post);
-        comment.setMember(member);
+        comment.setMember(memberId);
 
         return commentRepository.save(comment);
     }

@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final MemberService memberService;
     private final CouponService couponService;
 
 
@@ -54,14 +53,15 @@ public class EventServiceImpl implements EventService {
     public void couponIssuance(CouponIssuanceRequestDto requestDto) {
         Event event = eventRepository.findByEventIdForUpdate(requestDto.getEventId())
                 .orElseThrow(() -> new IllegalArgumentException("Event is not found"));
-        Member member = memberService.getMemberByMemberId(requestDto.getMemberId()) ;
+        //TODO MemberSetting
+        Long memberId = requestDto.getMemberId() ;
         /* 이벤트 종료 시점은 프론트 or 앞단에서 처리 해 준다.
         if (event.isDeadlineExpired()) {
             System.out.println("이벤트가 종료되었습니다.");
         }
         */
         event.decreaseCouponQuantity();
-        event.setMember(member);
+        event.setMember(memberId);
         eventRepository.save(event);
     }
 

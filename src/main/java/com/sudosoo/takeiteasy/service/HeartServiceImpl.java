@@ -17,48 +17,45 @@ import org.springframework.transaction.annotation.Transactional;
 public class HeartServiceImpl implements HeartService {
 
     private final HeartRepository heartRepository;
-    private final MemberService memberService;
     private final PostService postService;
     private final CommentService commentService;
 
     @Override
     public Heart createdPostHeart(PostHeartRequestDto heartRequestDTO){
-        Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
+        //TODO MemberSetting
+        Long memberId = heartRequestDTO.getMemberId();
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
 
-        existHeart(member, post);
-        Heart heart = Heart.getPostHeart(post,member);
+        if( heartRepository.existByMemberIdAndPost(memberId, post)){
+            throw new IllegalArgumentException("Duplicated Like !");
+        }
+        Heart heart = Heart.getPostHeart(post,memberId);
 
         return heartRepository.save(heart);
 
-    }
-
-    private void existHeart(Member member, Post post) {
-        heartRepository.findByMemberAndPost(member, post)
-                .orElseThrow(() -> new IllegalArgumentException("Duplicated Like !"));
     }
 
     @Override
     public Heart createdCommentHeart(CommentHeartRequestDto heartRequestDTO)  {
-        Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
+        //TODO MemberSetting
+        Long memberId = heartRequestDTO.getMemberId();
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
 
-        existHeart(member, comment);
-        Heart heart = Heart.getCommentHeart(comment,member);
+        if(heartRepository.existByMemberIdAndComment(memberId, comment)){
+            throw new IllegalArgumentException("Duplicated Like !");
+        }
+        Heart heart = Heart.getCommentHeart(comment,memberId);
 
         return heartRepository.save(heart);
     }
 
-    private void existHeart(Member member, Comment comment) {
-        heartRepository.findByMemberAndComment(member, comment)
-                .orElseThrow(()-> new IllegalArgumentException("Duplicated Like !"));
-    }
 
     @Override
     public void postDisHeart(PostHeartRequestDto heartRequestDTO) {
-        Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
+        //TODO MemberSetting
+        Long memberId =heartRequestDTO.getMemberId();
         Post post = postService.getPostByPostId(heartRequestDTO.getPostId());
-        Heart heart = findHeartByMemberAndPostOrComment(member,post);
+        Heart heart = findHeartByMemberAndPostOrComment(memberId,post);
 
         heart.unHeartPost();
 
@@ -67,30 +64,31 @@ public class HeartServiceImpl implements HeartService {
 
     @Override
     public void commentDisHeart(CommentHeartRequestDto heartRequestDTO) {
-        Member member = memberService.getMemberByMemberId(heartRequestDTO.getMemberId());
+        //TODO MemberSetting
+        Long memberId =heartRequestDTO.getMemberId();
         Comment comment  = commentService.getCommentByCommentId(heartRequestDTO.getCommentId());
-        Heart heart = findHeartByMemberAndPostOrComment(member, comment);
+        Heart heart = findHeartByMemberAndPostOrComment(memberId, comment);
 
         heart.unHeartComment();
 
         heartRepository.delete(heart);
     }
 
-    private Heart findHeartByMemberAndPostOrComment(Member member, Object reference) {
+    private Heart findHeartByMemberAndPostOrComment(Long memberId, Object reference) {
         if (reference instanceof Post) {
-            return getPostHeart(member,(Post)reference);
+            return getPostHeart(memberId,(Post)reference);
         } else if (reference instanceof Comment) {
-            return getCommentHeart(member,(Comment)reference);
+            return getCommentHeart(memberId,(Comment)reference);
         } else {
             throw new IllegalArgumentException("Unsupported reference type");
         }
     }
-    private Heart getPostHeart(Member m ,Post p){
-        return heartRepository.findByMemberAndPost(m,p)
+    private Heart getPostHeart(Long memberId ,Post p){
+        return heartRepository.findByMemberIdAndPost(memberId,p)
                 .orElseThrow(() -> new IllegalArgumentException("Could not find PostHeart id"));
     }
-    private Heart getCommentHeart(Member m ,Comment c){
-        return heartRepository.findByMemberAndComment(m,c)
+    private Heart getCommentHeart(Long memberId ,Comment c){
+        return heartRepository.findByMemberIdAndComment(memberId,c)
                 .orElseThrow(() -> new IllegalArgumentException("Could not find CommentHeart id"));
     }
 

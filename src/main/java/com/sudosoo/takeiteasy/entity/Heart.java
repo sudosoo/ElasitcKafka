@@ -22,9 +22,7 @@ public class Heart extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private Long memberId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
@@ -38,24 +36,24 @@ public class Heart extends BaseEntity {
     private HeartType heartType;
 
     @Builder
-    public Heart(Member member, Post post, Comment comment,HeartType heartType) {
-        this.member = member;
+    public Heart(Long memberId, Post post, Comment comment,HeartType heartType) {
+        this.memberId = memberId;
         this.post = post;
         this.comment = comment;
         this.heartType = heartType;
     }
 
-    public static Heart getPostHeart(Post post , Member member){
+    public static Heart getPostHeart(Post post , Long memberId){
         return Heart.builder()
                 .post(post)
-                .member(member)
+                .memberId(memberId)
                 .heartType(HeartType.POST)
                 .build();
     }
-    public static Heart getCommentHeart(Comment comment , Member member){
+    public static Heart getCommentHeart(Comment comment , Long memberId){
         return Heart.builder()
                 .comment(comment)
-                .member(member)
+                .memberId(memberId)
                 .heartType(HeartType.COMMENT)
                 .build();
     }
@@ -83,8 +81,4 @@ public class Heart extends BaseEntity {
             comment = null;
         }
     }
-    public String getMemberName(){
-        return this.member.getMemberName();
-    }
-
 }

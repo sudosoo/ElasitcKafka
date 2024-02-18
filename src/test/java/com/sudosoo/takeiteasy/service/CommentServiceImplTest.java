@@ -8,6 +8,9 @@ import com.sudosoo.takeiteasy.repository.CommentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -18,15 +21,18 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class CommentServiceImplTest {
-    CommentRepository commentRepository = mock(CommentRepository.class);
-    PostService postService = mock(PostService.class);
-    MemberService memberService = mock(MemberService.class);
-    CommentService commentService = new CommentServiceImpl(commentRepository,postService,memberService);
+    @Mock
+    CommentRepository commentRepository;
+    @Mock
+    PostService postService;
+    @InjectMocks
+    CommentServiceImpl commentService;
+    private final CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
+    private Comment testComment = Comment.of(createCommentRequestDto);
 
     @BeforeEach
     void setUp() {
-        Member mockMember = mock(Member.class);
-        when(memberService.getMemberByMemberId(anyLong())).thenReturn(mockMember);
+        MockitoAnnotations.openMocks(this);
 
         Post mockPost = mock(Post.class);
         when(postService.getPostByPostId(anyLong())).thenReturn(mockPost);
@@ -36,8 +42,7 @@ class CommentServiceImplTest {
     @DisplayName("createdComment")
     void createComment() {
         //given
-        CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
-        when(commentService.createComment(createCommentRequestDto)).thenReturn(Comment.of(createCommentRequestDto));
+        when(commentService.createComment(createCommentRequestDto)).thenReturn(testComment);
 
         //when
         Comment testComment = commentService.createComment(createCommentRequestDto);
@@ -53,8 +58,7 @@ class CommentServiceImplTest {
     @Test
     void getCommentByCommentId() {
         //given
-        CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
-        when(commentRepository.findById(any())).thenReturn(Optional.of(Comment.of(createCommentRequestDto)));
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment));
 
         //when
         Comment testComment = commentService.getCommentByCommentId(1L);

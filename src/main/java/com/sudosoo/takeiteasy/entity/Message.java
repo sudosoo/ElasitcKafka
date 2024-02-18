@@ -17,15 +17,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
-    @NotNull
-    private Member sender;
+    private Long senderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id")
-    @NotNull
-    private Member receiver;
+    private Long receiverId;
 
     @NotNull
     private String content;
@@ -39,9 +33,9 @@ public class Message {
     private final LocalDateTime sendTime = LocalDateTime.now();
 
     @Builder
-    private Message(Member sender, Member receiver, String content, MessageType messageType) {
-        this.sender = sender;
-        this.receiver = receiver;
+    private Message(Long senderId, Long receiverId, String content, MessageType messageType) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
         this.content = content;
         this.messageType = messageType;
     }
