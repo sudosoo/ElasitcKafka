@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface PostService {
-    Post createPost(CreatePostRequestDto createPostRequestDto);
+    Post create(CreatePostRequestDto createPostRequestDto);
     Post getPostByPostId(Long postId);
     PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest);
     List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageable);

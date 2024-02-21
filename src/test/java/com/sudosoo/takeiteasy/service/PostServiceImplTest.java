@@ -51,7 +51,7 @@ class PostServiceImplTest {
         when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
 
         //when
-        Post post = postService.createPost(testRequestDto);
+        Post post = postService.create(testRequestDto);
 
         //then
         String expectedTitle = testRequestDto.getTitle();

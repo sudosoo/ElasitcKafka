@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
     private final CommentRepository commentRepository;
 
     @Override
-    public Post createPost(CreatePostRequestDto requestDto) {
+    public Post create(CreatePostRequestDto requestDto) {
         //TODO MemberSetting
         Long memberId = requestDto.getMemberId();
         Post post = Post.of(requestDto);
