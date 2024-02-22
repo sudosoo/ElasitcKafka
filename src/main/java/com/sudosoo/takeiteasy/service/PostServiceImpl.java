@@ -81,7 +81,7 @@ public class PostServiceImpl implements PostService {
         });
     }
 
-    @KafkaListener(topics = "${devsoo.kafka.restapi.topic}", groupId = "${devsoo.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${devsoo.kafka.restapi.topic}", groupId = "createPost-consumer")
     private synchronized void handleKafkaMessage(KafkaMemberValidateResponseDto responseDto) {
         // Kafka 메시지를 받아와서 처리하는 로직
         if (responseDto.getTargetMethod().equals("createPost"))
