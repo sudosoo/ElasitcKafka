@@ -2,12 +2,14 @@ package com.sudosoo.takeiteasy.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sudosoo.takeiteasy.dto.RequestMessage;
+import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
 
 @Component
 @RequiredArgsConstructor
@@ -26,10 +28,10 @@ public class KafkaProducer {
     }
 
 
-    public void produceDtoToKafka(String targetMethod,Object data) {
+    public void produceDtoToKafka(kafkaMemberValidateRequestDto kafkaMemberRequestDto, CompletableFuture<Void> kafkaFuture) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String requestData = objectMapper.writeValueAsString(new RequestMessage(targetMethod, data));
+            String requestData = objectMapper.writeValueAsString(kafkaMemberRequestDto);
             ProducerRecord<String, String> record = new ProducerRecord<>(kafkaNoticeTopic, requestData);
             send(record);
         } catch (JsonProcessingException e) {

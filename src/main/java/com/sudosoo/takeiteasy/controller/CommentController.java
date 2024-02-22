@@ -14,10 +14,8 @@ public class CommentController {
     private final CommentService commentService;
     @PostMapping(value = "/create" , name = "createComment")
     public ResponseEntity<Void> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto) {
-        commentService.createComment(requestDto);
+        commentService.create(requestDto);
 
         return ResponseEntity.ok().build();
     }
-
-
 }

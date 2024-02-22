@@ -4,6 +4,7 @@ import com.sudosoo.takeiteasy.common.annotation.CustomNotify;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
+import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/post")
@@ -21,11 +23,12 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     @PostMapping(value = "/create" , name = "createPost")
-    public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
+    public ResponseEntity<Post> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
 
-        postService.create(requestDto);
+        CompletableFuture<Post> future = postService.createAsync(requestDto);
+        Post createdPost = future.join();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createdPost);
     }
 
     @CustomNotify

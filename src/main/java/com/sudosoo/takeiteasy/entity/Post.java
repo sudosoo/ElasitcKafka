@@ -67,8 +67,9 @@ public class Post extends BaseEntity {
     public void setCategory(Category category) {
         this.category = category;
     }
-    public void setMember(Long memberId) {
+    public void setMember(Long memberId,String writerName) {
         this.memberId = memberId;
+        this.writerName = writerName;
     }
 
     public void incrementViewCount() {

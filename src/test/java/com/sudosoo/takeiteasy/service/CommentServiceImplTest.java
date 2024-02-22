@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -26,8 +25,6 @@ class CommentServiceImplTest {
     private CommentRepository commentRepository;
     @Mock
     private PostRepository postRepository;
-    @Mock
-    private MemberService memberService;
     @InjectMocks
     private CommentServiceImpl commentService;
     private final CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
@@ -44,10 +41,10 @@ class CommentServiceImplTest {
     @DisplayName("createdComment")
     void createComment() {
         //given
-        when(commentService.createComment(createCommentRequestDto)).thenReturn(testComment);
+        when(commentService.create(createCommentRequestDto)).thenReturn(testComment);
 
         //when
-        Comment resultComment = commentService.createComment(createCommentRequestDto);
+        Comment resultComment = commentService.create(createCommentRequestDto);
 
         //then
         verify(commentRepository,times(1)).save(any(Comment.class));
@@ -60,7 +57,7 @@ class CommentServiceImplTest {
         when(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment));
 
         //when
-        Comment resultComment = commentService.getCommentByCommentId(1L);
+        Comment resultComment = commentService.getByCommentId(1L);
 
         //then
         String expectedCommentContent = createCommentRequestDto.getContent();

@@ -1,6 +1,5 @@
 package com.sudosoo.takeiteasy.kafka;
 
-import com.sudosoo.takeiteasy.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;

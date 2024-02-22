@@ -1,7 +1,6 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.notice.NoticeResponseDto;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Notice;
 import com.sudosoo.takeiteasy.repository.EmitterRepository;
 import com.sudosoo.takeiteasy.repository.NoticeRepository;

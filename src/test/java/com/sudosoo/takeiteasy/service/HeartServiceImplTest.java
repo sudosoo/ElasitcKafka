@@ -4,7 +4,6 @@ import com.sudosoo.takeiteasy.dto.heart.CommentHeartRequestDto;
 import com.sudosoo.takeiteasy.dto.heart.PostHeartRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Heart;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.HeartRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,6 @@ import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -40,9 +38,9 @@ class HeartServiceImplTest {
         MockitoAnnotations.openMocks(this);
 
         Post mockPost = mock(Post.class);
-        when(postService.getPostByPostId(anyLong())).thenReturn(mockPost);
+        when(postService.getByPostId(anyLong())).thenReturn(mockPost);
         Comment mockComment = mock(Comment.class);
-        when(commentService.getCommentByCommentId(anyLong())).thenReturn(mockComment);
+        when(commentService.getByCommentId(anyLong())).thenReturn(mockComment);
     }
 
     @Test
