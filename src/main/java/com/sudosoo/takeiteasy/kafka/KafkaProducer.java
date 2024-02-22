@@ -16,6 +16,8 @@ import java.util.concurrent.CompletableFuture;
 public class KafkaProducer {
     @Value("${devsoo.kafka.notice.topic}")
     private String kafkaNoticeTopic;
+    @Value("${devsoo.kafka.restapi.topic}")
+    private String kafkaRestApiTopic;
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -23,19 +25,29 @@ public class KafkaProducer {
         kafkaTemplate.send(kafkaNoticeTopic, memberId ,requestMessage);
     }
 
-    public void send(ProducerRecord<String, String> dataValue) {
-        kafkaTemplate.send(kafkaNoticeTopic, dataValue);
+    public void callAPI(ProducerRecord<String, String> dataValue, CompletableFuture<Void> future) {
+        try {
+            kafkaTemplate.send(kafkaRestApiTopic,dataValue);
+            future.complete(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 예외가 발생한 경우 CompletableFuture에 예외를 완료시킴
+            future.completeExceptionally(e);
+        }
     }
 
 
     public void produceDtoToKafka(kafkaMemberValidateRequestDto kafkaMemberRequestDto, CompletableFuture<Void> kafkaFuture) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String requestData = objectMapper.writeValueAsString(kafkaMemberRequestDto);
             ProducerRecord<String, String> record = new ProducerRecord<>(kafkaNoticeTopic, requestData);
-            send(record);
+            callAPI(record, future);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            future.completeExceptionally(e);
         }
     }
 
