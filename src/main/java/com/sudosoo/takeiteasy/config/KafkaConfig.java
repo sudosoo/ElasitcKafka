@@ -7,7 +7,13 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.KafkaMessageListenerContainer;
+import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -17,10 +23,12 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
+
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
-
+    @Value("${devsoo.kafka.restapi.topic}")
+    private String requestReplyTopic;
     @Bean
     public ProducerFactory<String, Object> producerFactory(){
         Map<String, Object> props = new HashMap<>();
@@ -44,4 +52,27 @@ public class KafkaConfig {
     public KafkaTemplate<String, Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
+
+    @Bean
+    public ReplyingKafkaTemplate<String, Object, Object> replyKafkaTemplate(ProducerFactory<String, Object> pf,
+                                                                                      KafkaMessageListenerContainer<String, Object> container) {
+        return new ReplyingKafkaTemplate<>(pf, container);
+
+    }
+
+    @Bean
+    public KafkaMessageListenerContainer<String, Object> replyContainer(ConsumerFactory<String, Object> cf) {
+        ContainerProperties containerProperties = new ContainerProperties(requestReplyTopic);
+        return new KafkaMessageListenerContainer<>(cf, containerProperties);
+    }
+
+    @Bean
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        factory.setReplyTemplate(kafkaTemplate());
+        return factory;
+    }
+
+
 }
