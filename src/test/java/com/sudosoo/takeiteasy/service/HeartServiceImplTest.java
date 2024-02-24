@@ -50,7 +50,7 @@ class HeartServiceImplTest {
         PostHeartRequestDto postHeartRequestDto = new PostHeartRequestDto(1L,1L);
 
         when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mock(Post.class), anyLong()));
-        when(heartRepository.existByMemberIdAndPost(anyLong(),mock(Post.class)))
+        when(heartRepository.existsByMemberIdAndPost(anyLong(),mock(Post.class)))
                 .thenReturn(false);
         //when
         Heart heart = heartService.createPostHeart(postHeartRequestDto);
@@ -67,7 +67,7 @@ class HeartServiceImplTest {
         //given
         final CommentHeartRequestDto commentHeartRequestDto = new CommentHeartRequestDto(1L,1L);
         when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mock(Comment.class),anyLong()));
-        when(heartRepository.existByMemberIdAndComment(anyLong(),mock(Comment.class)))
+        when(heartRepository.existsByMemberIdAndComment(anyLong(),mock(Comment.class)))
                 .thenReturn(false);
         //when
         Heart heart = heartService.createCommentHeart(commentHeartRequestDto);

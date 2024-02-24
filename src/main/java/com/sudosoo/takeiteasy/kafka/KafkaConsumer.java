@@ -1,9 +1,7 @@
 package com.sudosoo.takeiteasy.kafka;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,4 @@ public class KafkaConsumer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @KafkaListener(topics = "${devsoo.kafka.restapi.topic}")
-    public void getMember(ConsumerRecord<String, Object> record) {
-    }
 }

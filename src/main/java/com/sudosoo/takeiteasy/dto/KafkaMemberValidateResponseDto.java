@@ -6,8 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class KafkaMemberValidateResponseDto {
-
-    private String targetMethod;
     private Long memberId;
     private String memberName;
 }

@@ -4,13 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.internals.RecordHeader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.kafka.requestreply.RequestReplyFuture;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +28,7 @@ public class KafkaProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, Object, Object> replyingKafkaTemplate;
 
     public void sendNotice(String memberId, String requestMessage) {
         kafkaTemplate.send(kafkaNoticeTopic, memberId ,requestMessage);
@@ -39,6 +45,19 @@ public class KafkaProducer {
         }
     }
 
+    public Object replyRecord(Object requestData) throws ExecutionException, InterruptedException {
+        ProducerRecord<String, Object> record = new ProducerRecord<String, Object>(kafkaRestApiTopic, requestData);
+        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, kafkaRestApiTopic.getBytes()));
+        RequestReplyFuture<String, Object, Object> sendAndReceive = replyingKafkaTemplate.sendAndReceive(record);
+
+        SendResult<String, Object> sendResult = sendAndReceive.getSendFuture().get();
+
+        sendResult.getProducerRecord().headers().forEach(header -> System.out.println(header.key() + ":" + header.value().toString()));
+        ConsumerRecord<String, Object> consumerRecord = sendAndReceive.get();
+
+        return consumerRecord.value();
+    }
+
 
     public void produceDtoToKafka(kafkaMemberValidateRequestDto kafkaMemberRequestDto, CompletableFuture<Void> kafkaFuture) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -53,6 +72,7 @@ public class KafkaProducer {
             future.completeExceptionally(e);
         }
     }
+
 
 
 }

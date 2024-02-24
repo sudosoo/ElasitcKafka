@@ -1,10 +1,12 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sudosoo.takeiteasy.dto.KafkaMemberValidateResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
@@ -16,13 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,62 +32,28 @@ public class PostServiceImpl implements PostService {
     private final CategoryService categoryService;
     private final CommentRepository commentRepository;
     private final KafkaProducer kafkaProducer;
-    private CompletableFuture<KafkaMemberValidateResponseDto> kafkaResponseFuture;
-
-
-//    @Override
-//    public Post create(CreatePostRequestDto requestDto) {
-//        //TODO Member validate
-//        Long memberId = requestDto.getMemberId();
-//        kafkaMemberValidateRequestDto memberValidateRequestDto = new kafkaMemberValidateRequestDto(memberId);
-//        kafkaProducer.produceDtoToKafka(memberValidateRequestDto);
-//
-//        Post post = Post.of(requestDto);
-//        Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
-//        post.setMember(memberId);
-//        post.setCategory(category);
-//
-//        return postRepository.save(post);
-//    }
+    private final ObjectMapper objectMapper;
 
 
     @Override
-    public CompletableFuture<Post> createAsync(CreatePostRequestDto requestDto) {
-        Long memberId = requestDto.getMemberId();
-        kafkaMemberValidateRequestDto memberValidateRequestDto = new kafkaMemberValidateRequestDto(memberId);
+    public PostResponseDto create(CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException {
+        //TODO Member validate
 
-        // Kafka 메시지 송신 CompletableFuture
-        CompletableFuture<Void> kafkaFuture = new CompletableFuture<>();
-        // Kafka 메시지 송신
-        kafkaProducer.produceDtoToKafka(memberValidateRequestDto, kafkaFuture);
+        Object kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
 
-        // Kafka 메시지 수신 CompletableFuture
-        kafkaResponseFuture = new CompletableFuture<>();
+        KafkaMemberValidateResponseDto responseDto = objectMapper.convertValue(kafkaResult, KafkaMemberValidateResponseDto.class);
 
-        // Kafka 메시지 송신 후 응답이 도착한 후에 Post 객체 생성 및 반환하는 CompletableFuture
-        return kafkaFuture.thenComposeAsync((Void) -> {
-            // Kafka 메시지 수신 CompletableFuture가 완료될 때까지 대기
-            return kafkaResponseFuture.orTimeout(10000, TimeUnit.MICROSECONDS)
-                    .thenApplyAsync(responseDto -> {
-                        // Post 객체 생성 및 추가 작업 수행
-                        Post post = Post.of(requestDto);
-                        Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
-                        post.setCategory(category);
-                        post.setMember(responseDto.getMemberId(),responseDto.getMemberName());
+        System.out.println(responseDto.getMemberId()+"====================================");
 
-                        // Post 객체를 저장하고 반환
-                        return postRepository.save(post);
-            });
-        });
+        Post post = Post.of(requestDto);
+        Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
+        post.setMemberIdAndWriter(responseDto.getMemberId(), responseDto.getMemberName());
+        post.setCategory(category);
+
+        Post result = postRepository.save(post);
+
+        return result.toResponseDto();
     }
-
-    @KafkaListener(topics = "${devsoo.kafka.restapi.topic}", groupId = "createPost-consumer")
-    private synchronized void handleKafkaMessage(KafkaMemberValidateResponseDto responseDto) {
-        // Kafka 메시지를 받아와서 처리하는 로직
-        if (responseDto.getTargetMethod().equals("createPost"))
-            this.kafkaResponseFuture.complete(responseDto);
-    }
-
 
     @Override
     public Post getByPostId(Long postId) {

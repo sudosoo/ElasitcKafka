@@ -3,8 +3,8 @@ package com.sudosoo.takeiteasy.controller;
 import com.sudosoo.takeiteasy.common.annotation.CustomNotify;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
-import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api/post")
@@ -23,12 +23,11 @@ import java.util.concurrent.CompletableFuture;
 public class PostController {
     private final PostService postService;
     @PostMapping(value = "/create" , name = "createPost")
-    public ResponseEntity<Post> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) {
+    public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException {
 
-        CompletableFuture<Post> future = postService.createAsync(requestDto);
-        Post createdPost = future.join();
+        PostResponseDto result = postService.create(requestDto);
 
-        return ResponseEntity.ok(createdPost);
+        return ResponseEntity.ok(result);
     }
 
     @CustomNotify

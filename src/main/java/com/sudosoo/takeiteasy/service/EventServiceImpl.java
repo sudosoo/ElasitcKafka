@@ -5,7 +5,6 @@ import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
 import com.sudosoo.takeiteasy.dto.event.EventResponseDto;
 import com.sudosoo.takeiteasy.entity.Coupon;
 import com.sudosoo.takeiteasy.entity.Event;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

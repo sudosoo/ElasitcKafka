@@ -45,6 +45,7 @@ public class KafkaConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "post-server-consumer-group");
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
@@ -54,14 +55,17 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ReplyingKafkaTemplate<String, Object, Object> replyKafkaTemplate(ProducerFactory<String, Object> pf,
-                                                                                      KafkaMessageListenerContainer<String, Object> container) {
+    public ReplyingKafkaTemplate<String, Object, Object> replyKafkaTemplate
+            (
+            ProducerFactory<String, Object> pf,
+            KafkaMessageListenerContainer<String, Object> container) {
         return new ReplyingKafkaTemplate<>(pf, container);
 
     }
 
     @Bean
-    public KafkaMessageListenerContainer<String, Object> replyContainer(ConsumerFactory<String, Object> cf) {
+    public KafkaMessageListenerContainer<String, Object> replyContainer
+            (ConsumerFactory<String, Object> cf) {
         ContainerProperties containerProperties = new ContainerProperties(requestReplyTopic);
         return new KafkaMessageListenerContainer<>(cf, containerProperties);
     }

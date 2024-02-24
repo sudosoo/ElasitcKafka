@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Getter
@@ -58,17 +57,8 @@ public class Event {
         }
     }
 
-//    public void decreaseCouponQuantity() {
-//        int updatedQuantity = couponQuantity.decrementAndGet();
-//        if (updatedQuantity < 0) {
-//            // 쿠폰 수량이 이미 0이하로 감소한 경우 예외를 던집니다.
-//            throw new IllegalStateException("남은 쿠폰 수량이 없습니다.");
-//        }
-//    }
     public void setMember(Long memberId){
         this.memberId = memberId;
     }
-
-
 
 }
