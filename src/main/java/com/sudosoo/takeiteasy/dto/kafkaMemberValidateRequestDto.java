@@ -1,12 +1,11 @@
 package com.sudosoo.takeiteasy.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@RequiredArgsConstructor
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class kafkaMemberValidateRequestDto {
-    private final Long memberId;
+    private Long memberId;
 }
