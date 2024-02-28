@@ -1,6 +1,5 @@
 package com.sudosoo.takeiteasy.repository;
 
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -4,6 +4,7 @@ import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -67,8 +68,9 @@ public class Post extends BaseEntity {
     public void setCategory(Category category) {
         this.category = category;
     }
-    public void setMember(Long memberId) {
+    public void setMemberIdAndWriter(Long memberId,String writerName) {
         this.memberId = memberId;
+        this.writerName = writerName;
     }
 
     public void incrementViewCount() {
@@ -81,6 +83,10 @@ public class Post extends BaseEntity {
 
     public PostDetailResponseDto toDetailDto(Page<CommentResponseDto> comments){
         return new PostDetailResponseDto(this.id, this.title,this.content,this.writerName,comments);
+    }
+
+    public PostResponseDto toResponseDto() {
+        return new PostResponseDto(this.title,this.writerName);
     }
 
 }

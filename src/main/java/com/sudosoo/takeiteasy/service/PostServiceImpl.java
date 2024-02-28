@@ -1,12 +1,17 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sudosoo.takeiteasy.dto.KafkaResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
+import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Post;
+import com.sudosoo.takeiteasy.kafka.KafkaProducer;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,23 +33,26 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final CategoryService categoryService;
     private final CommentRepository commentRepository;
+    private final KafkaProducer kafkaProducer;
+    private final ObjectMapper objectMapper;
+
 
     @Override
-    public Post createPost(CreatePostRequestDto requestDto) {
-        //TODO MemberSetting
-        Long memberId = requestDto.getMemberId();
+    public PostResponseDto create(CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException {
+        Object kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
+        KafkaResponseDto kafkaResponseDto = objectMapper.readValue((String) kafkaResult, KafkaResponseDto.class);
         Post post = Post.of(requestDto);
         Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
-
-        post.setMember(memberId);
+        post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
         post.setCategory(category);
 
-        return postRepository.save(post);
+        Post result = postRepository.save(post);
+
+        return result.toResponseDto();
     }
 
-
     @Override
-    public Post getPostByPostId(Long postId) {
+    public Post getByPostId(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
     }
@@ -53,7 +64,7 @@ public class PostServiceImpl implements PostService {
         post.incrementViewCount();
 
         Page<Comment> comments = commentRepository.findCommentsByPostId(postId,pageRequest);
-        //TODO MemberSetting 각 코멘트의 유저이름을 찾아와서 넣어주기
+        //TODO MemberSetting 각 코멘트의 유저 이름을 찾아와서 넣어주기
         List<CommentResponseDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
         return post.toDetailDto(new PageImpl<>(responseCommentDtos));
     }

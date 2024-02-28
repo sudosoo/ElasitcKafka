@@ -1,9 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +18,11 @@ public class CommentServiceImpl implements CommentService {
     private final PostService postService;
 
     @Override
-    public Comment createComment(CreateCommentRequestDto createCommentRequestDto){
+    public Comment create(CreateCommentRequestDto createCommentRequestDto){
         //TODO MemberSetting
         Long memberId = createCommentRequestDto.getMemberId();
-        Post post = postService.getPostByPostId(createCommentRequestDto.getPostId());
+        Post post = postService.getByPostId(createCommentRequestDto.getPostId());
         Comment comment = Comment.of(createCommentRequestDto);
-
         comment.setPost(post);
         comment.setMember(memberId);
 
@@ -33,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getCommentByCommentId(Long commentId) {
+    public Comment getByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not found comment id : " + commentId));
     }

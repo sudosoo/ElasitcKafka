@@ -2,10 +2,8 @@ package com.sudosoo.takeiteasy.service;
 
 import com.sudosoo.takeiteasy.dto.coupon.CouponIssuanceRequestDto;
 import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
-import com.sudosoo.takeiteasy.dto.event.EventResponseDto;
 import com.sudosoo.takeiteasy.entity.Coupon;
 import com.sudosoo.takeiteasy.entity.Event;
-import com.sudosoo.takeiteasy.entity.Member;
 import com.sudosoo.takeiteasy.repository.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +21,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
