@@ -27,8 +27,10 @@ public class KafkaConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
-    @Value("${devsoo.kafka.restapi.topic}")
-    private String requestReplyTopic;
+    @Value("${devsoo.kafka.restapi.request.topic}")
+    private String kafkaRestApiRequestTopic;
+    @Value("${devsoo.kafka.restapi.reply.topic}")
+    private String kafkaRestApiReplyTopic;
     @Bean
     public ProducerFactory<String, String> producerFactory(){
         Map<String, Object> props = new HashMap<>();
@@ -66,7 +68,7 @@ public class KafkaConfig {
 
     @Bean
     public KafkaMessageListenerContainer<String, String> replyContainer() {
-        ContainerProperties containerProperties = new ContainerProperties("replyingTopic");
+        ContainerProperties containerProperties = new ContainerProperties(kafkaRestApiReplyTopic);
         return new KafkaMessageListenerContainer<>(consumerFactory(), containerProperties);
     }
 

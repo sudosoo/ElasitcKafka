@@ -20,8 +20,11 @@ import java.util.concurrent.ExecutionException;
 public class KafkaProducer {
     @Value("${devsoo.kafka.notice.topic}")
     private String kafkaNoticeTopic;
-    @Value("${devsoo.kafka.restapi.topic}")
-    private String kafkaRestApiTopic;
+    @Value("${devsoo.kafka.restapi.request.topic}")
+    private String kafkaRestApiRequestTopic;
+    @Value("${devsoo.kafka.restapi.reply.topic}")
+    private String kafkaRestApiReplyTopic;
+
     private final ObjectMapper objectMapper;
 
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -34,8 +37,8 @@ public class KafkaProducer {
 
     public Object replyRecord(Object requestData) throws ExecutionException, InterruptedException, JsonProcessingException {
         String jsonData = objectMapper.writeValueAsString(requestData);
-        ProducerRecord<String, String> record = new ProducerRecord<String, String>(kafkaRestApiTopic,jsonData);
-        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, kafkaRestApiTopic.getBytes()));
+        ProducerRecord<String, String> record = new ProducerRecord<String, String>(kafkaRestApiRequestTopic,jsonData);
+        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, kafkaRestApiReplyTopic.getBytes()));
         RequestReplyFuture<String, String, String> sendAndReceive = replyingKafkaTemplate.sendAndReceive(record);
 
         ConsumerRecord<String, String> consumerRecord = sendAndReceive.get();

@@ -39,12 +39,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto create(CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException {
-        //TODO Member validate
-
         Object kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
-
         KafkaResponseDto kafkaResponseDto = objectMapper.readValue((String) kafkaResult, KafkaResponseDto.class);
-
         Post post = Post.of(requestDto);
         Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
         post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
