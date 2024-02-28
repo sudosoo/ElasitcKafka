@@ -30,7 +30,7 @@ public class KafkaConfig {
     @Value("${devsoo.kafka.restapi.topic}")
     private String requestReplyTopic;
     @Bean
-    public ProducerFactory<String, Object> producerFactory(){
+    public ProducerFactory<String, String> producerFactory(){
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -53,13 +53,13 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public ReplyingKafkaTemplate<String, Object, String> replyKafkaTemplate() {
-        ReplyingKafkaTemplate<String, Object, String> replyingKafkaTemplate = new ReplyingKafkaTemplate<>(producerFactory(), replyContainer());
+    public ReplyingKafkaTemplate<String, String, String> replyKafkaTemplate() {
+        ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate = new ReplyingKafkaTemplate<>(producerFactory(), replyContainer());
         replyingKafkaTemplate.setDefaultReplyTimeout(Duration.ofMillis(5000));
         return replyingKafkaTemplate;
     }
@@ -81,6 +81,4 @@ public class KafkaConfig {
         factory.setReplyTemplate(kafkaTemplate());
         return factory;
     }
-
-
 }

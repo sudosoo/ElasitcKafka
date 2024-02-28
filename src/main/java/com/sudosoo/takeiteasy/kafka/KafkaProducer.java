@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.kafka;
 
-import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -21,20 +22,21 @@ public class KafkaProducer {
     private String kafkaNoticeTopic;
     @Value("${devsoo.kafka.restapi.topic}")
     private String kafkaRestApiTopic;
+    private final ObjectMapper objectMapper;
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    private final ReplyingKafkaTemplate<String, Object, String> replyingKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
     public void sendNotice(String memberId, String requestMessage) {
         kafkaTemplate.send(kafkaNoticeTopic, memberId ,requestMessage);
     }
 
-    public Object replyRecord(kafkaMemberValidateRequestDto requestData) throws ExecutionException, InterruptedException {
-
-        ProducerRecord<String, Object> record = new ProducerRecord<String, Object>(kafkaRestApiTopic,requestData);
-        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, "replyingTopic".getBytes()));
-        RequestReplyFuture<String, Object, String> sendAndReceive = replyingKafkaTemplate.sendAndReceive(record);
+    public Object replyRecord(Object requestData) throws ExecutionException, InterruptedException, JsonProcessingException {
+        String jsonData = objectMapper.writeValueAsString(requestData);
+        ProducerRecord<String, String> record = new ProducerRecord<String, String>(kafkaRestApiTopic,jsonData);
+        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, kafkaRestApiTopic.getBytes()));
+        RequestReplyFuture<String, String, String> sendAndReceive = replyingKafkaTemplate.sendAndReceive(record);
 
         ConsumerRecord<String, String> consumerRecord = sendAndReceive.get();
 
