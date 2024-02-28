@@ -7,7 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public class KafkaMemberValidateResponseDto {
+public class KafkaResponseDto {
     private Long memberId;
     private String memberName;
+
+    public KafkaResponseDto(Long memberId) {
+        this.memberId = memberId;
+    }
 }

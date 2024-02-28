@@ -2,7 +2,6 @@ package com.sudosoo.takeiteasy.dto;
 
 import lombok.*;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

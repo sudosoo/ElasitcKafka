@@ -1,7 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sudosoo.takeiteasy.dto.KafkaMemberValidateResponseDto;
+import com.sudosoo.takeiteasy.dto.KafkaResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
 import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
@@ -21,8 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -36,18 +38,16 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostResponseDto create(CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException {
+    public PostResponseDto create(CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException {
         //TODO Member validate
 
         Object kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
 
-        KafkaMemberValidateResponseDto responseDto = objectMapper.convertValue(kafkaResult, KafkaMemberValidateResponseDto.class);
-
-        System.out.println(responseDto.getMemberId()+"====================================");
+        KafkaResponseDto kafkaResponseDto = objectMapper.readValue((String) kafkaResult, KafkaResponseDto.class);
 
         Post post = Post.of(requestDto);
         Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
-        post.setMemberIdAndWriter(responseDto.getMemberId(), responseDto.getMemberName());
+        post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
         post.setCategory(category);
 
         Post result = postRepository.save(post);

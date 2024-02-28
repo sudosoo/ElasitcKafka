@@ -22,7 +22,7 @@ public class NoticeServiceImpl implements NoticeService{
     private final EmitterRepository emitterRepository;
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
-    @KafkaListener(topics = "${devsoo.kafka.notice.topic}")
+    @KafkaListener(topics = "${devsoo.kafka.notice.topic}",groupId = "notion-group")
     public void kafkaSend(ConsumerRecord<String, Object> record) {
         String receiverMemberName = record.key();
         String messageContent = record.value().toString();

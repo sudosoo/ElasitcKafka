@@ -14,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping("/api/post")
@@ -23,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 public class PostController {
     private final PostService postService;
     @PostMapping(value = "/create" , name = "createPost")
-    public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException {
+    public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException {
 
         PostResponseDto result = postService.create(requestDto);
 
