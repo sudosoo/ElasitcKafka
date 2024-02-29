@@ -15,15 +15,22 @@
 
 - [🐰 실시간 알림 Link(https://soobysu.tistory.com/130)]   
 
-- [🐻 AOP로깅 Code(https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71  
+- [🐻 AOP로깅 Code https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71  
 
-### 선착순 쿠폰 발행 ( 동시성 문제 )
-- [🎮 멀티스레드 환경 동시성 문제 해결 Link(https://soobysu.tistory.com/127)]
+### MSA 서버간 Kafka Evnet 비동기 통신
+- [📡 MSA 서버간 Kafka Evnet 비동기 통신
+Link(https://soobysu.tistory.com/135)
+Code https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd65d/src/main/java/com/sudosoo/takeiteasy/kafka/KafkaProducer.java#L38C5-L47C6
+]
 
 ### ELK + filebeat 를 활용한 로그적재 
 <img src="/images/KibanaLog.png" width="700" >
 
 - [🐨 ELK Stack 로그적재 Link(https://soobysu.tistory.com/category/%EA%B0%9C-%EB%B0%9C/Infra?page=3)] 
+
+### 서버간 Kafka Event 비동기 통신 
+- [🎮 Kafka를 이용한 MSA Component 비동기 통신
+Link(https://soobysu.tistory.com/127)]
 
 ### 젠킨스 + NginX + Docker CICD 무중단 배포
 <img src="/images/jenkinsStatus.png" width="700" >
@@ -47,8 +54,6 @@
 - [🐷 테이블 index 전략 (검색 최적화) Link(https://soobysu.tistory.com/115) ]
 
 ### TODO
-- 모듈 분리 (멀티모듈) 
-- Kafka 이벤트 스트림을 활용한 RestAPI 통신
 - Redis 세션스토리지 만들기 (진행중)
 
 
