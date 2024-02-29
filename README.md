@@ -22,6 +22,8 @@
 Code   
 (https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd65d/src/main/java/com/sudosoo/takeiteasy/kafka/KafkaProducer.java#L38C5-L47C6)
 
+- [🐻 AOP로깅 Code https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71  
+
 ### ELK + filebeat 를 활용한 로그적재 
 <img src="/images/KibanaLog.png" width="700" >
 
