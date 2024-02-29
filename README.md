@@ -1,5 +1,12 @@
 # Toy Project
 
+### Infra structure
+----
+
+<img src="/images/infraStructure.jpg"  >
+<img src="/images/InfraStructureDetail.png" width="700" >
+
+----
 ### AOP 로깅 / 중복 요청 방지 / 실시간 알림 ( SSE+ kafka)
 #### [ AOP Flow ] 
 <img src="/images/AOPFlow.png" width="700" >
@@ -44,11 +51,6 @@
 - Kafka 이벤트 스트림을 활용한 RestAPI 통신
 - Redis 세션스토리지 만들기 (진행중)
 
-<details><summary>Infra Structure
-</summary>
-  <img src="/images/InfraStructure.png" width="700" >
-  <img src="/images/InfraStructureDetail.png" width="700" >
-</details>
 
 <details><summary>Project Structure tree
 </summary>
