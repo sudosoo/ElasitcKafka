@@ -49,8 +49,9 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 
 - [🐷 테이블 index 전략 (검색 최적화) Link(https://soobysu.tistory.com/115) ]
 
-### TODO
-- Redis 세션스토리지 만들기 (진행중)
+### TODO 
+- Redis 글로벌 캐시스토리지 만들기 (진행중)
+- Redis 동시성 제어 분산 락 만들기 
 
 
 <details><summary>Project Structure tree
