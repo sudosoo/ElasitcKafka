@@ -19,7 +19,8 @@
 
 ### MSA 서버간 Kafka Evnet 비동기 통신
 - [📡 MSA 서버간 Kafka Evnet 비동기 통신 Link(https://soobysu.tistory.com/135) 
-Code(https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd65d/src/main/java/com/sudosoo/takeiteasy/kafka/KafkaProducer.java#L38C5-L47C6)]
+Code(
+https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd65d/src/main/java/com/sudosoo/takeiteasy/kafka/KafkaProducer.java#L38C5-L47C6)]
 
 ### ELK + filebeat 를 활용한 로그적재 
 <img src="/images/KibanaLog.png" width="700" >
