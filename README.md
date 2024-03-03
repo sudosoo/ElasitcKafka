@@ -1,5 +1,9 @@
 # Toy Project
 
+https://github.com/sudosoo/TakeItEasy/
+https://github.com/sudosoo/TakeItEasyEvent/
+https://github.com/sudosoo/TakeItEasyAdmin/
+
 ### Infra structure
 ----
 
