@@ -2,10 +2,7 @@ package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
-import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
+import com.sudosoo.takeiteasy.dto.post.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -48,12 +45,13 @@ public class Post extends BaseEntity {
     private int viewCount = 0;
 
     @Builder
-    private Post(Long id,String title, String content, Category category, Long memberId,int viewCount, List<Heart> hearts) {
+    private Post(Long id,String title, String content, Category category, Long memberId,String writerName,int viewCount, List<Heart> hearts) {
         this.id= id;
         this.title = title;
         this.content = content;
         this.category = category;
         this.memberId = memberId;
+        this.writerName = writerName;
         this.viewCount = viewCount;
         this.hearts = hearts;
     }
@@ -65,6 +63,14 @@ public class Post extends BaseEntity {
                 .build();
     }
 
+    public static Post testOf(PostRequestDto requestDto){
+        return  Post.builder()
+                .title(requestDto.getTitle())
+                .content(requestDto.getContent())
+                .writerName(requestDto.getMemberName())
+                .viewCount(0)
+                .build();
+    }
     public void setCategory(Category category) {
         this.category = category;
     }

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sudosoo.takeiteasy.dto.KafkaResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
-import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
+import com.sudosoo.takeiteasy.dto.post.*;
 import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Post;
@@ -42,12 +39,21 @@ public class PostServiceImpl implements PostService {
         Object kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
         KafkaResponseDto kafkaResponseDto = objectMapper.readValue((String) kafkaResult, KafkaResponseDto.class);
         Post post = Post.of(requestDto);
-        Category category = categoryService.getCategoryByCategoryId(requestDto.getCategoryId());
+        Category category = categoryService.getById(requestDto.getCategoryId());
         post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
         post.setCategory(category);
 
         Post result = postRepository.save(post);
 
+        return result.toResponseDto();
+    }
+
+    @Override
+    public PostResponseDto redisTest(PostRequestDto requestDto){
+        Post post = Post.testOf(requestDto);
+        Category category = categoryService.getById(requestDto.getCategoryId());
+        post.setCategory(category);
+        Post result = postRepository.save(post);
         return result.toResponseDto();
     }
 

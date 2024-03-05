@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryByCategoryId(Long categoryId) {
+    public Category getById(Long categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(
                 () -> new IllegalArgumentException("Could not found category id : " + categoryId));
     }

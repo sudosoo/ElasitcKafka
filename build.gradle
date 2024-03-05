@@ -53,6 +53,12 @@ dependencies {
     // slf4j & logback
     implementation('org.slf4j:jcl-over-slf4j')
     implementation('ch.qos.logback:logback-classic')
+
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+    testImplementation 'it.ozimov:embedded-redis:0.7.2'
+
 }
 
 tasks.named('test') {

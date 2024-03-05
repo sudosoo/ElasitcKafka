@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class PostResponseDto {
+public class PostRequestDto {
     private String title;
-    private String writer;
+    private String content;
+    private String memberName;
+    private Long categoryId;
 }
