@@ -17,9 +17,9 @@ MemberInfo : https://github.com/sudosoo/TakeItEasyAdmin/
 #### [ AOP Flow ] 
 <img src="/images/AOPFlow.png" width="700" >
 
-[🚗 중복요청방지 Blog Visit](https://soobysu.tistory.com/125)
+[🚗 중복요청방지 Blog Visit (https://soobysu.tistory.com/125)
 
-[🐰 실시간 알림 Blog Visit](https://soobysu.tistory.com/130)   
+[🐰 실시간 알림 Blog Visit (https://soobysu.tistory.com/130)   
 
 [🐻 AOP로깅 Code https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71
 
@@ -31,7 +31,7 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 ### ELK + filebeat 를 활용한 로그적재 
 <img src="/images/KibanaLog.png" width="700" >
 
-[🐨 ELK Stack 로그적재 Blog Visit](https://soobysu.tistory.com/category/%EA%B0%9C-%EB%B0%9C/Infra?page=3)
+[🐨 ELK Stack 로그적재 Blog Visit (https://soobysu.tistory.com/category/%EA%B0%9C-%EB%B0%9C/Infra?page=3)
 
 ### 젠킨스 + NginX + Docker CICD 무중단 배포
 <img src="/images/jenkinsStatus.png" width="700" >
@@ -39,7 +39,7 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 [🐻‍❄️ 젠킨스 + NginX + Docker CICD 무중단 배포 Blog Visit](https://soobysu.tistory.com/122) 
 
 ### Redis 분산락 활용 동시성 제어 ( AOP 적용 )
-[🐮 Redis 분산락 활용 Blog Visit](https://soobysu.tistory.com/136)  
+[🐮 Redis 분산락 활용 Blog Visit (https://soobysu.tistory.com/136)  
 
 [🚗 Visit TakeItEasyEvent Repo](https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45)
 
@@ -53,12 +53,12 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 <img src="/images/defaultInSert.png" width="700" >
 <img src="/images/batchInSert.png" width="700" >
 
-[🐥 Spring Batch ( Bulk insert ) Blog Visit](https://soobysu.tistory.com/131)
+[🐥 Spring Batch ( Bulk insert ) Blog Visit (https://soobysu.tistory.com/131)
 (https://github.com/sudosoo/TakeItEasy/blob/23a67017267ed0e9166b0fe0d1eeb87bff194c5d/src/main/java/com/sudosoo/takeiteasy/batch/BatchLauncherService.java#L34-L86)]
 
 ### 테이블 index 전략 ( 검색 최적화 )
 
-[🐷 테이블 index 전략 (검색 최적화) Blog Visit](https://soobysu.tistory.com/115)
+[🐷 테이블 index 전략 (검색 최적화) Blog Visit (https://soobysu.tistory.com/115)
 
 
 ### TODO 
