@@ -40,8 +40,7 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 
 ### Redis 분산락 활용 동시성 제어 ( AOP 적용 )
 - [🐮 Redis 분산락 활용 Link(https://soobysu.tistory.com/136)  
-Code   
-https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45]
+https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45 
 
 
 ### TDD 기반 테스트코드 작성 
