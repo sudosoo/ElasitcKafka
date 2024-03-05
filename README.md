@@ -39,13 +39,15 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 - [🐻‍❄️ 젠킨스 + NginX + Docker CICD 무중단 배포 Link(https://soobysu.tistory.com/122)] 
 
 ### Redis 분산락 활용 동시성 제어 ( AOP 적용 )
-- [🐮 Redis 분산락 활용 Link(https://soobysu.tistory.com/136)  
-(https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45)
+- [🐮 Redis 분산락 활용 Link(https://soobysu.tistory.com/136)
+
+  
+https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45
 
 
 ### TDD 기반 테스트코드 작성 
 
-- [🐯 Test Code (https://github.com/sudosoo/TakeItEasy/blob/b6244135e89647f393f643c0b79e5476b97f9423/src/test/java/com/sudosoo/takeiteasy/service/EventServiceImplTest.java#L76-L107)]
+- [🐯 Test Code https://github.com/sudosoo/TakeItEasy/blob/b6244135e89647f393f643c0b79e5476b97f9423/src/test/java/com/sudosoo/takeiteasy/service/EventServiceImplTest.java#L76-L107
 
 ### Spring Batch ( Bulk insert ) 
 #### 10만건 db insert [ 28분 -> 28초 성능개선 ]  
