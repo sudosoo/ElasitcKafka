@@ -21,7 +21,7 @@ MemberInfo : https://github.com/sudosoo/TakeItEasyAdmin/
 
 - [🐰 실시간 알림 Link(https://soobysu.tistory.com/130)]   
 
-- [🐻 AOP로깅 Code https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71  
+- [🐻 AOP로깅 Code https://github.com/sudosoo/TakeItEasy/blob/bf9fd8d5bac5f8dc3a8aae7776e2314891aadabd/src/main/java/com/sudosoo/takeiteasy/aspect/LoggingAspect.java#L31-L71
 
 ### MSA 서버간 Kafka Evnet 비동기 통신
 - [📡 MSA 서버간 Kafka Evnet 비동기 통신 Link(https://soobysu.tistory.com/135)   
@@ -41,10 +41,11 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 
 ### Redis 분산락 활용 동시성 제어 ( AOP 적용 )
 - [🐮 Redis 분산락 활용 Link(https://soobysu.tistory.com/136)
-
+  
 Code
 
-https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45
+https://github.com/sudosoo/TakeItEasyEvent/blob/f88d80568c9d31b8903c136c18c5b4fa76179566/src/main/kotlin/com/sudoSoo/takeItEasyEvent/aop/lock/DistributeLockAop.kt#L21-L45]
+
 
 ### TDD 기반 테스트코드 작성 
 
