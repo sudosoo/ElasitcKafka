@@ -1,10 +1,10 @@
 # Toy Project
 
-Post : https://github.com/sudosoo/TakeItEasy/
+Post(JAVA) : https://github.com/sudosoo/TakeItEasy/
 
-Event : https://github.com/sudosoo/TakeItEasyEvent/
+Event(Kotlin) : https://github.com/sudosoo/TakeItEasyEvent/
 
-MemberInfo : https://github.com/sudosoo/TakeItEasyAdmin/
+MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 
 ## Dependencies  
 ### Environment
@@ -20,6 +20,10 @@ MemberInfo : https://github.com/sudosoo/TakeItEasyAdmin/
 
 ### Global cache
 - Redis
+
+### DataBase
+- H2
+- PostgreSQL
   
 ### Libraries
 - Spring Boot 3.0.1
@@ -29,7 +33,7 @@ MemberInfo : https://github.com/sudosoo/TakeItEasyAdmin/
 - Spring Boot DevTools
 - Spring Boot Starter Test
 - Spring Boot starter data Redis
-- H3 JDBC Driver 2.4.0
+- Spring Boot starter batch
 - Spring RestDocs MockMvc
 - Mockk 1.12.5
 
