@@ -40,7 +40,7 @@ https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd
 - [🐻‍❄️ 젠킨스 + NginX + Docker CICD 무중단 배포 Link(https://soobysu.tistory.com/122)] 
 
 ### Redis 분산락 활용 동시성 제어 ( AOP 적용 )
-- [🐮 Redis 분산락 활용 Link(https://soobysu.tistory.com/136)]
+- [🐮 Redis 분산락 활용 Link(https://soobysu.tistory.com/136)
 
 Code
 
