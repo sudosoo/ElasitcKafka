@@ -37,13 +37,16 @@ public class TestController {
 
     @PostMapping(value = "/redis" , name = "redisTest")
     public void redisTest()  {
-        redisService.addToRedis();
+        redisService.postRepositoryToRedis();
     }
 
     @GetMapping(value = "/getV" , name = "getV")
     public List<PostResponseDto> redisGetTest()  {
-        return redisService.getV("PostResponseDto");
+        String methodName = "PostResponseDto";
+        return redisService.getValues(methodName);
     }
+
+
     @PostMapping(value = "/createPost" , name = "createPost")
     public PostResponseDto createPost(@RequestBody PostRequestDto requestDto)  {
         return postService.redisTest(requestDto);

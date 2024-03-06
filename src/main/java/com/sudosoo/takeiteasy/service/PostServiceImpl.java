@@ -9,6 +9,7 @@ import com.sudosoo.takeiteasy.entity.Category;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.kafka.KafkaProducer;
+import com.sudosoo.takeiteasy.redis.RedisService;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +32,22 @@ public class PostServiceImpl implements PostService {
     private final CommentRepository commentRepository;
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
-
+    private final RedisService redisService;
 
     @Override
-    public PostResponseDto create(CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException {
-        Object kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
-        KafkaResponseDto kafkaResponseDto = objectMapper.readValue((String) kafkaResult, KafkaResponseDto.class);
+    public PostResponseDto create(CreatePostRequestDto requestDto) {
+        KafkaResponseDto kafkaResponseDto = null;
+        try{
+            String kafkaResult = kafkaProducer.replyRecord(new kafkaMemberValidateRequestDto(requestDto.getMemberId()));
+            kafkaResponseDto = objectMapper.readValue(kafkaResult, KafkaResponseDto.class);
+
+        }catch (ExecutionException | InterruptedException | IOException e ){
+            e.getStackTrace();
+        }
+        if (kafkaResponseDto == null){
+            throw new IllegalArgumentException("kafka reply error");
+        }
+
         Post post = Post.of(requestDto);
         Category category = categoryService.getById(requestDto.getCategoryId());
         post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
@@ -45,7 +55,10 @@ public class PostServiceImpl implements PostService {
 
         Post result = postRepository.save(post);
 
-        return result.toResponseDto();
+        //redis ReadRepository 데이터 삽입
+        PostResponseDto responseDto= result.toResponseDto();
+        redisService.saveRedis(result.toResponseDto());
+        return responseDto;
     }
 
     @Override
@@ -88,4 +101,11 @@ public class PostServiceImpl implements PostService {
                 .memberId(1L)
                 .build();
     }
+
+    // 게시글 -> 조회 레디스 (페이지) ->
+    // 게시글 올리면 -> 레디스로 업데이트
+    //
+
+
+
 }
