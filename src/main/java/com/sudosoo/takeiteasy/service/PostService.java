@@ -16,4 +16,5 @@ public interface PostService {
     List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageable);
     Post createBatchPosts(int count);
     PostResponseDto redisTest(PostRequestDto requestDto);
+    List<PostResponseDto> getAllPost();
 }

@@ -9,5 +9,4 @@ import org.springframework.stereotype.Component;
 public class ReadQuery {
     private final PostRepository postRepository;
 
-
 }

@@ -59,7 +59,7 @@ public class RedisServiceImpl implements RedisService {
         List<T> result = new ArrayList<>();
         try {
             // 패키지명과 클래스명을 조합하여 전체 클래스 이름을 만듭니다.
-            String fullClassName = "com.sudosoo.takeiteasy.dto.post." + className;
+            String fullClassName = "com.sudosoo.takeiteasy.dto." + className;
             Class<?> clazz = Class.forName(fullClassName);
 
             List<String> jsonValues = redisTemplate.opsForList().range(className, 0, -1);
@@ -75,9 +75,8 @@ public class RedisServiceImpl implements RedisService {
     }
 
 
-
     @Override
-    public void saveRedis(Object value) {
+    public void saveReadValue(Object value) {
             try{
                 String className = value.getClass().getSimpleName();
                 String jsonObject = objectMapper.writeValueAsString(value);
@@ -89,7 +88,8 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void postRepositoryToRedis() {
+    public void postRepositoryRedisSynchronization() {
+        redisTemplate.delete("PostResponseDto");
         List<Post> posts = postRepository.findAll();
         for (Post post : posts) {
             try{

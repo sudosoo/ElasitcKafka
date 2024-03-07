@@ -56,10 +56,11 @@ public class PostServiceImpl implements PostService {
         Post result = postRepository.save(post);
 
         //redis ReadRepository 데이터 삽입
-        PostResponseDto responseDto= result.toResponseDto();
-        redisService.saveRedis(result.toResponseDto());
+        PostResponseDto responseDto = result.toResponseDto();
+        redisService.saveReadValue(result.toResponseDto());
         return responseDto;
     }
+
 
     @Override
     public PostResponseDto redisTest(PostRequestDto requestDto){
@@ -69,6 +70,7 @@ public class PostServiceImpl implements PostService {
         Post result = postRepository.save(post);
         return result.toResponseDto();
     }
+
 
     @Override
     public Post getByPostId(Long postId) {
@@ -89,6 +91,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> getAllPost() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream().map(Post::toResponseDto).toList();
+    }
+
+
+    @Override
     public List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageable) {
         return postRepository.findAll(pageable).map(Post::toTitleOnlyDto).toList();
     }
@@ -101,11 +111,5 @@ public class PostServiceImpl implements PostService {
                 .memberId(1L)
                 .build();
     }
-
-    // 게시글 -> 조회 레디스 (페이지) ->
-    // 게시글 올리면 -> 레디스로 업데이트
-    //
-
-
 
 }

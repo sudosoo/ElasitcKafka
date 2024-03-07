@@ -35,11 +35,6 @@ public class TestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/redis" , name = "redisTest")
-    public void redisTest()  {
-        redisService.postRepositoryToRedis();
-    }
-
     @GetMapping(value = "/getV" , name = "getV")
     public List<PostResponseDto> redisGetTest()  {
         String methodName = "PostResponseDto";
@@ -50,6 +45,11 @@ public class TestController {
     @PostMapping(value = "/createPost" , name = "createPost")
     public PostResponseDto createPost(@RequestBody PostRequestDto requestDto)  {
         return postService.redisTest(requestDto);
+    }
+
+    @PostMapping(value = "/synchronize" , name = "repositoryRedisSynchronization")
+    public void repositoryRedisSynchronization()  {
+        redisService.postRepositoryRedisSynchronization();
     }
 
 }
