@@ -1,20 +1,23 @@
 package com.sudosoo.takeiteasy.controller;
 
 import com.sudosoo.takeiteasy.batch.BatchLauncherService;
-import com.sudosoo.takeiteasy.kafka.KafkaProducer;
+import com.sudosoo.takeiteasy.dto.post.PostRequestDto;
+import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
+import com.sudosoo.takeiteasy.redis.RedisService;
 import com.sudosoo.takeiteasy.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
     private final BatchLauncherService batchLauncherService;
+    private final RedisService redisService;
+    private final PostService postService;
 
 
     @PostMapping(value = "/batchCreateDummyPost" , name = "batchCreateDummyPost")
@@ -31,4 +34,22 @@ public class TestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping(value = "/getV" , name = "getV")
+    public List<PostResponseDto> redisGetTest()  {
+        String methodName = "PostResponseDto";
+        return redisService.getValues(methodName);
+    }
+
+
+    @PostMapping(value = "/createPost" , name = "createPost")
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto)  {
+        return postService.redisTest(requestDto);
+    }
+
+    @PostMapping(value = "/synchronize" , name = "repositoryRedisSynchronization")
+    public void repositoryRedisSynchronization()  {
+        redisService.postRepositoryRedisSynchronization();
+    }
+
 }

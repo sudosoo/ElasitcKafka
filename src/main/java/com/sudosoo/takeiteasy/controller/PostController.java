@@ -51,4 +51,8 @@ public class PostController {
         return new ResponseEntity<>(postService.getPaginationPost(pageRequest), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getAll" , name = "getAll")
+    public List<PostResponseDto> getAllPost() {
+        return postService.getAllPost();
+    }
 }

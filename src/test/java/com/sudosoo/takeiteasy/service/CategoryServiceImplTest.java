@@ -62,7 +62,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
 
         //when
-        Category actualCategory = categoryService.getCategoryByCategoryId(1L);
+        Category actualCategory = categoryService.getById(1L);
 
         //then
         String expectedName = testCategory.getCategoryName();
