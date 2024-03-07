@@ -95,7 +95,7 @@ https://github.com/sudosoo/TakeItEasy/blob/1bc94d44e2264021ec72d97224468418a5500
 <img src="/images/batchInSert.png" width="700" >
 
 [🐥 Spring Batch ( Bulk insert ) Blog Visit (https://soobysu.tistory.com/131)
-(https://github.com/sudosoo/TakeItEasy/blob/23a67017267ed0e9166b0fe0d1eeb87bff194c5d/src/main/java/com/sudosoo/takeiteasy/batch/BatchLauncherService.java#L34-L86)]
+https://github.com/sudosoo/TakeItEasy/blob/23a67017267ed0e9166b0fe0d1eeb87bff194c5d/src/main/java/com/sudosoo/takeiteasy/batch/BatchLauncherService.java#L34-L86
 
 ---
 ### 테이블 index 전략 ( 검색 최적화 )  
