@@ -78,6 +78,7 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
@@ -89,6 +90,7 @@ public class PostServiceImpl implements PostService {
         List<CommentResponseDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
         return post.toDetailDto(new PageImpl<>(responseCommentDtos));
     }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -103,12 +105,14 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAll(pageable).map(Post::toTitleOnlyDto).toList();
     }
 
+
     @Override
     public Post createBatchPosts(int count){
         return Post.builder()
-                .title("Title"+count)
+                .title("title"+count)
                 .content("content"+count)
-                .memberId(1L)
+                .memberId((long) count)
+                .writerName("member"+count)
                 .build();
     }
 

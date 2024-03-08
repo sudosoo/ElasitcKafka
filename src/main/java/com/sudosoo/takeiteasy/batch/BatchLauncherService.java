@@ -32,7 +32,7 @@ public class BatchLauncherService {
     PreparedStatement pstmt = null ;
 
     public void runBatchJob() {
-        String sql = "INSERT INTO post (title, content, category_id, member_id, view_count) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO post (title, content, category_id,member_id, writer_name, view_count,is_deleted) VALUES (?, ?, ?, ?, ?, ?,?)";
 
         try {
             con = dataSource.getConnection();
@@ -44,9 +44,11 @@ public class BatchLauncherService {
 
                 pstmt.setString(1, post.getTitle());
                 pstmt.setString(2, post.getContent());
-                pstmt.setLong(3, 2L);
-                pstmt.setLong(4, 2L);
-                pstmt.setInt(5, post.getViewCount());
+                pstmt.setLong(3, 1L);
+                pstmt.setLong(4, post.getMemberId());
+                pstmt.setString(5, post.getWriterName());
+                pstmt.setInt(6, post.getViewCount());
+                pstmt.setBoolean(7, post.isDeleted());
 
                 // addBatch에 담기
                 pstmt.addBatch();
@@ -69,23 +71,30 @@ public class BatchLauncherService {
         } catch (Exception e) {
             try {
                 //실패시 rollback
+                e.getStackTrace();
                 con.rollback();
-            } catch (SQLException ignored) {;
+            } catch (SQLException sqlException) {
+                sqlException.getStackTrace();
             }
         } finally {
-            if (pstmt != null) try {
+            if (pstmt != null)
+                try {
                 pstmt.close();
                 pstmt = null;
-            } catch (SQLException ignored) {
+                } catch (SQLException exception) {
+                    exception.getStackTrace();
             }
             if (con != null) try {
                 con.close();
                 con = null;
             } catch (SQLException ignored) {
+                ignored.getStackTrace();
             }
         }
 
     }
+
+
     @Transactional
     public void runBatchJobV2() throws Exception {
 
