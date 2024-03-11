@@ -1,11 +1,13 @@
 package com.sudosoo.takeiteasy.service;
 
+import com.sudosoo.takeiteasy.common.service.JpaService;
 import com.sudosoo.takeiteasy.dto.notice.NoticeResponseDto;
 import com.sudosoo.takeiteasy.entity.Notice;
 import com.sudosoo.takeiteasy.repository.EmitterRepository;
 import com.sudosoo.takeiteasy.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +19,15 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class NoticeServiceImpl implements NoticeService{
+public class NoticeServiceImpl implements NoticeService , JpaService<Notice,Long> {
     private final NoticeRepository noticeRepository;
     private final EmitterRepository emitterRepository;
+
+    @Override
+    public JpaRepository<Notice, Long> getJpaRepository() {
+        return noticeRepository;
+    }
+
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
     @KafkaListener(topics = "${devsoo.kafka.notice.topic}",groupId = "notion-group")

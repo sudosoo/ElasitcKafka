@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sudosoo.takeiteasy.common.service.JpaService;
 import com.sudosoo.takeiteasy.dto.KafkaResponseDto;
 import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
 import com.sudosoo.takeiteasy.dto.kafkaMemberValidateRequestDto;
@@ -10,12 +11,12 @@ import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.kafka.KafkaProducer;
 import com.sudosoo.takeiteasy.redis.RedisService;
-import com.sudosoo.takeiteasy.repository.CommentRepository;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +27,19 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PostServiceImpl implements PostService {
+public class PostServiceImpl implements PostService , JpaService<Post,Long>{
     private final PostRepository postRepository;
     private final CategoryService categoryService;
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
     private final RedisService redisService;
+
+
+    @Override
+    public JpaRepository<Post, Long> getJpaRepository() {
+        return postRepository;
+    }
 
     @Override
     public PostResponseDto create(CreatePostRequestDto requestDto) {
@@ -53,7 +60,7 @@ public class PostServiceImpl implements PostService {
         post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
         post.setCategory(category);
 
-        Post result = postRepository.save(post);
+        Post result = saveModel(post);
 
         //redis ReadRepository 데이터 삽입
         PostResponseDto responseDto = result.toResponseDto();
@@ -67,7 +74,8 @@ public class PostServiceImpl implements PostService {
         Post post = Post.testOf(requestDto);
         Category category = categoryService.getById(requestDto.getCategoryId());
         post.setCategory(category);
-        Post result = postRepository.save(post);
+
+        Post result = saveModel(post);
         return result.toResponseDto();
     }
 
@@ -85,7 +93,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
         post.incrementViewCount();
 
-        Page<Comment> comments = commentRepository.findCommentsByPostId(postId,pageRequest);
+        Page<Comment> comments = commentService.getCommentsByPostId(postId,pageRequest);
         //TODO MemberSetting 각 코멘트의 유저 이름을 찾아와서 넣어주기
         List<CommentResponseDto> responseCommentDtos = comments.stream().map(Comment::toResponseDto).toList();
         return post.toDetailDto(new PageImpl<>(responseCommentDtos));

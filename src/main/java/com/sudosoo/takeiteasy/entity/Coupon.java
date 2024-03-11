@@ -2,13 +2,10 @@ package com.sudosoo.takeiteasy.entity;
 
 import com.sudosoo.takeiteasy.common.BaseEntity;
 import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
-import io.micrometer.core.instrument.util.AbstractPartition;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,9 +23,9 @@ public class Coupon extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime couponDeadline;
 
-    private int discountRate;
+    private int discountRate = 0;
 
-    private long discountPrice;
+    private long discountPrice = 0;
 
     private Boolean useCheck = false;
 

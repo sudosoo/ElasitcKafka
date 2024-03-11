@@ -1,6 +1,7 @@
 package com.sudosoo.takeiteasy.service;
 
 
+import com.sudosoo.takeiteasy.common.service.JpaService;
 import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
 import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
 import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
@@ -11,36 +12,40 @@ import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
-public class CategoryServiceImpl implements CategoryService {
+@RequiredArgsConstructor
+public class CategoryServiceImpl implements CategoryService , JpaService<Category, Long> {
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
 
     @Override
+    public JpaRepository<Category, Long> getJpaRepository() {
+        return categoryRepository;
+    }
+
+    @Override
     public Category createCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         Category category = Category.of(createCategoryRequestDto);
-
-        return categoryRepository.save(category);
+        return saveModel(category);
     }
 
     @Override
     public Category getById(Long categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(
-                () -> new IllegalArgumentException("Could not found category id : " + categoryId));
+        return findModelById(categoryId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public CategoryResponseDto getPostsByCategoryId(Long categoryId, Pageable pageable) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new IllegalArgumentException("해당 카테고리가 존재하지 않습니다"));
+        Category category = findModelById(categoryId);
 
         Page<Post> paginatedPost = postRepository.findPostsPaginationByCategoryId(categoryId, pageable);
         List<PostTitleOnlyResponseDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();
