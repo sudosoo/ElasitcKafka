@@ -82,15 +82,13 @@ public class PostServiceImpl implements PostService , JpaService<Post,Long>{
 
     @Override
     public Post getByPostId(Long postId) {
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Could not found post id : " + postId));
+        return findModelById(postId);
     }
-
 
     @Override
     @Transactional(readOnly = true)
     public PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
-        Post post = postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재 하지 않습니다."));
+        Post post = findModelById(postId);
         post.incrementViewCount();
 
         Page<Comment> comments = commentService.getCommentsByPostId(postId,pageRequest);
@@ -99,17 +97,15 @@ public class PostServiceImpl implements PostService , JpaService<Post,Long>{
         return post.toDetailDto(new PageImpl<>(responseCommentDtos));
     }
 
-
     @Override
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getAllPost() {
+    public List<PostResponseDto> getAll() {
         List<Post> posts = postRepository.findAll();
         return posts.stream().map(Post::toResponseDto).toList();
     }
 
-
     @Override
-    public List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageable) {
+    public List<PostTitleOnlyResponseDto> getPagination(Pageable pageable) {
         return postRepository.findAll(pageable).map(Post::toTitleOnlyDto).toList();
     }
 
