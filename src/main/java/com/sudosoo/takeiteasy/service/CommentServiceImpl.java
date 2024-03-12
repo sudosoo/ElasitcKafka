@@ -5,6 +5,7 @@ import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import com.sudosoo.takeiteasy.entity.Comment;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.CommentRepository;
+import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CommentServiceImpl implements CommentService , JpaService<Comment,Long> {
     private final CommentRepository commentRepository;
-    private final PostService postService;
+    private final PostRepository postRepository;
 
     @Override
     public JpaRepository<Comment, Long> getJpaRepository() {
@@ -28,7 +29,8 @@ public class CommentServiceImpl implements CommentService , JpaService<Comment,L
     public Comment create(CreateCommentRequestDto createCommentRequestDto){
         //TODO MemberSetting
         Long memberId = createCommentRequestDto.getMemberId();
-        Post post = postService.getByPostId(createCommentRequestDto.getPostId());
+        Post post = postRepository.findById(createCommentRequestDto.getPostId())
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 게시물 입니다 "));
         Comment comment = Comment.of(createCommentRequestDto);
         comment.setPost(post);
         comment.setMember(memberId);
