@@ -36,7 +36,7 @@ public class EventServiceImpl implements EventService, JpaService<Event,Long> {
         coupon = couponService.createCoupon(requestDto);
 
         Event event = Event.of(requestDto,eventDeadLine, coupon);
-        saveModel(event);
+        save(event);
         return new EventResponseDto(event.getId(),coupon.getId());
     }
 
@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService, JpaService<Event,Long> {
         */
         event.decreaseCouponQuantity();
         event.setMember(memberId);
-        saveModel(event);
+        save(event);
     }
 
 }

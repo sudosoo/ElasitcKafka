@@ -36,7 +36,7 @@ public class HeartServiceImpl implements HeartService, JpaService<Heart,Long> {
 
         Heart heart = Heart.getPostHeart(post,memberId);
 
-        return saveModel(heart);
+        return save(heart);
 
     }
 
@@ -50,7 +50,7 @@ public class HeartServiceImpl implements HeartService, JpaService<Heart,Long> {
 
         Heart heart = Heart.getCommentHeart(comment,memberId);
 
-        return saveModel(heart);
+        return save(heart);
     }
 
 

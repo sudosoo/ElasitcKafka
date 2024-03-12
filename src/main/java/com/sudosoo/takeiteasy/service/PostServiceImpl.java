@@ -60,7 +60,7 @@ public class PostServiceImpl implements PostService , JpaService<Post,Long>{
         post.setMemberIdAndWriter(kafkaResponseDto.getMemberId(),kafkaResponseDto.getMemberName());
         post.setCategory(category);
 
-        Post result = saveModel(post);
+        Post result = save(post);
 
         //redis ReadRepository 데이터 삽입
         PostResponseDto responseDto = result.toResponseDto();
@@ -75,20 +75,20 @@ public class PostServiceImpl implements PostService , JpaService<Post,Long>{
         Category category = categoryService.getById(requestDto.getCategoryId());
         post.setCategory(category);
 
-        Post result = saveModel(post);
+        Post result = save(post);
         return result.toResponseDto();
     }
 
 
     @Override
     public Post getByPostId(Long postId) {
-        return findModelById(postId);
+        return findById(postId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest) {
-        Post post = findModelById(postId);
+        Post post = findById(postId);
         post.incrementViewCount();
 
         Page<Comment> comments = commentService.getCommentsByPostId(postId,pageRequest);

@@ -29,7 +29,7 @@ public class CouponServiceImpl implements CouponService , JpaService<Coupon,Long
             coupon = Coupon.rateOf(requestDto);
 
         }
-        return saveModel(coupon);
+        return save(coupon);
     }
 
 }

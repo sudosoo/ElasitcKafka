@@ -34,18 +34,18 @@ public class CategoryServiceImpl implements CategoryService , JpaService<Categor
     @Override
     public Category createCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         Category category = Category.of(createCategoryRequestDto);
-        return saveModel(category);
+        return save(category);
     }
 
     @Override
     public Category getById(Long categoryId) {
-        return findModelById(categoryId);
+        return findById(categoryId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public CategoryResponseDto getPostsByCategoryId(Long categoryId, Pageable pageable) {
-        Category category = findModelById(categoryId);
+        Category category = findById(categoryId);
 
         Page<Post> paginatedPost = postRepository.findPostsPaginationByCategoryId(categoryId, pageable);
         List<PostTitleOnlyResponseDto> responsePosts = paginatedPost.stream().map(Post::toTitleOnlyDto).toList();

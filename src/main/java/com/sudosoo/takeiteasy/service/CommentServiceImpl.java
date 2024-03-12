@@ -33,12 +33,12 @@ public class CommentServiceImpl implements CommentService , JpaService<Comment,L
         comment.setPost(post);
         comment.setMember(memberId);
 
-        return saveModel(comment);
+        return save(comment);
     }
 
     @Override
     public Comment getByCommentId(Long commentId) {
-        return findModelById(commentId);
+        return findById(commentId);
     }
 
     @Override
