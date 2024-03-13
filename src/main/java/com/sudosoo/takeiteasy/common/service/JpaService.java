@@ -38,7 +38,7 @@ public interface JpaService<MODEL, ID> {
 
         Page<MODEL> pageModel = getJpaRepository().findAll(pageRequest);
         if (pageModel.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Is Empty.");
         } else {
             return pageModel;
         }

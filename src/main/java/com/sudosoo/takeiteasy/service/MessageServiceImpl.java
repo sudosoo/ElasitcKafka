@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class  MessageServiceImpl implements MessageService, JpaService<Message,Long> {
+public class  MessageServiceImpl implements MessageService, JpaService< Message,Long > {
     private final KafkaProducer kafkaProducer;
     private final MessageRepository messageRepository;
 
@@ -33,9 +33,10 @@ public class  MessageServiceImpl implements MessageService, JpaService<Message,L
                 .receiverId(receiverId)
                 .messageType(requestDto.getMessageType())
                 .build();
+
         //TODO MemberSetting 유저이름 넣기
         kafkaProducer.sendNotice(receiverId.toString(),message.getContent());
-        messageRepository.save(message);
+        save(message);
     }
 
 

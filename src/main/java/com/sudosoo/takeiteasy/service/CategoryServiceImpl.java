@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService , JpaService<Category, Long> {
+public class CategoryServiceImpl implements CategoryService , JpaService <Category, Long> {
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
 
