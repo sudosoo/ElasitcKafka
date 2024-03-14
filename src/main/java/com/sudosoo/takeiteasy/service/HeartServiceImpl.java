@@ -37,7 +37,6 @@ public class HeartServiceImpl implements HeartService, JpaService<Heart,Long> {
         Heart heart = Heart.getPostHeart(post,memberId);
 
         return save(heart);
-
     }
 
     @Override
