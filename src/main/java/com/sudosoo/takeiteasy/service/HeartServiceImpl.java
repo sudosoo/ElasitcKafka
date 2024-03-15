@@ -71,9 +71,11 @@ public class HeartServiceImpl implements HeartService, JpaService<Heart,Long> {
         Heart heart = findHeartByMemberAndPostOrComment(memberId, comment);
 
         heart.unHeartComment();
-
+        //TODO deleteById null 체크 뺄지 확인
         deleteById(heart.getId());
     }
+
+
 
     private Heart findHeartByMemberAndPostOrComment(Long memberId, Object reference) {
         if (reference instanceof Post) {
