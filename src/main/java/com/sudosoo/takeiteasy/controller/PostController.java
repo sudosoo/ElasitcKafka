@@ -48,11 +48,11 @@ public class PostController {
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
         Pageable pageRequest = PageRequest.of(pageNo,10);
 
-        return new ResponseEntity<>(postService.getPaginationPost(pageRequest), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getPagination(pageRequest), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getAll" , name = "getAll")
     public List<PostResponseDto> getAllPost() {
-        return postService.getAllPost();
+        return postService.getAll();
     }
 }

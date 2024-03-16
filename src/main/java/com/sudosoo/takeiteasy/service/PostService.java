@@ -13,8 +13,8 @@ public interface PostService {
     PostResponseDto create(CreatePostRequestDto createPostRequestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException;
     Post getByPostId(Long postId);
     PostDetailResponseDto getPostDetailByPostId(Long postId, Pageable pageRequest);
-    List<PostTitleOnlyResponseDto> getPaginationPost(Pageable pageable);
+    List<PostTitleOnlyResponseDto> getPagination(Pageable pageable);
     Post createBatchPosts(int count);
     PostResponseDto redisTest(PostRequestDto requestDto);
-    List<PostResponseDto> getAllPost();
+    List<PostResponseDto> getAll();
 }

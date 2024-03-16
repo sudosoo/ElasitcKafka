@@ -36,11 +36,13 @@ class CouponServiceImplTest {
         when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
 
         // When
-        Coupon createdCoupon = couponService.priceCouponCreate(priceCouponRequestDto);
+        Coupon coupon = couponService.createCoupon(priceCouponRequestDto);
+        System.out.println(priceCouponRequestDto.getDiscountRate());
 
         // Then
-        assertEquals(testCoupon, createdCoupon);
-        verify(couponRepository,times(1)).save(createdCoupon);
+        assertEquals(testCoupon, coupon);
+        assertEquals(0 , coupon.getDiscountRate());
+        verify(couponRepository,times(1)).save(coupon);
     }
 
     @Test
@@ -48,15 +50,16 @@ class CouponServiceImplTest {
     void rateCouponCreate() throws Exception {
         //given
         CreateEventRequestDto rateCouponRequestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10);
-        Coupon testCoupon = Coupon.rateOf(rateCouponRequestDto);
-        when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
+        Coupon coupon = Coupon.rateOf(rateCouponRequestDto);
+        when(couponRepository.save(coupon)).thenReturn(coupon);
 
         //when
-        Coupon createdCoupon = couponService.rateCouponCreate(rateCouponRequestDto);
+        Coupon createdCoupon = couponService.createCoupon(rateCouponRequestDto);
 
         //then
-        assertEquals(testCoupon, createdCoupon);
-        verify(couponRepository,times(1)).save(testCoupon);
+        assertEquals(coupon, createdCoupon);
+        assertEquals(0 , coupon.getDiscountPrice());
+        verify(couponRepository,times(1)).save(coupon);
     }
 
 

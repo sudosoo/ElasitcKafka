@@ -41,7 +41,7 @@ class EventServiceImplTest {
     void createdEventByRateCoupon() {
         CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent","2024-12-31T23:59:59","2024-12-31T23:59:59",10,10);
         Coupon mockRateCoupon = mock(Coupon.class);
-        when(couponService.rateCouponCreate(requestDto)).thenReturn(mockRateCoupon);
+        when(couponService.createCoupon(requestDto)).thenReturn(mockRateCoupon);
 
         Event mockEvent = mock(Event.class);
         when(eventRepository.save(any(Event.class))).thenReturn(mockEvent);
@@ -50,7 +50,7 @@ class EventServiceImplTest {
         eventService.createdEvent(requestDto);
 
         // Then
-        verify(couponService, times(1)).rateCouponCreate(requestDto);
+        verify(couponService, times(1)).createCoupon(requestDto);
         verify(eventRepository, times(1)).save(any(Event.class));
     }
     @Test
@@ -58,7 +58,7 @@ class EventServiceImplTest {
     void createdEventByPriceCoupon() {
         CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent","2024-12-31T23:59:59","2024-12-31T23:59:59",10,10000L);
         Coupon mockPriceCoupon = mock(Coupon.class);
-        when(couponService.priceCouponCreate(requestDto)).thenReturn(mockPriceCoupon);
+        when(couponService.createCoupon(requestDto)).thenReturn(mockPriceCoupon);
 
         Event mockEvent = mock(Event.class);
         when(eventRepository.save(any(Event.class))).thenReturn(mockEvent);
@@ -67,7 +67,7 @@ class EventServiceImplTest {
         eventService.createdEvent(requestDto);
 
         // Then
-        verify(couponService, times(1)).priceCouponCreate(requestDto);
+        verify(couponService, times(1)).createCoupon(requestDto);
         verify(eventRepository, times(1)).save(any(Event.class));
     }
 

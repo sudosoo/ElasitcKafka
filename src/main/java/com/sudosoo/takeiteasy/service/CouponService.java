@@ -5,8 +5,6 @@ import com.sudosoo.takeiteasy.entity.Coupon;
 
 public interface CouponService {
 
-    Coupon priceCouponCreate(CreateEventRequestDto requestDto);
-
-    Coupon rateCouponCreate(CreateEventRequestDto requestDto);
+    Coupon createCoupon(CreateEventRequestDto requestDto);
 
 }

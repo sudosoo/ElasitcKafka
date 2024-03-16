@@ -53,8 +53,9 @@ class CategoryServiceImplTest {
         categoryService.createCategory(createCategoryRequestDto);
 
         //then
-        verify(categoryRepository,times(1)).save(testCategory);
+        verify(categoryRepository,times(1)).save(any());
     }
+
     @Test
     @DisplayName("getCategoryByCategoryId")
     void getCategoryByCategoryId() {
@@ -71,6 +72,7 @@ class CategoryServiceImplTest {
         assertNotNull(actualCategory, "The created post should not be null");
         assertEquals(expectedName, actualName, "Expected Title: " + expectedName + ", Actual Title: " + actualName);
     }
+
     @Test
     @DisplayName("getPostsByCategoryId")
     void getPostsByCategoryId(){

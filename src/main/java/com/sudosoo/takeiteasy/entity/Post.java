@@ -26,6 +26,7 @@ public class Post extends BaseEntity {
 
     private String content;
 
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
