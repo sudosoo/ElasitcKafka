@@ -1,8 +1,8 @@
 package com.sudosoo.takeiteasy.entity;
 
+import com.sudosoo.takeItEasy.dto.comment.CommentResponseDto;
+import com.sudosoo.takeItEasy.dto.post.*;
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
-import com.sudosoo.takeiteasy.dto.post.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -91,8 +91,8 @@ public class Post extends BaseEntity {
         return new PostDetailResponseDto(this.id, this.title,this.content,this.writerName,comments);
     }
 
-    public PostResponseDto toResponseDto() {
-        return new PostResponseDto(this.title,this.writerName);
+    public TestPostResponseDto toResponseDto() {
+        return new TestPostResponseDto(this.title,this.writerName);
     }
 
 }

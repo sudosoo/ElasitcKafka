@@ -2,7 +2,7 @@ package com.sudosoo.takeiteasy.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
+import com.sudosoo.takeItEasy.dto.post.TestPostResponseDto;
 import com.sudosoo.takeiteasy.entity.Post;
 import com.sudosoo.takeiteasy.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -93,7 +93,7 @@ public class RedisServiceImpl implements RedisService {
         List<Post> posts = postRepository.findAll();
         for (Post post : posts) {
             try{
-                PostResponseDto postInstance = post.toResponseDto();
+                TestPostResponseDto postInstance = post.toResponseDto();
                 String jsonPost = objectMapper.writeValueAsString(postInstance);
                 redisTemplate.opsForList().leftPush("PostResponseDto",jsonPost);
 

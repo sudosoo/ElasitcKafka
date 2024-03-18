@@ -1,16 +1,18 @@
 package com.sudosoo.takeiteasy.entity;
 
+import com.sudosoo.takeItEasy.dto.category.CategoryResponseDto;
+import com.sudosoo.takeItEasy.dto.category.CreateCategoryRequestDto;
+import com.sudosoo.takeItEasy.dto.post.PostTitleOnlyResponseDto;
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
-import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
-
 
 @Entity
 @Getter
@@ -32,7 +34,7 @@ public class Category extends BaseEntity {
     public static Category of(CreateCategoryRequestDto createCategoryRequestDto){
         return new Category(createCategoryRequestDto.getCategoryName());
     }
-    public CategoryResponseDto toResponseDto(Category category,Page<PostTitleOnlyResponseDto> postTitleDtoPage){
+    public CategoryResponseDto toResponseDto(Category category, Page<PostTitleOnlyResponseDto> postTitleDtoPage){
         return new CategoryResponseDto(category.getCategoryName(),postTitleDtoPage);
     }
 

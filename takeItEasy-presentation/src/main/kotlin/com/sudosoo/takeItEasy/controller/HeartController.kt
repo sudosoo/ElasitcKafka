@@ -1,47 +1,41 @@
-package com.sudosoo.takeItEasy.controller;
+package com.sudosoo.takeItEasy.controller
 
-import com.sudosoo.takeiteasy.dto.heart.CommentHeartRequestDto;
-import com.sudosoo.takeiteasy.dto.heart.PostHeartRequestDto;
-import com.sudosoo.takeiteasy.service.HeartService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import com.sudosoo.takeItEasy.dto.heart.CommentHeartRequestDto
+import com.sudosoo.takeItEasy.dto.heart.PostHeartRequestDto
+import com.sudosoo.takeItEasy.service.HeartService
+import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/heart")
-@RequiredArgsConstructor
-public class HeartController {
-    private final HeartService heartService;
+class HeartController (val heartService: HeartService){
 
-    @PostMapping(value = "/createPostHeart" , name = "createPostHeart")
-    public ResponseEntity<Void> createPostHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
+    @PostMapping("/createPostHeart", name = "createPostHeart")
+    fun createPostHeart(@RequestBody @Valid requestDto: PostHeartRequestDto): ResponseEntity<Void> {
+        heartService.createPostHeart(requestDto)
 
-        heartService.createPostHeart(requestDto);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build<Void>()
     }
 
-    @PostMapping(value = "/createCommentHeart" , name = "createCommentHeart")
-    public ResponseEntity<Void> createCommentHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
+    @PostMapping("/createCommentHeart", name = "createCommentHeart")
+    fun createCommentHeart(@RequestBody @Valid requestDto: CommentHeartRequestDto): ResponseEntity<Void> {
+        heartService.createCommentHeart(requestDto)
 
-        heartService.createCommentHeart(requestDto);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build<Void>()
     }
 
-    @PutMapping(value = "/createPostDisHeart" , name = "createPostDisHeart")
-    public ResponseEntity<Void> createPostDisHeart(@Valid @RequestBody PostHeartRequestDto requestDto) {
+    @PutMapping("/createPostDisHeart", name = "createPostDisHeart")
+    fun createPostDisHeart(@RequestBody @Valid requestDto: PostHeartRequestDto): ResponseEntity<Void> {
+        heartService.postDisHeart(requestDto)
 
-        heartService.postDisHeart(requestDto);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build<Void>()
     }
 
-    @PutMapping(value = "/createCommentDisHeart" , name = "createCommentDisHeart")
-    public ResponseEntity<Void> createCommentDisHeart(@Valid @RequestBody CommentHeartRequestDto requestDto) {
+    @PutMapping("/createCommentDisHeart", name = "createCommentDisHeart")
+    fun createCommentDisHeart(@RequestBody @Valid requestDto: CommentHeartRequestDto): ResponseEntity<Void> {
+        heartService.commentDisHeart(requestDto)
 
-        heartService.commentDisHeart(requestDto);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build<Void>()
     }
 }

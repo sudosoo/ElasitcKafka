@@ -1,6 +1,6 @@
 rootProject.name = "takeItEasy"
 
-include("takeItEasy-support","takeItEasy-domain","takeItEasy-presentation")
+include("takeItEasy-support","takeItEasy-domain","takeItEasy-presentation","takeItEasy-application")
 
 pluginManagement {
     val kotlinVersion :String by settings
@@ -17,7 +17,7 @@ pluginManagement {
                 "org.jetbrains.kotlin.plugin.jpa" -> useVersion(kotlinVersion)
                 "org.jetbrains.kotlin.plugin.allopen" -> useVersion(kotlinVersion)
                 "org.gradle.core" -> useVersion(kotlinVersion)
-                "org.jetbrains.kotlin.kapt" -> useVersion(kotlinVersion)
+
             }
         }
     }

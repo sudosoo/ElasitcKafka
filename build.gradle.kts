@@ -1,17 +1,11 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import org.springframework.boot.gradle.tasks.bundling.BootJar
-
-//val applicationVersion : String by project
-val querydslVersion : String by project
 
 plugins {
     id("org.springframework.boot") apply false
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
-    kotlin("kapt")
     kotlin("plugin.jpa")
-    kotlin("plugin.allopen")
 }
 
 
@@ -38,6 +32,8 @@ subprojects {
 
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+
 
     dependencyManagement {
         imports {
@@ -64,15 +60,13 @@ subprojects {
         //코틀린 모듈
     }else{
         apply(plugin = "org.jetbrains.kotlin.jvm")
-        apply(plugin = "kotlin-kapt")
-        apply(plugin = "kotlin-jpa")
-        apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
+        apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+//        apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
 
         dependencies {
             implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
             implementation("org.jetbrains.kotlin:kotlin-reflect")
             implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-            kapt("com.querydsl:querydsl-apt:${querydslVersion}:jakarta")
         }
 
         configurations {
@@ -118,13 +112,14 @@ subprojects {
     }
 
     dependencies {
+        implementation("org.springframework.kafka:spring-kafka")
         implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("org.springframework.boot:spring-boot-devtools")
-        implementation("org.springframework.boot:spring-boot-starter-jdbc")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
         testImplementation("org.junit.jupiter:junit-jupiter-api")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
     }
 
     tasks.test {
@@ -134,6 +129,5 @@ subprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-
 
 }

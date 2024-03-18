@@ -1,8 +1,8 @@
 package com.sudosoo.takeiteasy.entity;
 
+import com.sudosoo.takeItEasy.dto.comment.CommentResponseDto;
+import com.sudosoo.takeItEasy.dto.comment.CreateCommentRequestDto;
 import com.sudosoo.takeiteasy.common.BaseEntity;
-import com.sudosoo.takeiteasy.dto.comment.CommentResponseDto;
-import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 

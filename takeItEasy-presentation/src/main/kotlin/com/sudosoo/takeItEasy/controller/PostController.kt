@@ -1,57 +1,61 @@
-package com.sudosoo.takeItEasy.controller;
+package com.sudosoo.takeItEasy.controller
 
-import com.sudosoo.takeiteasy.common.annotation.CustomNotify;
-import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostResponseDto;
-import com.sudosoo.takeiteasy.dto.post.PostTitleOnlyResponseDto;
-import com.sudosoo.takeiteasy.service.PostService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
+import com.sudosoo.takeItEasy.dto.post.CreatePostRequestDto
+import com.sudosoo.takeItEasy.dto.post.PostDetailResponseDto
+import com.sudosoo.takeItEasy.dto.post.TestPostResponseDto
+import com.sudosoo.takeItEasy.dto.post.PostTitleOnlyResponseDto
+import com.sudosoo.takeItEasy.service.PostService
+import com.sudosoo.takeiteasy.common.annotation.CustomNotify
+import jakarta.validation.Valid
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import java.io.IOException
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeoutException
 
 @RestController
 @RequestMapping("/api/post")
-@RequiredArgsConstructor
-public class PostController {
-    private final PostService postService;
-    @PostMapping(value = "/create" , name = "createPost")
-    public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody CreatePostRequestDto requestDto) throws ExecutionException, InterruptedException, IOException, TimeoutException {
-
-        PostResponseDto result = postService.create(requestDto);
-
-        return ResponseEntity.ok(result);
+class PostController(val postService: PostService) {
+    @PostMapping("/create", name = "createPost")
+    @Throws(ExecutionException::class, InterruptedException::class, IOException::class, TimeoutException::class)
+    fun createPost(@RequestBody @Valid requestDto:CreatePostRequestDto): ResponseEntity<TestPostResponseDto> {
+        val result: TestPostResponseDto = postService.create(requestDto)
+        return ResponseEntity.ok(result)
     }
 
     @CustomNotify
-    @GetMapping(value = "/getDetail" , name = "getPostDetail")
-    public ResponseEntity<PostDetailResponseDto> getPostDetail
-            (@RequestParam Long postId,
-             @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
-        pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
-        Pageable pageRequest = PageRequest.of(pageNo,10);
+    @GetMapping("/getDetail", name = "getPostDetail")
+    fun getPostDetail(
+        @RequestParam postId: Long,
+        @RequestParam(required = false, defaultValue = "0", value = "page") pageNo: Int
+    ): ResponseEntity<PostDetailResponseDto> {
+        var pageNo = pageNo
+        pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
+        val pageRequest: Pageable = PageRequest.of(pageNo, 10)
 
-        return new ResponseEntity<>(postService.getPostDetailByPostId(postId,pageRequest), HttpStatus.OK);
+        return ResponseEntity(postService.getPostDetailByPostId(postId, pageRequest), HttpStatus.OK)
     }
 
-    @GetMapping(value = "/get" , name = "getPaginationPost")
-    public ResponseEntity<List<PostTitleOnlyResponseDto>> getPaginationPost(@RequestParam(required = false, defaultValue = "0", value = "page")int pageNo ) {
-        pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
-        Pageable pageRequest = PageRequest.of(pageNo,10);
+    @GetMapping("/get", name = "getPaginationPost")
+    fun getPaginationPost(
+        @RequestParam(
+            required = false,
+            defaultValue = "0",
+            value = "page"
+        ) pageNo: Int
+    ): ResponseEntity<List<PostTitleOnlyResponseDto>> {
+        var pageNo = pageNo
+        pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
+        val pageRequest: Pageable = PageRequest.of(pageNo, 10)
 
-        return new ResponseEntity<>(postService.getPaginationPost(pageRequest), HttpStatus.OK);
+        return ResponseEntity(postService.getPaginationPost(pageRequest), HttpStatus.OK)
     }
 
-    @GetMapping(value = "/getAll" , name = "getAll")
-    public List<PostResponseDto> getAllPost() {
-        return postService.getAllPost();
+    @GetMapping("/getAll", name = "getAll")
+    fun allPost(): List<Any>{
+        return postService.allPost
     }
 }

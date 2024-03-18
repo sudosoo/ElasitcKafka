@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 
 
 class CategoryServiceImplTest {
-
     @Mock
     private CategoryRepository categoryRepository;
     @Mock

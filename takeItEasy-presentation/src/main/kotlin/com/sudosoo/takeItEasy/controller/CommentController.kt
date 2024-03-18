@@ -1,20 +1,24 @@
-package com.sudosoo.takeItEasy.controller;
+package com.sudosoo.takeItEasy.controller
 
-import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
-import com.sudosoo.takeiteasy.service.CommentService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import com.sudosoo.takeItEasy.dto.comment.CreateCommentRequestDto
+import com.sudosoo.takeItEasy.service.CommentService
+import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto
+import com.sudosoo.takeiteasy.service.CommentService
+import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/comment")
-@RequiredArgsConstructor
-public class CommentController {
-    private final CommentService commentService;
-    @PostMapping(value = "/create" , name = "createComment")
-    public ResponseEntity<Void> createComment(@Valid @RequestBody CreateCommentRequestDto requestDto) {
-        commentService.create(requestDto);
+class CommentController(val commentService : CommentService) {
 
-        return ResponseEntity.ok().build();
+    @PostMapping("/create", name = "createComment")
+    fun createComment(@RequestBody @Valid  requestDto: CreateCommentRequestDto): ResponseEntity<Void> {
+        commentService.create(requestDto)
+
+        return ResponseEntity.ok().build<Void>()
     }
 }

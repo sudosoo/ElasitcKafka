@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.entity;
 
-import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
+import com.sudosoo.takeItEasy.dto.event.CreateEventRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,7 +35,7 @@ public class Event {
         this.couponQuantity = couponQuantity;
         this.eventDeadline = eventDeadline;
     }
-    public static Event of(CreateEventRequestDto requestDto,LocalDateTime eventDeadline, Coupon coupon){
+    public static Event of(CreateEventRequestDto requestDto, LocalDateTime eventDeadline, Coupon coupon){
         return Event.builder()
                 .eventName(requestDto.getEventName())
                 .coupon(coupon)
