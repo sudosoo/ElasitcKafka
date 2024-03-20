@@ -7,5 +7,5 @@ interface RedisService {
     fun saveReadValue(value: Any)
     fun <T> findByPaginationPost(responseDtoName: String, pageable: PageRequest): MutableList<T>
     fun <T> getValues(methodName: String): MutableList<T>
-    fun postRepositoryRedisSynchronization(posts : MutableList<Post>)
+    fun postRepositoryRedisSynchronization()
 }
