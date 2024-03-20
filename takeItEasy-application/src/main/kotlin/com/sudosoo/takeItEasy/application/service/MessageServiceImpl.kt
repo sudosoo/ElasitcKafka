@@ -2,7 +2,7 @@ package com.sudosoo.takeItEasy.application.service
 
 import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Message
-import com.sudosoo.takeItEasy.domain.kafka.KafkaProducer
+import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.repository.MessageRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

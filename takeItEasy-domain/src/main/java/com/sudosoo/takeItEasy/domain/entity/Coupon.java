@@ -1,6 +1,5 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
-import com.sudosoo.takeItEasy.domain.support.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon extends BaseEntity {
+public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

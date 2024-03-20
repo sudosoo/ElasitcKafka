@@ -1,6 +1,5 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
-import com.sudosoo.takeItEasy.domain.support.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +9,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Heart extends BaseEntity {
+public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

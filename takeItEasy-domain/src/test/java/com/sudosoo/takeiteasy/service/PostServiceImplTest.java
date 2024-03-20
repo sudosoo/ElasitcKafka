@@ -36,7 +36,7 @@ class PostServiceImplTest {
     @InjectMocks
     PostServiceImpl postService;
     private final CreatePostRequestDto testRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
-    private final Post testPost = Post.of(testRequestDto);
+    private final Post testPost = Post.of(testRequestDto.getTitle(), testRequestDto.getContent());
 
     @BeforeEach
     void setUp() {

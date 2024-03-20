@@ -1,6 +1,5 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
-import com.sudosoo.takeItEasy.domain.support.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseEntity {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -35,6 +34,8 @@ public class Comment extends BaseEntity {
         this.post = post;
         this.hearts = hearts;
     }
+
+
     public static Comment of(String content){
         return Comment.builder()
                 .content(content)

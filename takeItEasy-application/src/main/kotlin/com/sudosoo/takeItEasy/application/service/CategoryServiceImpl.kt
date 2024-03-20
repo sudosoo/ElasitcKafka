@@ -1,5 +1,6 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Category
@@ -19,7 +20,7 @@ class CategoryServiceImpl(
     val postRepository : PostRepository
 ) : CategoryService {
     override fun createCategory(createCategoryRequestDto: CreateCategoryRequestDto): Category {
-        val category = Category.of(createCategoryRequestDto)
+        val category = Category.of(createCategoryRequestDto.categoryName)
 
         return categoryRepository.save<Category>(category)
     }
@@ -35,8 +36,8 @@ class CategoryServiceImpl(
 
         val paginatedPost: Page<Post> = postRepository.findPostsPaginationByCategoryId(categoryId, pageable)
         val responsePosts : MutableList<PostTitleOnlyResponseDto> =
-            paginatedPost.stream().map{ o -> o.toTitleOnlyDto()}.toList()
+            paginatedPost.stream().map{ o -> PostTitleOnlyResponseDto(o)}.toList()
 
-        return category.toResponseDto(category, PageImpl(responsePosts))
+        return CategoryResponseDto(category, PageImpl(responsePosts))
     }
 }

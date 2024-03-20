@@ -7,8 +7,8 @@ import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDt
 import com.sudosoo.takeItEasy.application.dto.post.*
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
-import com.sudosoo.takeItEasy.domain.kafka.KafkaProducer
-import com.sudosoo.takeItEasy.domain.redis.RedisService
+import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
+import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
@@ -44,7 +44,7 @@ class PostServiceImpl(
         }
         requireNotNull(kafkaResponseDto) { "kafka reply error" }
 
-        val post: Post = Post.of(requestDto)
+        val post: Post = Post.of(requestDto.title, requestDto.content)
         val category = categoryService.getById(requestDto.categoryId)
         post.setMemberIdAndWriter(kafkaResponseDto.memberId, kafkaResponseDto.memberName)
         post.setCategory(category)
@@ -52,18 +52,18 @@ class PostServiceImpl(
         val result: Post = postRepository.save<Post>(post)
 
         //redis ReadRepository 데이터 삽입
-        val responseDto: TestPostResponseDto = result.toResponseDto()
-        redisService.saveReadValue(result.toResponseDto())
+        val responseDto = TestPostResponseDto(result)
+        redisService.saveReadValue(responseDto)
         return responseDto
     }
 
 
     override fun redisTest(requestDto: PostRequestDto): TestPostResponseDto {
-        val post: Post = Post.testOf(requestDto)
+        val post: Post = Post.of(requestDto.title, requestDto.memberName)
         val category = categoryService.getById(requestDto.categoryId)
         post.setCategory(category)
         val result: Post = postRepository.save<Post>(post)
-        return result.toResponseDto()
+        return TestPostResponseDto(result)
     }
 
 
@@ -84,21 +84,21 @@ class PostServiceImpl(
 
         val comments: Page<Comment> = commentRepository.findCommentsByPostId(postId, pageRequest)
         //TODO MemberSetting 각 코멘트의 유저 이름을 찾아와서 넣어주기
-        val responseCommentDtos: List<CommentResponseDto> =
-            comments.stream().map{ obj -> obj.toResponseDto() }.toList()
-        return post.toDetailDto(PageImpl(responseCommentDtos))
+        val responseCommentDtos: MutableList<CommentResponseDto> =
+            comments.stream().map{ o -> CommentResponseDto(o) }.toList()
+        return PostDetailResponseDto(post,responseCommentDtos)
     }
 
     @Transactional(readOnly = true)
     override fun allPost () : List<TestPostResponseDto>{
             val posts: List<Post> = postRepository.findAll()
 
-        return posts.stream().map { obj -> obj.toResponseDto()}.toList()
+        return posts.stream().map { o -> TestPostResponseDto(o)}.toList()
     }
 
 
     override fun getPaginationPost(pageable: Pageable): List<PostTitleOnlyResponseDto> {
-        return postRepository.findAll(pageable).map { obj -> obj.toTitleOnlyDto() }.toList()
+        return postRepository.findAll(pageable).map { o -> PostTitleOnlyResponseDto(o) }.toList()
     }
 
     override fun createBatchPosts(count: Int): Post {

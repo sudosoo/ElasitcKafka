@@ -2,7 +2,6 @@ package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,19 +52,19 @@ public class Post {
         this.viewCount = viewCount;
         this.hearts = hearts;
     }
-    public static Post of(CreatePostRequestDto createPostRequestDto){
+    public static Post of(String title, String content){
         return  Post.builder()
-                .title(createPostRequestDto.getTitle())
-                .content(createPostRequestDto.getContent())
+                .title(title)
+                .content(content)
                 .viewCount(0)
                 .build();
     }
 
-    public static Post testOf(PostRequestDto requestDto){
+    public static Post testOf(String title, String content, String memberName){
         return  Post.builder()
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
-                .writerName(requestDto.getMemberName())
+                .title(title)
+                .content(content)
+                .writerName(memberName)
                 .viewCount(0)
                 .build();
     }
@@ -79,16 +78,5 @@ public class Post {
         this.viewCount++;
     }
 
-    public PostTitleOnlyResponseDto toTitleOnlyDto(){
-        return new PostTitleOnlyResponseDto(this.id, this.title, this.getHearts().size(),this.viewCount,this.writerName);
-    }
-
-    public PostDetailResponseDto toDetailDto(Page<CommentResponseDto> comments){
-        return new PostDetailResponseDto(this.id, this.title,this.content,this.writerName,comments);
-    }
-
-    public TestPostResponseDto toResponseDto() {
-        return new TestPostResponseDto(this.title,this.writerName);
-    }
 
 }

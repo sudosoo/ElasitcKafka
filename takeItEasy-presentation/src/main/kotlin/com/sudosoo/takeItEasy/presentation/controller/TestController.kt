@@ -3,9 +3,7 @@ package com.sudosoo.takeItEasy.presentation.controller
 import com.sudosoo.takeItEasy.application.dto.post.PostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.service.PostService
-import com.sudosoo.takeItEasy.domain.redis.RedisService
-import com.sudosoo.takeItEasy.support.batch.BatchLauncherService
-
+import com.sudosoo.takeItEasy.batch.batch.BatchLauncherService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

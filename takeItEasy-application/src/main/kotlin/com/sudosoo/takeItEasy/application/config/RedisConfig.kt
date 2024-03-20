@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.support.config
+package com.sudosoo.takeItEasy.application.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

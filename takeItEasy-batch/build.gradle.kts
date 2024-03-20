@@ -1,5 +1,7 @@
 
 dependencies {
+
+    implementation(project(":takeItEasy-domain"))
     implementation(project(":takeItEasy-application"))
 
     //spring batch

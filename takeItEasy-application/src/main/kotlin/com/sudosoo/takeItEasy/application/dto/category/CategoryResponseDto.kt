@@ -8,7 +8,9 @@ class CategoryResponseDto(
     val categoryName: String,
     val postTitleDtos: Page<PostTitleOnlyResponseDto>
 ){
-    fun toResponseDto(category: Category, postTitleDtoPage: Page<PostTitleOnlyResponseDto>): CategoryResponseDto {
-        return CategoryResponseDto(category.categoryName, postTitleDtoPage!!)
-    }
+    constructor(category: Category, postTitleDtoPage: Page<PostTitleOnlyResponseDto>):this(
+        category.categoryName,
+        postTitleDtoPage
+    )
+
 }

@@ -1,11 +1,11 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
+import com.sudosoo.takeItEasy.application.annotation.CustomNotify
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.service.PostService
-import com.sudosoo.takeItEasy.support.annotation.CustomNotify
 import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable

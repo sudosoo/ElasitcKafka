@@ -20,7 +20,7 @@ class CommentServiceImpl(
         //TODO MemberSetting
         val memberId: Long = createCommentRequestDto.memberId
         val post: Post = postService.getByPostId(createCommentRequestDto.postId)
-        val comment = Comment.of(createCommentRequestDto)
+        val comment = Comment.of(createCommentRequestDto.content)
         comment.post = post
         comment.setMember(memberId)
 

@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.batch.batch
+package com.sudosoo.takeItEasy.batch
 
 import com.sudosoo.takeItEasy.application.service.PostService
 import com.sudosoo.takeItEasy.domain.entity.Post
