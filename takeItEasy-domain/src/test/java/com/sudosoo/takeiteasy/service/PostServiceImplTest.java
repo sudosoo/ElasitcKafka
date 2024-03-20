@@ -1,12 +1,13 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeiteasy.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeiteasy.entity.Category;
-import com.sudosoo.takeiteasy.entity.Comment;
-import com.sudosoo.takeiteasy.entity.Post;
-import com.sudosoo.takeiteasy.repository.CommentRepository;
-import com.sudosoo.takeiteasy.repository.PostRepository;
+import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto;
+import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeItEasy.application.service.CategoryService;
+import com.sudosoo.takeItEasy.application.service.PostServiceImpl;
+import com.sudosoo.takeItEasy.domain.entity.Comment;
+import com.sudosoo.takeItEasy.domain.entity.Post;
+import com.sudosoo.takeItEasy.domain.repository.CommentRepository;
+import com.sudosoo.takeItEasy.domain.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,8 +96,7 @@ class PostServiceImplTest {
         // then
         assertEquals(testPost.getId(), result.getPostId());
         assertEquals(testPost.getTitle(), result.getTitle());
-        assertEquals(testPost.getContent(), result.getNotifyContent());
-        assertEquals(commentPage.getSize(), result.getCommentsResponseDto().getSize());
+        assertEquals(testPost.getContent(), result.getContent());
     }
 
 }

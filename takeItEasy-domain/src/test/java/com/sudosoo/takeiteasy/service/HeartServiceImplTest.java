@@ -1,11 +1,14 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.heart.CommentHeartRequestDto;
-import com.sudosoo.takeiteasy.dto.heart.PostHeartRequestDto;
-import com.sudosoo.takeiteasy.entity.Comment;
-import com.sudosoo.takeiteasy.entity.Heart;
-import com.sudosoo.takeiteasy.entity.Post;
-import com.sudosoo.takeiteasy.repository.HeartRepository;
+import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto;
+import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto;
+import com.sudosoo.takeItEasy.application.service.CommentService;
+import com.sudosoo.takeItEasy.application.service.HeartServiceImpl;
+import com.sudosoo.takeItEasy.application.service.PostService;
+import com.sudosoo.takeItEasy.domain.entity.Comment;
+import com.sudosoo.takeItEasy.domain.entity.Heart;
+import com.sudosoo.takeItEasy.domain.entity.Post;
+import com.sudosoo.takeItEasy.domain.repository.HeartRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

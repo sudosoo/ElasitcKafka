@@ -1,10 +1,12 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.coupon.CouponIssuanceRequestDto;
-import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
-import com.sudosoo.takeiteasy.entity.Coupon;
-import com.sudosoo.takeiteasy.entity.Event;
-import com.sudosoo.takeiteasy.repository.EventRepository;
+import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto;
+import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto;
+import com.sudosoo.takeItEasy.application.service.CouponService;
+import com.sudosoo.takeItEasy.application.service.EventServiceImpl;
+import com.sudosoo.takeItEasy.domain.entity.Coupon;
+import com.sudosoo.takeItEasy.domain.entity.Event;
+import com.sudosoo.takeItEasy.domain.repository.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +31,9 @@ class EventServiceImplTest {
     EventRepository eventRepository;
     @Mock
     CouponService couponService;
-    @InjectMocks EventServiceImpl eventService;
-    private final CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent",LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10);
+    @InjectMocks
+    EventServiceImpl eventService;
+    private final CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent",LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,null,10);
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -39,7 +42,7 @@ class EventServiceImplTest {
     @Test
     @DisplayName("EventCreateTest")
     void createdEventByRateCoupon() {
-        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent","2024-12-31T23:59:59","2024-12-31T23:59:59",10,10);
+        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent","2024-12-31T23:59:59","2024-12-31T23:59:59",10,null,10);
         Coupon mockRateCoupon = mock(Coupon.class);
         when(couponService.rateCouponCreate(requestDto)).thenReturn(mockRateCoupon);
 
@@ -56,7 +59,7 @@ class EventServiceImplTest {
     @Test
     @DisplayName("EventCreateTest")
     void createdEventByPriceCoupon() {
-        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent","2024-12-31T23:59:59","2024-12-31T23:59:59",10,10000L);
+        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent","2024-12-31T23:59:59","2024-12-31T23:59:59",10,10000L,null);
         Coupon mockPriceCoupon = mock(Coupon.class);
         when(couponService.priceCouponCreate(requestDto)).thenReturn(mockPriceCoupon);
 

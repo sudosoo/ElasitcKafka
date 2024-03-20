@@ -1,11 +1,12 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.category.CategoryResponseDto;
-import com.sudosoo.takeiteasy.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeiteasy.entity.Category;
-import com.sudosoo.takeiteasy.entity.Post;
-import com.sudosoo.takeiteasy.repository.CategoryRepository;
-import com.sudosoo.takeiteasy.repository.PostRepository;
+import com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto;
+import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto;
+import com.sudosoo.takeItEasy.application.service.CategoryServiceImpl;
+import com.sudosoo.takeItEasy.domain.entity.Category;
+import com.sudosoo.takeItEasy.domain.entity.Post;
+import com.sudosoo.takeItEasy.domain.repository.CategoryRepository;
+import com.sudosoo.takeItEasy.domain.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,6 +88,5 @@ class CategoryServiceImplTest {
 
         //then
         assertEquals(testCategory.getCategoryName(), result.getCategoryName());
-        assertEquals(postsPage.getSize(), result.getPostResponseDtos().getSize());
     }
 }

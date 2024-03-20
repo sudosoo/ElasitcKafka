@@ -1,10 +1,11 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.comment.CreateCommentRequestDto;
-import com.sudosoo.takeiteasy.entity.Comment;
-import com.sudosoo.takeiteasy.entity.Post;
-import com.sudosoo.takeiteasy.repository.CommentRepository;
-import com.sudosoo.takeiteasy.repository.PostRepository;
+import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto;
+import com.sudosoo.takeItEasy.application.service.CommentServiceImpl;
+import com.sudosoo.takeItEasy.domain.entity.Comment;
+import com.sudosoo.takeItEasy.domain.entity.Post;
+import com.sudosoo.takeItEasy.domain.repository.CommentRepository;
+import com.sudosoo.takeItEasy.domain.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

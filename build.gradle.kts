@@ -29,7 +29,7 @@ java {
 }
 
 subprojects {
-
+    apply(plugin = "java")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
@@ -50,8 +50,7 @@ subprojects {
     }
 
     //자바 모듈
-    if (name == "domain") {
-        apply(plugin = "java")
+    if (name == "takeItEasy-domain") {
 
         java {
             sourceCompatibility = JavaVersion.VERSION_17
@@ -61,12 +60,11 @@ subprojects {
     }else{
         apply(plugin = "org.jetbrains.kotlin.jvm")
         apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-//        apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
 
         dependencies {
             implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
             implementation("org.jetbrains.kotlin:kotlin-reflect")
-            implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+            implementation("org.jetbrains.kotlin:kotlin-stdlib")
         }
 
         configurations {
@@ -119,7 +117,11 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+        //redis
+        implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
     }
 
     tasks.test {

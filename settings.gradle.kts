@@ -1,6 +1,9 @@
 rootProject.name = "takeItEasy"
 
-include("takeItEasy-support","takeItEasy-domain","takeItEasy-presentation","takeItEasy-application")
+include(
+    "takeItEasy-support","takeItEasy-domain",
+    "takeItEasy-presentation","takeItEasy-application",
+    "takeItEasy-batch")
 
 pluginManagement {
     val kotlinVersion :String by settings

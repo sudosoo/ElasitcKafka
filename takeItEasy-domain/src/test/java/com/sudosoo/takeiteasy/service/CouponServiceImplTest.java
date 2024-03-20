@@ -1,8 +1,9 @@
 package com.sudosoo.takeiteasy.service;
 
-import com.sudosoo.takeiteasy.dto.event.CreateEventRequestDto;
-import com.sudosoo.takeiteasy.entity.Coupon;
-import com.sudosoo.takeiteasy.repository.CouponRepository;
+import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto;
+import com.sudosoo.takeItEasy.application.service.CouponServiceImpl;
+import com.sudosoo.takeItEasy.domain.entity.Coupon;
+import com.sudosoo.takeItEasy.domain.repository.CouponRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,12 +32,12 @@ class CouponServiceImplTest {
     @Test
     @DisplayName("priceCouponCreate")
     void priceCouponCreate() throws Exception {
-        CreateEventRequestDto priceCouponRequestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10000L);
-        Coupon testCoupon = Coupon.priceOf(priceCouponRequestDto);
+        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10000L,null);
+        Coupon testCoupon = Coupon.priceOf(requestDto);
         when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
 
         // When
-        Coupon createdCoupon = couponService.priceCouponCreate(priceCouponRequestDto);
+        Coupon createdCoupon = couponService.priceCouponCreate(requestDto);
 
         // Then
         assertEquals(testCoupon, createdCoupon);
@@ -47,7 +48,7 @@ class CouponServiceImplTest {
     @DisplayName("rateCouponCreate")
     void rateCouponCreate() throws Exception {
         //given
-        CreateEventRequestDto rateCouponRequestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10);
+        CreateEventRequestDto rateCouponRequestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,null,10);
         Coupon testCoupon = Coupon.rateOf(rateCouponRequestDto);
         when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
 
