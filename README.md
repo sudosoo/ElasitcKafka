@@ -1,6 +1,6 @@
 # Toy Project
 
-Post(JAVA) : https://github.com/sudosoo/TakeItEasy/
+Post(Kotlin,JAVA) : https://github.com/sudosoo/TakeItEasy/
 
 Event(Kotlin) : https://github.com/sudosoo/TakeItEasyEvent/
 
