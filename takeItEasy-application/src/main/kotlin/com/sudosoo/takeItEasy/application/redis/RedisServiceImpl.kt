@@ -33,7 +33,8 @@ class RedisServiceImpl(
         val end = start + pageable.pageSize - 1
 
         val jsonValues = redisTemplate.opsForList().range(responseDtoName, start.toLong(), end.toLong())
-        return jsonValues.mapNotNull { jsonValue ->
+        //TODO null 체크만들기
+        return jsonValues!!.mapNotNull { jsonValue ->
             try {
                 objectMapper.readValue(jsonValue, clazz)?.let {
                     clazz.cast(it) as T
@@ -49,7 +50,9 @@ class RedisServiceImpl(
             val fullClassName = "com.sudosoo.takeItEasy.application.dto.$className"
             val clazz = Class.forName(fullClassName) as Class<T>
             val jsonValues = redisTemplate.opsForList().range(className, 0, -1)
-            jsonValues.mapNotNull { jsonValue ->
+
+            //TODO null 체크만들기
+            jsonValues!!.mapNotNull { jsonValue ->
                 try {
                     objectMapper.readValue(jsonValue, clazz)
                 } catch (e: Exception) {

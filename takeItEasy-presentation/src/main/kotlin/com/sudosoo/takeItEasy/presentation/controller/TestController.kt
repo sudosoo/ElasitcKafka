@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/test")
 class TestController (
-    val batchLauncherService: BatchLauncherService,
+//    val batchLauncherService: BatchLauncherService,
     val redisService: RedisService,
     val postService: PostService)
 {
-    @PostMapping("/batchCreateDummyPost", name = "batchCreateDummyPost")
-    fun batchCreateDummyPost(): ResponseEntity<Void> {
-        //batch를 로직 통한 실행
-        batchLauncherService.runBatchJob()
-        return ResponseEntity.ok().build()
-    }
-
-    @PostMapping("/defaultCreateDummyPost", name = "createDummyPost")
-    @Throws(Exception::class)
-    fun defaultCreateDummyPost(): ResponseEntity<Void> {
-        //기존 로직
-        batchLauncherService.runBatchJobV2()
-
-        return ResponseEntity.ok().build<Void>()
-    }
+//    @PostMapping("/batchCreateDummyPost", name = "batchCreateDummyPost")
+//    fun batchCreateDummyPost(): ResponseEntity<Void> {
+//        //batch를 로직 통한 실행
+//        batchLauncherService.runBatchJob()
+//        return ResponseEntity.ok().build()
+//    }
+//
+//    @PostMapping("/defaultCreateDummyPost", name = "createDummyPost")
+//    @Throws(Exception::class)
+//    fun defaultCreateDummyPost(): ResponseEntity<Void> {
+//        //기존 로직
+//        batchLauncherService.runBatchJobV2()
+//
+//        return ResponseEntity.ok().build<Void>()
+//    }
 
     @GetMapping("/getV", name = "getV")
     fun redisGetTest(): List<TestPostResponseDto> {

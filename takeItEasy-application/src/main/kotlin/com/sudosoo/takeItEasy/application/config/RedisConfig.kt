@@ -25,18 +25,18 @@ class RedisConfig (
 
     @Bean
     fun redisTemplate(): RedisTemplate<String, String> {
-        val redisTemplate: RedisTemplate<String, String> = RedisTemplate()
+        var redisTemplate: RedisTemplate<String, String> = RedisTemplate()
         redisTemplate.keySerializer = StringRedisSerializer.UTF_8
         redisTemplate.valueSerializer = StringRedisSerializer.UTF_8
-        redisTemplate.defaultSerializer = RedisSerializer.string()
-        redisTemplate.connectionFactory= redisConnectionFactory()
+        redisTemplate.setDefaultSerializer(RedisSerializer.string())
+        redisTemplate.setConnectionFactory(redisConnectionFactory())
         return redisTemplate
     }
 
     @Bean
     fun redisMessageListener(): RedisMessageListenerContainer {
-        val container: RedisMessageListenerContainer = RedisMessageListenerContainer()
-        container.connectionFactory=redisConnectionFactory()
+        var container = RedisMessageListenerContainer()
+        container.setConnectionFactory(redisConnectionFactory())
         return container
     }
 }

@@ -1,4 +1,14 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
+tasks {
+    val bootJar: BootJar by getting(BootJar::class)
+    {
+        enabled = true
+    }
+    val jar by getting(Jar::class) {
+        enabled = false
+    }
+}
 dependencies {
 //    implementation(project(":takeItEasy-support"))
     api(project(":takeItEasy-presentation"))

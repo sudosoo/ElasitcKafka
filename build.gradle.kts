@@ -88,13 +88,8 @@ subprojects {
             compileKotlin {
                 kotlinOptions.jvmTarget = "17"
                 kotlinOptions.freeCompilerArgs = listOf(
-                    "-Xopt-in=kotlin.RequiresOptIn",
-                    "-XXLanguage:+InlineClasses"
+                    "-Xjsr305=strict",
                 )
-            }
-
-            compileTestKotlin {
-                kotlinOptions.jvmTarget = "17"
             }
         }
     }
@@ -116,6 +111,7 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("org.springframework.boot:spring-boot-devtools")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        implementation ("org.springframework.boot:spring-boot-starter")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api")
         testImplementation("org.springframework.boot:spring-boot-starter-test")

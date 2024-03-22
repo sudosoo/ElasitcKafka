@@ -16,7 +16,6 @@ class CategoryController (val categoryService: CategoryService ){
     @PostMapping( "/create", name = "createCategory")
     fun createCategory(@Valid @RequestBody requestDto: CreateCategoryRequestDto): ResponseEntity<Void> {
         categoryService.create(requestDto)
-
         return ResponseEntity.ok().build()
     }
 

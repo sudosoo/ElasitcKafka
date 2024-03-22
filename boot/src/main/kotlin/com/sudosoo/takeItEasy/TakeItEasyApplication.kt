@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaAuditing
-@EntityScan(basePackages = ["com.sudosoo.takeItEasy.domain"])
-@EnableJpaRepositories("com.sudosoo.takeItEasy.domain")
-@SpringBootApplication(scanBasePackages = ["com.sudosoo.takeItEasy.domain","com.sudosoo.takeItEasy.application", "com.sudosoo.takeItEasy.presentation"])
+@SpringBootApplication
 class TakeItEasyApplication
     fun main(args: Array<String>) {
         runApplication<TakeItEasyApplication>(*args)
