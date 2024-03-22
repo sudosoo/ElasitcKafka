@@ -30,7 +30,7 @@ class EventServiceImpl (
             couponService.priceCouponCreate(requestDto)
         }
 
-        val event = Event.of(requestDto.eventName,requestDto.couponQuantity, eventDeadLine, coupon)
+        val event = Event.of(requestDto.eventName,requestDto.couponQuantity, requestDto.eventDeadline, coupon)
         eventRepository.save<Event>(event)
         return EventResponseDto(event.id, coupon.id)
     }

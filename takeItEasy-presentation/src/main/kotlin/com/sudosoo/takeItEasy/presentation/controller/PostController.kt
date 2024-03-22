@@ -19,6 +19,7 @@ import java.util.concurrent.TimeoutException
 @RestController
 @RequestMapping("/api/post")
 class PostController(val postService: PostService) {
+
     @PostMapping("/create", name = "createPost")
     @Throws(ExecutionException::class, InterruptedException::class, IOException::class, TimeoutException::class)
     fun createPost(@RequestBody @Valid requestDto: CreatePostRequestDto): ResponseEntity<TestPostResponseDto> {

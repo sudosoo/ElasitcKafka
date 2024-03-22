@@ -35,6 +35,7 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 
 
+
     dependencyManagement {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:3.0.4")

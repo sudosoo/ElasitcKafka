@@ -3,7 +3,7 @@ rootProject.name = "takeItEasy"
 include(
     "takeItEasy-support","takeItEasy-domain",
     "takeItEasy-presentation","takeItEasy-application",
-    "takeItEasy-batch")
+    "takeItEasy-batch","boot")
 
 pluginManagement {
     val kotlinVersion :String by settings

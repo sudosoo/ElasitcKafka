@@ -34,11 +34,11 @@ public class Event {
         this.couponQuantity = couponQuantity;
         this.eventDeadline = eventDeadline;
     }
-    public static Event of(String eventName,int couponQuantity, LocalDateTime eventDeadline, Coupon coupon){
+    public static Event of(String eventName,int couponQuantity, String eventDeadline, Coupon coupon){
         return Event.builder()
                 .eventName(eventName)
                 .coupon(coupon)
-                .eventDeadline(eventDeadline)
+                .eventDeadline(LocalDateTime.parse(eventDeadline))
                 .couponQuantity(couponQuantity)
                 .build();
 

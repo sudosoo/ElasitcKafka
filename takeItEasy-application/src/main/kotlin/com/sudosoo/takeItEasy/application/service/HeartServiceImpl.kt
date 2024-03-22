@@ -39,10 +39,10 @@ class HeartServiceImpl(
     }
 
 
-    override fun postDisHeart(heartRequestDTO: PostHeartRequestDto) {
+    override fun postDisHeart(requestDto: PostHeartRequestDto) {
         //TODO MemberSetting
-        val memberId: Long = heartRequestDTO.memberId
-        val post: Post = postService.getByPostId(heartRequestDTO.postId)
+        val memberId: Long = requestDto.memberId
+        val post: Post = postService.getByPostId(requestDto.postId)
         val heart: Heart = findHeartByMemberAndPostOrComment(memberId, post)
 
         heart.unHeartPost()
@@ -50,10 +50,10 @@ class HeartServiceImpl(
         heartRepository.delete(heart)
     }
 
-    override fun commentDisHeart(heartRequestDTO: CommentHeartRequestDto) {
+    override fun commentDisHeart(requestDto: CommentHeartRequestDto) {
         //TODO MemberSetting
-        val memberId: Long = heartRequestDTO.memberId
-        val comment = commentService.getByCommentId(heartRequestDTO.commentId)
+        val memberId: Long = requestDto.memberId
+        val comment = commentService.getByCommentId(requestDto.commentId)
         val heart: Heart = findHeartByMemberAndPostOrComment(memberId, comment)
 
         heart.unHeartComment()

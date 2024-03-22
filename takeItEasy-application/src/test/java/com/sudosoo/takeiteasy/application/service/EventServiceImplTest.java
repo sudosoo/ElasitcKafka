@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.service;
+package com.sudosoo.takeiteasy.application.service;
 
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto;
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto;
@@ -80,12 +80,13 @@ class EventServiceImplTest {
     @DisplayName("쿠폰 발급 테스트 (멀티 스레드)")
     void couponIssuanceForMultiThreadTest() throws InterruptedException {
         CouponIssuanceRequestDto couponIssuanceRequestDto = new CouponIssuanceRequestDto(1L,1L,1L);
+        String testEventDeadLine = LocalDateTime.now().toString();
         AtomicInteger successCount = new AtomicInteger();
         int numberOfExecute = 100000;
         ExecutorService service = Executors.newFixedThreadPool(10);
         CountDownLatch latch = new CountDownLatch(numberOfExecute);
         Coupon mockCoupon = mock(Coupon.class);
-        Event event = Event.of(requestDto, LocalDateTime.now(), mockCoupon);
+        Event event = Event.of(requestDto.getEventName(),requestDto.getCouponQuantity(),testEventDeadLine , mockCoupon);
         when(eventRepository.findByEventIdForUpdate(anyLong())).thenReturn(Optional.ofNullable(event));
 
         for (int i = 0; i < numberOfExecute; i++) {

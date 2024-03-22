@@ -4,7 +4,6 @@ import com.sudosoo.takeItEasy.application.dto.post.PostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.application.service.PostService
-import com.sudosoo.takeItEasy.batch.BatchLauncherService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

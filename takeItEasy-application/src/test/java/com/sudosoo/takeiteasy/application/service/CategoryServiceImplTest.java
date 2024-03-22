@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.service;
+package com.sudosoo.takeiteasy.application.service;
 
 import com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto;
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto;
@@ -36,7 +36,7 @@ class CategoryServiceImplTest {
     private CategoryServiceImpl categoryService;
 
     private final CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test카테고리");
-    private Category testCategory = Category.of(createCategoryRequestDto);
+    private Category testCategory = Category.of(createCategoryRequestDto.getCategoryName());
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
 
         //when
-        categoryService.createCategory(createCategoryRequestDto);
+        categoryService.create(createCategoryRequestDto);
 
         //then
         verify(categoryRepository,times(1)).save(testCategory);
@@ -84,7 +84,7 @@ class CategoryServiceImplTest {
         when(postRepository.findPostsPaginationByCategoryId(1L, pageRequest)).thenReturn(postsPage);
 
         //when
-        CategoryResponseDto result = categoryService.getPostsByCategoryId(1L, PageRequest.of(0, 10));
+        CategoryResponseDto result = categoryService.getPosts(1L, PageRequest.of(0, 10));
 
         //then
         assertEquals(testCategory.getCategoryName(), result.getCategoryName());

@@ -6,7 +6,7 @@ import com.sudosoo.takeItEasy.domain.entity.Category
 import org.springframework.data.domain.Pageable
 
 interface CategoryService {
-    fun createCategory(createCategoryRequestDto: CreateCategoryRequestDto): Category
+    fun create(requestDto: CreateCategoryRequestDto): Category
     fun getById(categoryId: Long): Category
-    fun getPostsByCategoryId(categoryId: Long, pageable: Pageable): CategoryResponseDto
+    fun getPosts(categoryId: Long, pageable: Pageable): CategoryResponseDto
 }

@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.service;
+package com.sudosoo.takeiteasy.application.service;
 
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto;

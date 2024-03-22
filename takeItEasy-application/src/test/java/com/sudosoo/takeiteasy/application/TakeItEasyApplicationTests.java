@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy;
+package com.sudosoo.takeiteasy.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

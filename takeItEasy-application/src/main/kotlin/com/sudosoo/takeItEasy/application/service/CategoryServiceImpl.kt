@@ -19,7 +19,7 @@ class CategoryServiceImpl(
     val categoryRepository : CategoryRepository,
     val postRepository : PostRepository
 ) : CategoryService {
-    override fun createCategory(createCategoryRequestDto: CreateCategoryRequestDto): Category {
+    override fun create(createCategoryRequestDto: CreateCategoryRequestDto): Category {
         val category = Category.of(createCategoryRequestDto.categoryName)
 
         return categoryRepository.save<Category>(category)
@@ -31,7 +31,7 @@ class CategoryServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getPostsByCategoryId(categoryId: Long, pageable: Pageable): com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto {
+    override fun getPosts(categoryId: Long, pageable: Pageable): com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto {
         val category: Category = categoryRepository.findById(categoryId).orElseThrow{ IllegalArgumentException("해당 카테고리가 존재하지 않습니다") }
 
         val paginatedPost: Page<Post> = postRepository.findPostsPaginationByCategoryId(categoryId, pageable)

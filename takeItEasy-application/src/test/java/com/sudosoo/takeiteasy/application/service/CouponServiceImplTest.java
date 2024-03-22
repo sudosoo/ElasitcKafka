@@ -1,4 +1,4 @@
-package com.sudosoo.takeiteasy.service;
+package com.sudosoo.takeiteasy.application.service;
 
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto;
 import com.sudosoo.takeItEasy.application.service.CouponServiceImpl;
@@ -33,7 +33,7 @@ class CouponServiceImplTest {
     @DisplayName("priceCouponCreate")
     void priceCouponCreate() throws Exception {
         CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10000L,null);
-        Coupon testCoupon = Coupon.priceOf(requestDto);
+        Coupon testCoupon = Coupon.priceOf(requestDto.getEventName(), requestDto.getCouponDeadline(), requestDto.getDiscountPrice());
         when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
 
         // When
@@ -48,12 +48,12 @@ class CouponServiceImplTest {
     @DisplayName("rateCouponCreate")
     void rateCouponCreate() throws Exception {
         //given
-        CreateEventRequestDto rateCouponRequestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,null,10);
-        Coupon testCoupon = Coupon.rateOf(rateCouponRequestDto);
+        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,null,10);
+        Coupon testCoupon = Coupon.rateOf(requestDto.getEventName(), requestDto.getCouponDeadline(), requestDto.getDiscountRate());
         when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
 
         //when
-        Coupon createdCoupon = couponService.rateCouponCreate(rateCouponRequestDto);
+        Coupon createdCoupon = couponService.rateCouponCreate(requestDto);
 
         //then
         assertEquals(testCoupon, createdCoupon);

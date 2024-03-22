@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/category")
-class CategoryController (
-    val categoryService: CategoryService
-) {
+class CategoryController (val categoryService: CategoryService ){
 
     @PostMapping( "/create", name = "createCategory")
     fun createCategory(@Valid @RequestBody requestDto: CreateCategoryRequestDto): ResponseEntity<Void> {
-        categoryService.createCategory(requestDto)
+        categoryService.create(requestDto)
 
         return ResponseEntity.ok().build()
     }
@@ -30,6 +28,6 @@ class CategoryController (
         var pageNo = pageNo
         pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
         val pageable: PageRequest = PageRequest.of(pageNo, 10)
-        return ResponseEntity(categoryService.getPostsByCategoryId(categoryId, pageable), HttpStatus.OK)
+        return ResponseEntity(categoryService.getPosts(categoryId, pageable), HttpStatus.OK)
     }
 }
