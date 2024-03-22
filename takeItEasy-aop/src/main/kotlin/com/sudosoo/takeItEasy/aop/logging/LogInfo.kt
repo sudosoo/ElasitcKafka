@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.support.aspect.logging
+package com.sudosoo.takeItEasy.aop.logging
 
 class LogInfo(
     val url: String,

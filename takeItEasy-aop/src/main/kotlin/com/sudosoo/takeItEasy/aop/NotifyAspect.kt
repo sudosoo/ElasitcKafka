@@ -1,8 +1,8 @@
-package com.sudosoo.takeItEasy.support.aspect
+package com.sudosoo.takeItEasy.aop
 
 
 import com.sudosoo.takeItEasy.application.service.NoticeService
-import com.sudosoo.takeItEasy.support.aspect.notice.NotifyInfo
+import com.sudosoo.takeItEasy.aop.notice.NotifyInfo
 
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component
 @Component
 class NotifyAspect(val noticeService: NoticeService) {
 
-    @Pointcut("@annotation(com.sudosoo.takeItEasy.CustomNotify)")
+    @Pointcut("@annotation(com.sudosoo.takeItEasy.application.annotation.CustomNotify)")
     fun annotationPointcut() {}
 
     @AfterReturning(pointcut = "annotationPointcut()", returning = "result")

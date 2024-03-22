@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.support.aspect
+package com.sudosoo.takeItEasy.aop
 
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around

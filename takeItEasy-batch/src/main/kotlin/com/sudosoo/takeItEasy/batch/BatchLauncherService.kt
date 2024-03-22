@@ -8,11 +8,13 @@ import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Bean
+import org.springframework.stereotype.Service
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import javax.sql.DataSource
 
+@Service
 class BatchLauncherService(
     private val jobLauncher: JobLauncher,
     private val jobRepository: JobRepository,
@@ -74,7 +76,6 @@ class BatchLauncherService(
         }
     }
 
-    @Bean
     fun runBatchJobV2() {
         for (i in 0 until 10) {
             val start = i * 10000
@@ -83,7 +84,7 @@ class BatchLauncherService(
             val reader: ItemReader<Post> = batchJobService.reader(start, end)
             val writer: ItemWriter<Post> = batchJobService.writer(dataSource)
 
-            val step: Step = batchJobService.createPostsStep(jobRepository, reader, writer, null)
+            val step: Step = batchJobService.createPostsStep(jobRepository, reader, writer)
 
             val job: Job = batchJobService.createPostsJob(jobRepository, step)
 

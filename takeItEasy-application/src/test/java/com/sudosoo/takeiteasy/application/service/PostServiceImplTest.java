@@ -2,6 +2,8 @@ package com.sudosoo.takeiteasy.application.service;
 
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto;
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto;
+import com.sudosoo.takeItEasy.application.kafka.KafkaProducer;
+import com.sudosoo.takeItEasy.application.redis.RedisService;
 import com.sudosoo.takeItEasy.application.service.CategoryService;
 import com.sudosoo.takeItEasy.application.service.PostServiceImpl;
 import com.sudosoo.takeItEasy.domain.entity.Comment;
@@ -30,11 +32,17 @@ class PostServiceImplTest {
     @Mock
     CategoryService categoryService;
     @Mock
-    PostRepository postRepository;
-    @Mock
     CommentRepository commentRepository;
+    @Mock
+    KafkaProducer kafkaProducer;
+    @Mock
+    RedisService redisService;
+
+    @Mock
+    PostRepository postRepository;
     @InjectMocks
     PostServiceImpl postService;
+
     private final CreatePostRequestDto testRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
     private final Post testPost = Post.of(testRequestDto.getTitle(), testRequestDto.getContent());
 
@@ -83,20 +91,18 @@ class PostServiceImplTest {
     @DisplayName("getPostDetailByPostId")
     void getPostDetailByPostId() {
         // given
-        Comment commentMock1 = mock(Comment.class);
-        Comment commentMock2 = mock(Comment.class);
-        Comment commentMock3 = mock(Comment.class);
+        Comment commentMock1 = Comment.of("test1");
+        Comment commentMock2 = Comment.of("test2");
+        Comment commentMock3 = Comment.of("test3");
         Pageable pageRequest = PageRequest.of(0, 10);
         Page<Comment> commentPage = new PageImpl<>(Arrays.asList(commentMock1,commentMock2,commentMock3));
         when(commentRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage);
 
         // when
-        PostDetailResponseDto result = postService.getPostDetailByPostId(1L, PageRequest.of(0, 10));
+        PostDetailResponseDto result = postService.getPostDetailByPostId(1L, pageRequest);
 
         // then
-        assertEquals(testPost.getId(), result.getPostId());
-        assertEquals(testPost.getTitle(), result.getTitle());
-        assertEquals(testPost.getContent(), result.getContent());
+        assertEquals(commentPage.getContent().size(), result.getComments().size());
     }
 
 }

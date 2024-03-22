@@ -31,11 +31,13 @@ class BatchJobService(
     }
 
 
-    fun createPostsStep(jobRepository: JobRepository, reader: ItemReader<Post>, writer: ItemWriter<Post>, processor: ItemProcessor<Post, Post>?): Step {
+    fun createPostsStep(jobRepository: JobRepository,
+                        reader: ItemReader<Post>,
+                        writer: ItemWriter<Post>): Step
+    {
         return StepBuilder("createPostsStep",jobRepository)
             .chunk<Post, Post>(10000,transactionManager)
             .reader(reader)
-            .processor(processor)
             .writer(writer)
             .build()
     }

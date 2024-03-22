@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.support.aspect.notice
+package com.sudosoo.takeItEasy.aop.notice
 
 interface NotifyInfo {
     fun getReceiverName(): String

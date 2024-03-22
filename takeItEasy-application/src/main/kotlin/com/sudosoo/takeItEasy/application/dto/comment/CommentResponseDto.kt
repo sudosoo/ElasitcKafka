@@ -9,7 +9,7 @@ class CommentResponseDto(
     val content: String,
     val likeCount: Int
 ){
-    constructor(comment: Comment) : this(
+    constructor(comment: Comment) : this (
         commentId = comment.id,
         writerName = comment.writerName,
         content = comment.content,

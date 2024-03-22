@@ -27,9 +27,10 @@ class PostServiceImpl(
     val categoryService: CategoryService,
     val commentRepository: CommentRepository,
     val kafkaProducer: KafkaProducer,
-    val objectMapper: ObjectMapper,
     val redisService: RedisService
 ) : PostService {
+    val objectMapper = ObjectMapper()
+
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
         try {
@@ -83,9 +84,9 @@ class PostServiceImpl(
         post.incrementViewCount()
 
         val comments: Page<Comment> = commentRepository.findCommentsByPostId(postId, pageRequest)
-        //TODO MemberSetting 각 코멘트의 유저 이름을 찾아와서 넣어주기
-        val responseCommentDtos: MutableList<CommentResponseDto> =
+        val responseCommentDtos : MutableList<CommentResponseDto> =
             comments.stream().map{ o -> CommentResponseDto(o) }.toList()
+
         return PostDetailResponseDto(post,responseCommentDtos)
     }
 

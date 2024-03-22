@@ -1,8 +1,10 @@
 rootProject.name = "takeItEasy"
 
 include(
-    "takeItEasy-support","takeItEasy-domain",
-    "takeItEasy-presentation","takeItEasy-application",
+    "takeItEasy-aop",
+    "takeItEasy-domain",
+    "takeItEasy-presentation",
+    "takeItEasy-application",
     "takeItEasy-batch","boot")
 
 pluginManagement {

@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.support.aspect.logging
+package com.sudosoo.takeItEasy.aop.logging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletRequest

@@ -10,8 +10,9 @@ tasks {
     }
 }
 dependencies {
-//    implementation(project(":takeItEasy-support"))
     api(project(":takeItEasy-presentation"))
+    implementation(project(":takeItEasy-aop"))
+
     implementation("org.springframework.boot:spring-boot-starter")
     
     implementation("org.springframework.boot:spring-boot-starter-web")
