@@ -1,6 +1,7 @@
 package com.sudosoo.takeItEasy.application.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CommentResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.KafkaResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDto
@@ -13,6 +14,7 @@ import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,8 +30,9 @@ class PostServiceImpl(
     val commentRepository: CommentRepository,
     val kafkaProducer: KafkaProducer,
     val redisService: RedisService
-) : PostService {
+) : PostService ,JpaService<Post, Long>{
     val objectMapper = ObjectMapper()
+    override fun getJpaRepository(): PostRepository = postRepository
 
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
@@ -41,7 +44,7 @@ class PostServiceImpl(
         } catch (e: InterruptedException) {
             e.stackTrace
         } catch (e: IOException) {
-            e.getStackTrace()
+            e.stackTrace
         }
         requireNotNull(kafkaResponseDto) { "kafka reply error" }
 
@@ -63,19 +66,13 @@ class PostServiceImpl(
         val post: Post = Post.of(requestDto.title, requestDto.memberName)
         val category = categoryService.getById(requestDto.categoryId)
         post.setCategory(category)
-        val result: Post = postRepository.save<Post>(post)
+        val result = save(post)
         return TestPostResponseDto(result)
     }
 
 
     override fun getByPostId(postId: Long): Post {
-        return postRepository.findById(postId)
-            .orElseThrow<IllegalArgumentException>(Supplier {
-                IllegalArgumentException(
-                    "Could not found post id : $postId"
-                )
-            })
-    }
+        return findById(postId) }
 
     @Transactional(readOnly = true)
     override fun getPostDetailByPostId(postId: Long, pageRequest: Pageable): PostDetailResponseDto {
@@ -98,8 +95,8 @@ class PostServiceImpl(
     }
 
 
-    override fun getPaginationPost(pageable: Pageable): List<PostTitleOnlyResponseDto> {
-        return postRepository.findAll(pageable).map { o -> PostTitleOnlyResponseDto(o) }.toList()
+    override fun getPaginationPost(pageRequest: PageRequest): List<PostTitleOnlyResponseDto> {
+        return findAllPagination(pageRequest).map { o -> PostTitleOnlyResponseDto(o) }.toList()
     }
 
     override fun createBatchPosts(count: Int): Post {

@@ -1,5 +1,7 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.repository.BaseRepository
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
@@ -10,6 +12,7 @@ import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,7 +21,10 @@ import org.springframework.transaction.annotation.Transactional
 class CategoryServiceImpl(
     val categoryRepository : CategoryRepository,
     val postRepository : PostRepository
-) : CategoryService {
+) : CategoryService,JpaService<Category,Long> {
+    override fun getJpaRepository(): JpaRepository<Category, Long> = categoryRepository
+
+
     override fun create(requestDto: CreateCategoryRequestDto): Category {
         val category = Category.of(requestDto.categoryName)
 
@@ -40,4 +46,5 @@ class CategoryServiceImpl(
 
         return CategoryResponseDto(category, PageImpl(responsePosts))
     }
+
 }

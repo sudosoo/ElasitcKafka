@@ -1,11 +1,13 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -16,11 +18,11 @@ import java.util.function.Supplier
 class EventServiceImpl (
     val eventRepository: EventRepository,
     val couponService: CouponService
-) :EventService {
+) :EventService , JpaService<Event, Long>{
 
-    override fun createdEvent(requestDto: CreateEventRequestDto): EventResponseDto {
+    override fun getJpaRepository(): JpaRepository<Event, Long> = eventRepository
+    override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
         validateDiscountFields(requestDto)
-        val eventDeadLine = LocalDateTime.parse(requestDto.eventDeadline)
 
         val coupon: Coupon = if (requestDto.discountRate !== 0) {
             //할인율 적용 쿠폰일때
@@ -31,14 +33,14 @@ class EventServiceImpl (
         }
 
         val event = Event.of(requestDto.eventName,requestDto.couponQuantity, requestDto.eventDeadline, coupon)
-        eventRepository.save<Event>(event)
+        save(event)
         return EventResponseDto(event.id, coupon.id)
     }
 
     @Transactional(timeout = 5)
     override fun couponIssuance(requestDto: CouponIssuanceRequestDto) {
         val event: Event = eventRepository.findByEventIdForUpdate(requestDto.eventId)
-            .orElseThrow<IllegalArgumentException>(Supplier { IllegalArgumentException("Event is not found") })
+            .orElseThrow { IllegalArgumentException("Event is not found") }
         //TODO MemberSetting
         val memberId: Long = requestDto.memberId
         /* 이벤트 종료 시점은 프론트 or 앞단에서 처리 해 준다.
@@ -48,7 +50,7 @@ class EventServiceImpl (
         */
         event.decreaseCouponQuantity()
         event.setMember(memberId)
-        eventRepository.save<Event>(event)
+        save<Event>(event)
     }
 
     companion object {

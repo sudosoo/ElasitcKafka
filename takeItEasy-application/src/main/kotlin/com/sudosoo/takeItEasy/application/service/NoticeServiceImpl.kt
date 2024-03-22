@@ -16,7 +16,7 @@ import java.io.IOException
 class NoticeServiceImpl(
     private val noticeRepository: NoticeRepository,
     private val emitterRepository: EmitterRepository
-) : NoticeService {
+) : NoticeService{
 
     companion object {
         private const val DEFAULT_TIMEOUT = 60L * 1000 * 60

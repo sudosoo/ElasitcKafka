@@ -1,5 +1,6 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Message
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
@@ -12,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional
 class MessageServiceImpl(
     val kafkaProducer: KafkaProducer,
     val messageRepository: MessageRepository
-) : com.sudosoo.takeItEasy.application.service.MessageService {
+) :MessageService, JpaService<Message, Long> {
+
+    override fun getJpaRepository() = messageRepository
 
     override fun send(requestDto: MessageSendRequestDto) {
         //TODO MemberSetting
@@ -26,6 +29,6 @@ class MessageServiceImpl(
             .build()
         //TODO MemberSetting 유저이름 넣기
         kafkaProducer.sendNotice(receiverId.toString(), message.content)
-        messageRepository.save<Message>(message)
+        save<Message>(message)
     }
 }

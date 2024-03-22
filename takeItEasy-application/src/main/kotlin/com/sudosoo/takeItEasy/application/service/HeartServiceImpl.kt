@@ -1,5 +1,6 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Comment
@@ -15,7 +16,9 @@ class HeartServiceImpl(
     val heartRepository: HeartRepository,
     val postService: PostService,
     val commentService: CommentService
-) : HeartService {
+) : HeartService , JpaService<Heart, Long> {
+    override fun getJpaRepository(): HeartRepository = heartRepository
+
     override fun createPostHeart(requestDto: PostHeartRequestDto): Heart {
         //TODO MemberSetting
         val memberId: Long = requestDto.memberId
@@ -24,7 +27,7 @@ class HeartServiceImpl(
         require(!heartRepository.existsByMemberIdAndPost(memberId, post)) { "Duplicated Like !" }
         val heart: Heart = Heart.getPostHeart(post, memberId)
 
-        return heartRepository.save<Heart>(heart)
+        return save<Heart>(heart)
     }
 
     override fun createCommentHeart(requestDto: CommentHeartRequestDto): Heart {
@@ -35,7 +38,7 @@ class HeartServiceImpl(
         require(!heartRepository.existsByMemberIdAndComment(memberId, comment)) { "Duplicated Like !" }
         val heart: Heart = Heart.getCommentHeart(comment, memberId)
 
-        return heartRepository.save<Heart>(heart)
+        return save<Heart>(heart)
     }
 
 
@@ -47,7 +50,7 @@ class HeartServiceImpl(
 
         heart.unHeartPost()
 
-        heartRepository.delete(heart)
+        deleteById(heart.id)
     }
 
     override fun commentDisHeart(requestDto: CommentHeartRequestDto) {
@@ -58,7 +61,7 @@ class HeartServiceImpl(
 
         heart.unHeartComment()
 
-        heartRepository.delete(heart)
+        deleteById(heart.id)
     }
 
     private fun findHeartByMemberAndPostOrComment(memberId: Long, reference: Any): Heart {

@@ -1,11 +1,14 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
+import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional
 class CommentServiceImpl(
     val commentRepository: CommentRepository,
     val postService: PostService
-) : CommentService {
+) : CommentService, JpaService<Comment, Long>{
+
+    override fun getJpaRepository(): JpaRepository<Comment, Long> = commentRepository
 
     override fun create(createCommentRequestDto: CreateCommentRequestDto): Comment {
         //TODO MemberSetting
@@ -24,12 +29,11 @@ class CommentServiceImpl(
         comment.post = post
         comment.setMember(memberId)
 
-        return commentRepository.save(comment)
+        return save(comment)
     }
 
     override fun getByCommentId(commentId: Long): Comment {
-        return commentRepository.findById(commentId)
-            .orElseThrow{ IllegalArgumentException("Could not found comment id : $commentId") }
+        return findById(commentId)
     }
 
     override fun getCommentPaginationByPostId(postId: Long, pageRequest: Pageable): Page<Comment> {

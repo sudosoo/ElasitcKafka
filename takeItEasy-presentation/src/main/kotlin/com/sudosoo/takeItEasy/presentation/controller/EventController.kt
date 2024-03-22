@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class EventController(val eventService: EventService) {
     @PostMapping("/create", name = "createEvent")
     fun createEvent(@RequestBody @Valid requestDto: CreateEventRequestDto): ResponseEntity<EventResponseDto> {
-        return ResponseEntity.ok(eventService.createdEvent(requestDto))
+        return ResponseEntity.ok(eventService.create(requestDto))
     }
 
     @PostMapping("/couponIssuance", name = "couponIssuance")

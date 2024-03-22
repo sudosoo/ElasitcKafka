@@ -50,7 +50,7 @@ class PostController(val postService: PostService) {
     ): ResponseEntity<List<PostTitleOnlyResponseDto>> {
         var pageNo = pageNo
         pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
-        val pageRequest: Pageable = PageRequest.of(pageNo, 10)
+        val pageRequest: PageRequest = PageRequest.of(pageNo, 10)
 
         return ResponseEntity(postService.getPaginationPost(pageRequest), HttpStatus.OK)
     }
