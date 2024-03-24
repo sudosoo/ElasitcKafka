@@ -26,7 +26,7 @@ class CategoryServiceImpl(
 
 
     override fun create(requestDto: CreateCategoryRequestDto): Category {
-        val category = Category.of(requestDto.categoryName)
+        val category = Category(requestDto.categoryName)
 
         return categoryRepository.save<Category>(category)
     }

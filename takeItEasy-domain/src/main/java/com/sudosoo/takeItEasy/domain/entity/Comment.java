@@ -23,7 +23,8 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<Heart> hearts = new ArrayList<>();
 
-    private Comment(String content, Long memberId, String writerName, Post post, List<Heart> hearts) {
+    public Comment(Long id , String content, Long memberId, String writerName, Post post, List<Heart> hearts) {
+        this.id = id;
         this.content = content;
         this.memberId = memberId;
         this.writerName = writerName;
@@ -31,29 +32,30 @@ public class Comment {
         this.hearts = hearts;
     }
 
-    protected Comment() {
+    public Comment(Long id, String content, String writerName) {
+        this.id = id;
+        this.content = content;
+        this.writerName = writerName;
     }
 
-
-    public static Comment of(String content) {
-        return Comment.builder()
-                .content(content)
-                .build();
+    public Comment(String content) {
+        this.content = content;
     }
 
-    public static CommentBuilder builder() {
-        return new CommentBuilder();
-    }
-
-    public void setMember(Long memberId) {
-        this.memberId = memberId;
-    }
+    protected Comment() {}
 
     public void setPost(Post post) {
         this.post = post;
         post.getComments().add(this);
     }
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
 
+    public void setHearts(Heart heart) {
+        this.hearts.add(heart);
+        heart.setComment(this);
+    }
 
     public Long getId() {
         return this.id;
@@ -128,47 +130,6 @@ public class Comment {
         return result;
     }
 
-    public static class CommentBuilder {
-        private String content;
-        private Long memberId;
-        private String writerName;
-        private Post post;
-        private List<Heart> hearts;
 
-        CommentBuilder() {
-        }
 
-        public CommentBuilder content(String content) {
-            this.content = content;
-            return this;
-        }
-
-        public CommentBuilder memberId(Long memberId) {
-            this.memberId = memberId;
-            return this;
-        }
-
-        public CommentBuilder writerName(String writerName) {
-            this.writerName = writerName;
-            return this;
-        }
-
-        public CommentBuilder post(Post post) {
-            this.post = post;
-            return this;
-        }
-
-        public CommentBuilder hearts(List<Heart> hearts) {
-            this.hearts = hearts;
-            return this;
-        }
-
-        public Comment build() {
-            return new Comment(this.content, this.memberId, this.writerName, this.post, this.hearts);
-        }
-
-        public String toString() {
-            return "Comment.CommentBuilder(content=" + this.content + ", memberId=" + this.memberId + ", writerName=" + this.writerName + ", post=" + this.post + ", hearts=" + this.hearts + ")";
-        }
-    }
 }
