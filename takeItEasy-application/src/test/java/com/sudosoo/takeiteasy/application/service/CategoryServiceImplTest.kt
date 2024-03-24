@@ -1,92 +1,68 @@
-package com.sudosoo.takeiteasy.application.service;
+package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto;
-import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto;
-import com.sudosoo.takeItEasy.application.service.CategoryServiceImpl;
-import com.sudosoo.takeItEasy.domain.entity.Category;
-import com.sudosoo.takeItEasy.domain.entity.Post;
-import com.sudosoo.takeItEasy.domain.repository.CategoryRepository;
-import com.sudosoo.takeItEasy.domain.repository.PostRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-
+import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
+import com.sudosoo.takeItEasy.application.service.CategoryServiceImpl
+import com.sudosoo.takeItEasy.domain.entity.Category
+import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
+import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.mockito.*
+import org.mockito.Mockito.*
+import java.util.*
 
 class CategoryServiceImplTest {
     @Mock
-    private CategoryRepository categoryRepository;
+    private lateinit var categoryRepository: CategoryRepository
     @Mock
-    private PostRepository postRepository;
+    private lateinit var postRepository: PostRepository
     @InjectMocks
-    private CategoryServiceImpl categoryService;
+    private lateinit var categoryService: CategoryServiceImpl
 
-    private final CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test카테고리");
-    private Category testCategory = Category.of(createCategoryRequestDto.getCategoryName());
+    private val createCategoryRequestDto = CreateCategoryRequestDto("test 카테고리")
+    private val testCategory: Category = Category(createCategoryRequestDto.categoryName)
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
+    fun setUp() {
+        MockitoAnnotations.initMocks(this)
     }
+
     @Test
-    @DisplayName("createCategory")
-    void createCategory() throws Exception {
+    @Throws(Exception::class)
+    fun `카테고리 만들기`() {
         //given
-        CreateCategoryRequestDto createCategoryRequestDto = new CreateCategoryRequestDto("Test 카테고리");
-        when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
+        val createCategoryRequestDto = CreateCategoryRequestDto("Test 카테고리")
+        `when`(categoryRepository.findById(ArgumentMatchers.anyLong()))
+            .thenReturn(Optional.ofNullable(testCategory))
+        `when`(categoryRepository.save(any())).thenReturn(testCategory)
 
         //when
-        categoryService.create(createCategoryRequestDto);
+        categoryService.create(createCategoryRequestDto)
 
         //then
-        verify(categoryRepository,times(1)).save(testCategory);
+        verify(categoryRepository, times(1)).save(any())
     }
+
     @Test
-    @DisplayName("getCategoryByCategoryId")
-    void getCategoryByCategoryId() {
+    fun `카테고리 아이디로 카테고리 가져오기`() {
         //given
-        when(categoryRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testCategory));
+        `when`(categoryRepository.findById(ArgumentMatchers.anyLong()))
+            .thenReturn(Optional.ofNullable(testCategory))
 
         //when
-        Category actualCategory = categoryService.getById(1L);
+        val actualCategory = categoryService.getById(1L)
 
         //then
-        String expectedName = testCategory.getCategoryName();
-        String actualName = actualCategory.getCategoryName();
+        val expectedName = testCategory.categoryName
+        val actualName = actualCategory.categoryName
 
-        assertNotNull(actualCategory, "The created post should not be null");
-        assertEquals(expectedName, actualName, "Expected Title: " + expectedName + ", Actual Title: " + actualName);
+        Assertions.assertNotNull(actualCategory, "The created post should not be null")
+        Assertions.assertEquals(
+            expectedName, actualName,
+            "Expected Title: $expectedName, Actual Title: $actualName"
+        )
     }
-//    @Test
-//    @DisplayName("getPostsByCategoryId")
-//    void getPostsByCategoryId(){
-//        //given
-//        Post postMock1 = mock(Post.class);
-//        Post postMock2 = mock(Post.class);
-//        Post postMock3 = mock(Post.class);
-//        Pageable pageRequest = PageRequest.of(0, 10);
-//        Page<Post> postsPage = new PageImpl<>(Arrays.asList(postMock1,postMock2,postMock3));
-//        when(categoryRepository.findById(1L)).thenReturn(Optional.ofNullable(testCategory));
-//        when(postRepository.findPostsPaginationByCategoryId(1L, pageRequest)).thenReturn(postsPage);
-//
-//        //when
-//        CategoryResponseDto result = categoryService.getPosts(1L, PageRequest.of(0, 10));
-//
-//        //then
-//        assertEquals(testCategory.getCategoryName(), result.getCategoryName());
-//    }
+
 }

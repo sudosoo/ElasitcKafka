@@ -25,7 +25,7 @@ class HeartServiceImpl(
         val post: Post = postService.getByPostId(requestDto.postId)
 
         require(!heartRepository.existsByMemberIdAndPost(memberId, post)) { "Duplicated Like !" }
-        val heart: Heart = Heart.getPostHeart(post, memberId)
+        val heart = getPostHeart(memberId,post)
 
         return save<Heart>(heart)
     }
@@ -36,7 +36,7 @@ class HeartServiceImpl(
         val comment = commentService.getByCommentId(requestDto.commentId)
 
         require(!heartRepository.existsByMemberIdAndComment(memberId, comment)) { "Duplicated Like !" }
-        val heart: Heart = Heart.getCommentHeart(comment, memberId)
+        val heart = getCommentHeart(memberId,comment)
 
         return save<Heart>(heart)
     }
@@ -78,7 +78,7 @@ class HeartServiceImpl(
         }
     }
 
-    private fun getPostHeart(memberId: Long, p: Post?): Heart {
+    private fun getPostHeart(memberId: Long, p: Post): Heart {
         return heartRepository.findByMemberIdAndPost(memberId, p)
             .orElseThrow{ IllegalArgumentException("Could not find PostHeart id") }
     }

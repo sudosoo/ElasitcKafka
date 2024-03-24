@@ -1,68 +1,65 @@
-package com.sudosoo.takeiteasy.application.service;
+package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto;
-import com.sudosoo.takeItEasy.application.service.CommentServiceImpl;
-import com.sudosoo.takeItEasy.application.service.PostService;
-import com.sudosoo.takeItEasy.domain.entity.Comment;
-import com.sudosoo.takeItEasy.domain.entity.Post;
-import com.sudosoo.takeItEasy.domain.repository.CommentRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
+import com.sudosoo.takeItEasy.application.service.CommentServiceImpl
+import com.sudosoo.takeItEasy.application.service.PostService
+import com.sudosoo.takeItEasy.domain.entity.Comment
+import com.sudosoo.takeItEasy.domain.entity.Post
+import com.sudosoo.takeItEasy.domain.repository.CommentRepository
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.mockito.*
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.Mockito.*
+import java.util.*
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-
-class CommentServiceImplTest {
-
+internal class CommentServiceImplTest {
     @Mock
-    private CommentRepository commentRepository;
+    lateinit var commentRepository: CommentRepository
     @Mock
-    private PostService postService;
+    lateinit var postService: PostService
     @InjectMocks
-    private CommentServiceImpl commentService;
-    private final CreateCommentRequestDto createCommentRequestDto = new CreateCommentRequestDto(1L,1L,"TestContent");
-    private Comment testComment = Comment.of(createCommentRequestDto.getContent());
+    lateinit var commentService: CommentServiceImpl
+
+    private val createCommentRequestDto = CreateCommentRequestDto(1L, 1L, "TestContent")
+    private val testComment = Comment(createCommentRequestDto.content)
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        Post mockPost = mock(Post.class);
-        when(postService.getByPostId(anyLong())).thenReturn(mockPost);
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        val mockPost = mock(Post::class.java)
+        `when`(postService.getByPostId(anyLong())).thenReturn(mockPost)
     }
 
     @Test
     @DisplayName("createdComment")
-    void createComment() {
+    fun `코멘트 만들기`() {
         //given
-        when(commentRepository.save(any())).thenReturn(testComment);
+        `when`<Any>(commentRepository.save(ArgumentMatchers.any())).thenReturn(testComment)
 
         //when
-        Comment resultComment = commentService.create(createCommentRequestDto);
+        commentService.create(createCommentRequestDto)
 
         //then
-        verify(commentRepository,times(1)).save(any(Comment.class));
+        verify(commentRepository, times(1)).save(any())
+
     }
 
     @Test
-    void getCommentByCommentId() {
-        //given
-        when(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment));
+    fun `코멘트 아이디로 코멘트 가져오기`() {
+        // given
+        `when`(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment))
 
-        //when
-        Comment resultComment = commentService.getByCommentId(1L);
+        // when
+        val resultComment = commentService.getByCommentId(1L)
 
-        //then
-        String expectedCommentContent = createCommentRequestDto.getContent();
-        String actualCommentContent = resultComment.getContent();
+        // then
+        val expectedCommentContent = createCommentRequestDto.content
+        val actualCommentContent = resultComment.content
 
-        verify(commentRepository,times(1)).findById(any());
-        assertEquals(expectedCommentContent, actualCommentContent, "Expected Comment Content: " + expectedCommentContent + ", Actual Comment Content: " + actualCommentContent);
+        verify(commentRepository, times(1)).findById(any())
+        assertThat(actualCommentContent.equals(expectedCommentContent))
     }
 }

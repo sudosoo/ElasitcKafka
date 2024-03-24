@@ -1,115 +1,105 @@
-package com.sudosoo.takeiteasy.application.service;
+package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto;
-import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto;
-import com.sudosoo.takeItEasy.application.service.CommentService;
-import com.sudosoo.takeItEasy.application.service.HeartServiceImpl;
-import com.sudosoo.takeItEasy.application.service.PostService;
-import com.sudosoo.takeItEasy.domain.entity.Comment;
-import com.sudosoo.takeItEasy.domain.entity.Heart;
-import com.sudosoo.takeItEasy.domain.entity.Post;
-import com.sudosoo.takeItEasy.domain.repository.HeartRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.util.Optional;
-
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
+import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
+import com.sudosoo.takeItEasy.application.service.CommentService
+import com.sudosoo.takeItEasy.application.service.HeartServiceImpl
+import com.sudosoo.takeItEasy.application.service.PostService
+import com.sudosoo.takeItEasy.domain.entity.*
+import com.sudosoo.takeItEasy.domain.repository.HeartRepository
+import org.hibernate.validator.internal.util.Contracts.assertNotNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.MockitoAnnotations
+import java.util.*
 
 class HeartServiceImplTest {
     @Mock
-    HeartRepository heartRepository;
+    lateinit var heartRepository: HeartRepository
     @Mock
-    PostService postService;
+    lateinit var postService: PostService
     @Mock
-    CommentService commentService;
+    lateinit var commentService: CommentService
     @InjectMocks
-    HeartServiceImpl heartService;
-    Long testMemberId = 1L;
+    lateinit var heartService: HeartServiceImpl
+
+    private val testCategory = Category("카테고리")
+    private val testPost = Post(1L, "제목", "내용", testCategory, 1L, "작성자", 0, mutableListOf())
+    private val testComment = Comment(1L, "내용", 1L, "작성자",testPost, mutableListOf())
+    val testCommentHeart = Heart(1L,1L,testPost, testComment, HeartType.COMMENT)
+    val testPostHeart = Heart(1L,1L,testPost, testComment, HeartType.POST)
 
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
 
-        Post mockPost = mock(Post.class);
-        when(postService.getByPostId(anyLong())).thenReturn(mockPost);
-        Comment mockComment = mock(Comment.class);
-        when(commentService.getByCommentId(anyLong())).thenReturn(mockComment);
+        `when`(postService.getByPostId(anyLong())).thenReturn(testPost)
+        `when`(commentService.getByCommentId(anyLong())).thenReturn(testComment)
     }
 
     @Test
-    @DisplayName("createdPostHeart")
-    void createdPostHeart(){
+    fun `게시판 하트 만들기`() {
         //given
-        PostHeartRequestDto postHeartRequestDto = new PostHeartRequestDto(1L,1L);
+        val postHeartRequestDto = PostHeartRequestDto(1L, 1L)
+        `when`(heartRepository.save(any())).thenReturn(testPostHeart)
+        `when`(heartRepository.existsByMemberIdAndPost(anyLong(), any())).thenReturn(false)
+        `when`(heartRepository.findByMemberIdAndPost(anyLong(), any())).thenReturn(Optional.ofNullable(testPostHeart))
 
-        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mock(Post.class), anyLong()));
-        when(heartRepository.existsByMemberIdAndPost(anyLong(),mock(Post.class)))
-                .thenReturn(false);
         //when
-        Heart heart = heartService.createPostHeart(postHeartRequestDto);
+        val heart = heartService.createPostHeart(postHeartRequestDto)
 
         //then
-        assertNotNull(heart, "The actual heart should not be null");
-        assertDoesNotThrow(() -> heartService.createPostHeart(postHeartRequestDto));
-    }
-
-
-    @Test
-    @DisplayName("createCommentHeart")
-    void createCommentHeart() throws Exception {
-        //given
-        final CommentHeartRequestDto commentHeartRequestDto = new CommentHeartRequestDto(1L,1L);
-        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mock(Comment.class),anyLong()));
-        when(heartRepository.existsByMemberIdAndComment(anyLong(),mock(Comment.class)))
-                .thenReturn(false);
-        //when
-        Heart heart = heartService.createCommentHeart(commentHeartRequestDto);
-
-        //then
-        assertNotNull(heart, "The actual heart should not be null");
+        assertNotNull(heart, "The actual heart should not be null")
     }
 
     @Test
-    @DisplayName("postDisHeart")
-    void postDisHeart() throws Exception {
+    fun `코멘트 하트 만들기`() {
         //given
-        PostHeartRequestDto postHeartRequestDto = new PostHeartRequestDto(1L,1L);
-        Post mockPost = mock(Post.class);
-        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getPostHeart(mockPost,testMemberId));
-        when(heartRepository.findByMemberIdAndPost(anyLong(), any(Post.class)))
-                .thenReturn(Optional.ofNullable(Heart.getPostHeart(mockPost, testMemberId)));
-
+        val commentHeartRequestDto = CommentHeartRequestDto(1L, 1L)
+        `when`(heartRepository.save(any())).thenReturn(testCommentHeart)
+        `when`(heartRepository.existsByMemberIdAndComment(anyLong(), any())).thenReturn(false)
+        `when`(heartRepository.findByMemberIdAndComment(1L, testComment)).thenReturn(Optional.ofNullable(testCommentHeart))
         //when
-        assertDoesNotThrow(() -> heartService.postDisHeart(postHeartRequestDto));
+        val heart = heartService.createCommentHeart(commentHeartRequestDto)
 
         //then
-        verify(heartRepository, times(1)).delete(any(Heart.class));
+        assertNotNull(heart, "The actual heart should not be null")
     }
 
     @Test
-    @DisplayName("commentDisHeart")
-    void commentDisHeart() throws Exception {
+    fun `게시판 하트 지우기`() {
         //given
-        final CommentHeartRequestDto commentHeartRequestDto = new CommentHeartRequestDto(1L,1L);
-        Comment mockComment = mock(Comment.class);
-        when(heartRepository.save(any(Heart.class))).thenReturn(Heart.getCommentHeart(mockComment,testMemberId));
-        when(heartRepository.findByMemberIdAndComment(anyLong(),any(Comment.class)))
-                .thenReturn(Optional.ofNullable(Heart.getCommentHeart(mockComment, testMemberId)));
-
+        val postHeartRequestDto = PostHeartRequestDto(1L, 1L)
+        `when`(heartRepository.save(any(Heart::class.java))).thenReturn(testPostHeart)
+        `when`(heartRepository.findByMemberIdAndPost(anyLong(), any()))
+            .thenReturn(Optional.ofNullable(testPostHeart))
         //when
-        assertDoesNotThrow(() -> heartService.commentDisHeart(commentHeartRequestDto));
+        assertDoesNotThrow { heartService.postDisHeart(postHeartRequestDto) }
 
         //then
-        verify(heartRepository, times(1)).delete(any(Heart.class));
+        verify(heartRepository, times(1)).deleteById(anyLong())
+    }
+
+    @Test
+    fun `코멘트 하트 지우기`() {
+        //given
+        val commentHeartRequestDto = CommentHeartRequestDto(1L, 1L)
+
+        `when`(heartRepository.save(any(Heart::class.java))).thenReturn(testCommentHeart)
+        `when`(heartRepository.findByMemberIdAndComment(anyLong(), any(Comment::class.java)))
+            .thenReturn(Optional.ofNullable(testCommentHeart))
+
+        //when
+        assertDoesNotThrow { heartService.commentDisHeart(commentHeartRequestDto) }
+
+        //then
+        verify(heartRepository, times(1)).deleteById(anyLong())
     }
 }

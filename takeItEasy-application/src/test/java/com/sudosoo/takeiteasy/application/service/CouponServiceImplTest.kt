@@ -1,64 +1,72 @@
-package com.sudosoo.takeiteasy.application.service;
+package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto;
-import com.sudosoo.takeItEasy.application.service.CouponServiceImpl;
-import com.sudosoo.takeItEasy.domain.entity.Coupon;
-import com.sudosoo.takeItEasy.domain.repository.CouponRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
-class CouponServiceImplTest {
-
+import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
+import com.sudosoo.takeItEasy.application.service.CouponServiceImpl
+import com.sudosoo.takeItEasy.domain.entity.Coupon
+import com.sudosoo.takeItEasy.domain.repository.CouponRepository
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.*
+import org.mockito.MockitoAnnotations
+import java.time.LocalDateTime
+class CouponServiceImplTest{
     @Mock
-    CouponRepository couponRepository;
-
+    lateinit var couponRepository: CouponRepository
     @InjectMocks
-    CouponServiceImpl couponService;
+    lateinit var couponService: CouponServiceImpl
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
     }
 
     @Test
-    @DisplayName("priceCouponCreate")
-    void priceCouponCreate() throws Exception {
-        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,10000L,null);
-        Coupon testCoupon = Coupon.priceOf(requestDto.getEventName(), requestDto.getCouponDeadline(), requestDto.getDiscountPrice());
-        when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
+    @Throws(Exception::class)
+    fun `가격할인 쿠폰 만들기`() {
+        val requestDto = CreateEventRequestDto(
+            "TestEvent",
+            LocalDateTime.now().toString(),
+            LocalDateTime.now().toString(),
+            10,
+            10000L,
+            null
+        )
+        val testCoupon = Coupon.priceOf(requestDto.eventName, requestDto.couponDeadline, requestDto.discountPrice!!)
+        `when`(couponRepository.save(testCoupon)).thenReturn(testCoupon)
 
         // When
-        Coupon createdCoupon = couponService.priceCouponCreate(requestDto);
+        val createdCoupon = couponService.priceCouponCreate(requestDto)
 
         // Then
-        assertEquals(testCoupon, createdCoupon);
-        verify(couponRepository,times(1)).save(createdCoupon);
+        assertThat(createdCoupon.equals(testCoupon))
+        verify(couponRepository, times(1)).save(createdCoupon)
     }
 
     @Test
-    @DisplayName("rateCouponCreate")
-    void rateCouponCreate() throws Exception {
-        //given
-        CreateEventRequestDto requestDto = new CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(),LocalDateTime.now().toString(),10,null,10);
-        Coupon testCoupon = Coupon.rateOf(requestDto.getEventName(), requestDto.getCouponDeadline(), requestDto.getDiscountRate());
-        when(couponRepository.save(testCoupon)).thenReturn(testCoupon);
+    @Throws(Exception::class)
+    fun `할인율 쿠폰 만들기 테스트`() {
+        val requestDto = CreateEventRequestDto(
+            "TestEvent",
+            LocalDateTime.now().toString(),
+            LocalDateTime.now().toString(),
+            10,
+            null,
+            10
+        )
+        val testCoupon = Coupon.rateOf(requestDto.eventName, requestDto.couponDeadline, requestDto.discountRate!!)
+        `when`(couponRepository.save(testCoupon)).thenReturn(testCoupon)
 
-        //when
-        Coupon createdCoupon = couponService.rateCouponCreate(requestDto);
+        // When
+        val createdCoupon = couponService.rateCouponCreate(requestDto)
 
-        //then
-        assertEquals(testCoupon, createdCoupon);
-        verify(couponRepository,times(1)).save(testCoupon);
+        // Then
+        assertThat(createdCoupon.equals(testCoupon))
+        verify(couponRepository, times(1)).save(createdCoupon)
     }
-
-
 }

@@ -1,108 +1,94 @@
-package com.sudosoo.takeiteasy.application.service;
+package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto;
-import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto;
-import com.sudosoo.takeItEasy.application.kafka.KafkaProducer;
-import com.sudosoo.takeItEasy.application.redis.RedisService;
-import com.sudosoo.takeItEasy.application.service.CategoryService;
-import com.sudosoo.takeItEasy.application.service.PostServiceImpl;
-import com.sudosoo.takeItEasy.domain.entity.Comment;
-import com.sudosoo.takeItEasy.domain.entity.Post;
-import com.sudosoo.takeItEasy.domain.repository.CommentRepository;
-import com.sudosoo.takeItEasy.domain.repository.PostRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
+import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
+import com.sudosoo.takeItEasy.application.redis.RedisService
+import com.sudosoo.takeItEasy.application.service.CategoryService
+import com.sudosoo.takeItEasy.application.service.PostServiceImpl
+import com.sudosoo.takeItEasy.domain.entity.Category
+import com.sudosoo.takeItEasy.domain.entity.Comment
+import com.sudosoo.takeItEasy.domain.entity.Heart
+import com.sudosoo.takeItEasy.domain.entity.Post
+import com.sudosoo.takeItEasy.domain.repository.CommentRepository
+import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import java.util.*
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
-
-class PostServiceImplTest {
+class PostServiceImplTest{
     @Mock
-    CategoryService categoryService;
-    @Mock
-    CommentRepository commentRepository;
-    @Mock
-    KafkaProducer kafkaProducer;
-    @Mock
-    RedisService redisService;
+    lateinit var categoryService: CategoryService
 
     @Mock
-    PostRepository postRepository;
+    lateinit var commentRepository: CommentRepository
+
+    @Mock
+    lateinit var kafkaProducer: KafkaProducer
+
+    @Mock
+    lateinit var redisService: RedisService
+
+    @Mock
+    lateinit var postRepository: PostRepository
+
     @InjectMocks
-    PostServiceImpl postService;
+    lateinit var postService: PostServiceImpl
 
-    private final CreatePostRequestDto testRequestDto = new CreatePostRequestDto("제목","내용",1L,1L);
-    private final Post testPost = Post.of(testRequestDto.getTitle(), testRequestDto.getContent());
+    val mockCategory = Category("카테고리")
+    private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, 1L)
+
+    private val resultPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
 
-        when(postRepository.save(any(Post.class))).thenReturn(testPost);
-        when(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testPost));
-    }
-//
-//    @Test
-//    @DisplayName("createPost")
-//    void createPost() {
-//        //given
-//        Category categoryMock = mock(Category.class);
-//        when(categoryService.getCategoryByCategoryId(anyLong())).thenReturn(categoryMock);
-//
-//        //when
-//        Post post = postService.create(testRequestDto);
-//
-//        //then
-//        String expectedTitle = testRequestDto.getTitle();
-//        String actualTitle = post.getTitle();
-//
-//        assertNotNull(post, "The created post should not be null");
-//        assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
-//    }
-
-    @Test
-    @DisplayName("getPostByPostId")
-    void getPostByPostId() {
-        //given
-        //when
-        Post testPost = postService.getByPostId(1L);
-
-        //then
-        String expectedTitle = testRequestDto.getTitle();
-        String actualTitle = testPost.getTitle();
-
-        assertNotNull(testPost, "The created post should not be null");
-        assertEquals(expectedTitle, actualTitle, "Expected Title: " + expectedTitle + ", Actual Title: " + actualTitle);
+        `when`(postRepository.save(any(Post::class.java))).thenReturn(resultPost)
+        `when`(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(resultPost))
     }
 
     @Test
-    @DisplayName("getPostDetailByPostId")
-    void getPostDetailByPostId() {
-        // given
-        Comment commentMock1 = Comment.of("test1");
-        Comment commentMock2 = Comment.of("test2");
-        Comment commentMock3 = Comment.of("test3");
-        Pageable pageRequest = PageRequest.of(0, 10);
-        Page<Comment> commentPage = new PageImpl<>(Arrays.asList(commentMock1,commentMock2,commentMock3));
-        when(commentRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage);
+    fun `게시글id로 게시글 가져오기`() {
+        val testPost = postService.getByPostId(1L)
 
-        // when
-        PostDetailResponseDto result = postService.getPostDetailByPostId(1L, pageRequest);
+        val expectedTitle = testRequestDto.title
+        val actualTitle = testPost.title
 
-        // then
-        assertEquals(commentPage.getContent().size(), result.getComments().size());
+        assertNotNull(testPost, "The created post should not be null")
+        assertEquals(expectedTitle, actualTitle, "Expected Title: $expectedTitle, Actual Title: $actualTitle")
     }
 
+    @Test
+    fun `게시글id로 게시글 상세 내용가져오기 `() {
+        val commentMock1 = Comment(1L, "testM1", "test1")
+        val commentMock2 = Comment(2L, "testM2", "test2")
+        val commentMock3 = Comment(3L, "testM3", "test3")
+        val heart1 = Heart.getCommentHeart( 1L,commentMock1)
+        val heart2 = Heart.getCommentHeart( 2L,commentMock2)
+        val heart3 = Heart.getCommentHeart( 1L,commentMock3)
+        commentMock1.setHearts(heart1)
+        commentMock1.setHearts(heart2)
+        commentMock1.setHearts(heart3)
+
+        val pageRequest: Pageable = PageRequest.of(0, 10)
+        val commentPage: Page<Comment> = PageImpl(listOf(commentMock1, commentMock2, commentMock3))
+        `when`(commentRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage)
+
+        val result = postService.getPostDetailByPostId(1L, pageRequest)
+
+        assertEquals(commentPage.content.size, result.comments.size)
+    }
 }

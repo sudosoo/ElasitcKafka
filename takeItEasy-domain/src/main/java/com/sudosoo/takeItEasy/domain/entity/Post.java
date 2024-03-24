@@ -37,7 +37,7 @@ public class Post {
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
 
-    private Post(Long id, String title, String content, Category category, Long memberId, String writerName, int viewCount, List<Heart> hearts) {
+    public Post(Long id, String title, String content, Category category, Long memberId, String writerName, int viewCount, List<Heart> hearts) {
         this.id = id;
         this.title = title;
         this.content = content;

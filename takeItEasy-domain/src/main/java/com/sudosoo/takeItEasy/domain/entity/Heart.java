@@ -1,5 +1,6 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -8,59 +9,59 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Nullable
     private Long id;
 
     private Long memberId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
+    @Nullable
     private Post post;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_id")
+    @Nullable
     private Comment comment;
 
     @Enumerated(EnumType.STRING)
     private HeartType heartType;
 
-    public Heart(Long memberId, Post post, Comment comment, HeartType heartType) {
+    public Heart(Long id, Long memberId, Post post, Comment comment, HeartType heartType) {
+        this.id = id;
         this.memberId = memberId;
         this.post = post;
         this.comment = comment;
         this.heartType = heartType;
     }
 
+    private Heart(Long memberId, Comment comment) {
+        this.memberId = memberId;
+        this.comment = comment;
+        this.heartType = HeartType.COMMENT;
+
+    }
+
+    private Heart(Long memberId, Post post) {
+        this.memberId = memberId;
+        this.post = post;
+        this.heartType = HeartType.POST;
+    }
+
+    public static Heart getPostHeart(Long memberId , Post post) {
+        return new Heart(memberId, post);
+    }
+
+    public static Heart getCommentHeart(Long memberId , Comment comment) {
+        return new Heart(memberId, comment);
+    }
+
     protected Heart() {
-    }
-
-    public static Heart getPostHeart(Post post, Long memberId) {
-        return Heart.builder()
-                .post(post)
-                .memberId(memberId)
-                .heartType(HeartType.POST)
-                .build();
-    }
-
-    public static Heart getCommentHeart(Comment comment, Long memberId) {
-        return Heart.builder()
-                .comment(comment)
-                .memberId(memberId)
-                .heartType(HeartType.COMMENT)
-                .build();
-    }
-
-    public static HeartBuilder builder() {
-        return new HeartBuilder();
     }
 
     public void setPost(Post post) {
         this.post = post;
         post.getHearts().add(this);
-    }
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
-        comment.getHearts().add(this);
     }
 
     public void unHeartPost() {
@@ -75,6 +76,10 @@ public class Heart {
             comment.getHearts().remove(this);
             comment = null;
         }
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 
     public Long getId() {
@@ -140,41 +145,4 @@ public class Heart {
         return result;
     }
 
-    public static class HeartBuilder {
-        private Long memberId;
-        private Post post;
-        private Comment comment;
-        private HeartType heartType;
-
-        HeartBuilder() {
-        }
-
-        public HeartBuilder memberId(Long memberId) {
-            this.memberId = memberId;
-            return this;
-        }
-
-        public HeartBuilder post(Post post) {
-            this.post = post;
-            return this;
-        }
-
-        public HeartBuilder comment(Comment comment) {
-            this.comment = comment;
-            return this;
-        }
-
-        public HeartBuilder heartType(HeartType heartType) {
-            this.heartType = heartType;
-            return this;
-        }
-
-        public Heart build() {
-            return new Heart(this.memberId, this.post, this.comment, this.heartType);
-        }
-
-        public String toString() {
-            return "Heart.HeartBuilder(memberId=" + this.memberId + ", post=" + this.post + ", comment=" + this.comment + ", heartType=" + this.heartType + ")";
-        }
-    }
 }

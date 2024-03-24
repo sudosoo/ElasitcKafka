@@ -15,17 +15,12 @@ public class Category {
     private String categoryName;
     private boolean isDeleted = false;
 
-    private Category(String categoryName) {
+    public Category(String categoryName) {
         this.categoryName = categoryName;
     }
 
     protected Category() {
     }
-
-    public static Category of(String categoryName) {
-        return new Category(categoryName);
-    }
-
 
     public Long getId() {
         return this.id;
