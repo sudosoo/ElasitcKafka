@@ -48,7 +48,7 @@ class PostServiceImpl(
         }
         requireNotNull(kafkaResponseDto) { "kafka reply error" }
 
-        val post: Post = Post.of(requestDto.title, requestDto.content)
+        val post = Post(requestDto.title, requestDto.content)
         val category = categoryService.getById(requestDto.categoryId)
         post.setMemberIdAndWriter(kafkaResponseDto.memberId, kafkaResponseDto.memberName)
         post.setCategory(category)
@@ -63,7 +63,7 @@ class PostServiceImpl(
 
 
     override fun redisTest(requestDto: PostRequestDto): TestPostResponseDto {
-        val post: Post = Post.of(requestDto.title, requestDto.memberName)
+        val post = Post(requestDto.title, requestDto.memberName)
         val category = categoryService.getById(requestDto.categoryId)
         post.setCategory(category)
         val result = save(post)
@@ -100,10 +100,6 @@ class PostServiceImpl(
     }
 
     override fun createBatchPosts(count: Int): Post {
-        return Post.builder()
-            .title("Title$count")
-            .content("content$count")
-            .memberId(1L)
-            .build()
+        return Post("Title$count",  "content$count",  1L)
     }
 }
