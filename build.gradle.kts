@@ -112,7 +112,6 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-devtools")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation ("org.springframework.boot:spring-boot-starter")
-        implementation ("org.apache.tomcat:tomcat-servlet-api")
         implementation("org.springframework.boot:spring-boot-starter-web")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api")
