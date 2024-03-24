@@ -1,14 +1,10 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@EqualsAndHashCode(callSuper=false)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
     @Id
@@ -27,7 +23,6 @@ public class Coupon {
 
     private Boolean useCheck = false;
 
-    @Builder
     private Coupon(String couponName, LocalDateTime couponDeadline, int discountRate, long discountPrice, Boolean useCheck) {
         this.couponName = couponName;
         this.couponDeadline = couponDeadline;
@@ -35,19 +30,140 @@ public class Coupon {
         this.discountPrice = discountPrice;
         this.useCheck = useCheck;
     }
-    public static Coupon priceOf(String couponName, String couponDeadline, long discountPrice){
+
+    protected Coupon() {
+    }
+
+    public static Coupon priceOf(String couponName, String couponDeadline, long discountPrice) {
         return Coupon.builder()
-                .couponName(couponName+discountPrice)
+                .couponName(couponName + discountPrice)
                 .couponDeadline(LocalDateTime.parse(couponDeadline))
                 .discountPrice(discountPrice)
                 .build();
     }
-    public static Coupon rateOf(String couponName, String couponDeadline, int discountRate){
+
+    public static Coupon rateOf(String couponName, String couponDeadline, int discountRate) {
         return Coupon.builder()
-                .couponName(couponName+discountRate)
+                .couponName(couponName + discountRate)
                 .couponDeadline(LocalDateTime.parse(couponDeadline))
                 .discountRate(discountRate)
                 .build();
     }
 
+    public static CouponBuilder builder() {
+        return new CouponBuilder();
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getCouponName() {
+        return this.couponName;
+    }
+
+    public LocalDateTime getCouponDeadline() {
+        return this.couponDeadline;
+    }
+
+    public int getDiscountRate() {
+        return this.discountRate;
+    }
+
+    public long getDiscountPrice() {
+        return this.discountPrice;
+    }
+
+    public Boolean getUseCheck() {
+        return this.useCheck;
+    }
+
+    public boolean equals(final Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Coupon)) return false;
+        final Coupon other = (Coupon) o;
+        if (!other.canEqual((Object) this)) return false;
+        final Object this$id = this.getId();
+        final Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        final Object this$couponName = this.getCouponName();
+        final Object other$couponName = other.getCouponName();
+        if (this$couponName == null ? other$couponName != null : !this$couponName.equals(other$couponName))
+            return false;
+        final Object this$couponDeadline = this.getCouponDeadline();
+        final Object other$couponDeadline = other.getCouponDeadline();
+        if (this$couponDeadline == null ? other$couponDeadline != null : !this$couponDeadline.equals(other$couponDeadline))
+            return false;
+        if (this.getDiscountRate() != other.getDiscountRate()) return false;
+        if (this.getDiscountPrice() != other.getDiscountPrice()) return false;
+        final Object this$useCheck = this.getUseCheck();
+        final Object other$useCheck = other.getUseCheck();
+        if (this$useCheck == null ? other$useCheck != null : !this$useCheck.equals(other$useCheck)) return false;
+        return true;
+    }
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof Coupon;
+    }
+
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        final Object $id = this.getId();
+        result = result * PRIME + ($id == null ? 43 : $id.hashCode());
+        final Object $couponName = this.getCouponName();
+        result = result * PRIME + ($couponName == null ? 43 : $couponName.hashCode());
+        final Object $couponDeadline = this.getCouponDeadline();
+        result = result * PRIME + ($couponDeadline == null ? 43 : $couponDeadline.hashCode());
+        result = result * PRIME + this.getDiscountRate();
+        final long $discountPrice = this.getDiscountPrice();
+        result = result * PRIME + (int) ($discountPrice >>> 32 ^ $discountPrice);
+        final Object $useCheck = this.getUseCheck();
+        result = result * PRIME + ($useCheck == null ? 43 : $useCheck.hashCode());
+        return result;
+    }
+
+    public static class CouponBuilder {
+        private String couponName;
+        private LocalDateTime couponDeadline;
+        private int discountRate;
+        private long discountPrice;
+        private Boolean useCheck;
+
+        CouponBuilder() {
+        }
+
+        public CouponBuilder couponName(String couponName) {
+            this.couponName = couponName;
+            return this;
+        }
+
+        public CouponBuilder couponDeadline(LocalDateTime couponDeadline) {
+            this.couponDeadline = couponDeadline;
+            return this;
+        }
+
+        public CouponBuilder discountRate(int discountRate) {
+            this.discountRate = discountRate;
+            return this;
+        }
+
+        public CouponBuilder discountPrice(long discountPrice) {
+            this.discountPrice = discountPrice;
+            return this;
+        }
+
+        public CouponBuilder useCheck(Boolean useCheck) {
+            this.useCheck = useCheck;
+            return this;
+        }
+
+        public Coupon build() {
+            return new Coupon(this.couponName, this.couponDeadline, this.discountRate, this.discountPrice, this.useCheck);
+        }
+
+        public String toString() {
+            return "Coupon.CouponBuilder(couponName=" + this.couponName + ", couponDeadline=" + this.couponDeadline + ", discountRate=" + this.discountRate + ", discountPrice=" + this.discountPrice + ", useCheck=" + this.useCheck + ")";
+        }
+    }
 }
