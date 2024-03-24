@@ -3,10 +3,10 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 tasks {
     val bootJar: BootJar by getting(BootJar::class)
     {
-        enabled = true
+        enabled = false
     }
     val jar by getting(Jar::class) {
-        enabled = false
+        enabled = true
     }
 }
 dependencies {
