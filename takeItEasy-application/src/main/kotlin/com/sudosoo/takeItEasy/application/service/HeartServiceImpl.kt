@@ -7,6 +7,7 @@ import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Heart
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.HeartRepository
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +18,7 @@ class HeartServiceImpl(
     val postService: PostService,
     val commentService: CommentService
 ) : HeartService , JpaService<Heart, Long> {
-    override fun getJpaRepository(): HeartRepository = heartRepository
+    override var jpaRepository: JpaRepository<Heart,Long> = heartRepository
 
     override fun createPostHeart(requestDto: PostHeartRequestDto): Heart {
         //TODO MemberSetting
@@ -27,7 +28,7 @@ class HeartServiceImpl(
         require(!heartRepository.existsByMemberIdAndPost(memberId, post)) { "Duplicated Like !" }
         val heart = getPostHeart(memberId,post)
 
-        return save<Heart>(heart)
+        return save(heart)
     }
 
     override fun createCommentHeart(requestDto: CommentHeartRequestDto): Heart {
@@ -38,7 +39,7 @@ class HeartServiceImpl(
         require(!heartRepository.existsByMemberIdAndComment(memberId, comment)) { "Duplicated Like !" }
         val heart = getCommentHeart(memberId,comment)
 
-        return save<Heart>(heart)
+        return save(heart)
     }
 
 

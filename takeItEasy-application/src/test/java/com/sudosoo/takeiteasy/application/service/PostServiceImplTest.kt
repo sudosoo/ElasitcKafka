@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
@@ -14,7 +15,6 @@ import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyLong
@@ -43,6 +43,8 @@ class PostServiceImplTest{
 
     @Mock
     lateinit var postRepository: PostRepository
+    @Mock
+    lateinit var jpaService: JpaService<Post, Long>
 
     @InjectMocks
     lateinit var postService: PostServiceImpl

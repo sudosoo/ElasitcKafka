@@ -1,11 +1,13 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.service.CouponService
 import com.sudosoo.takeItEasy.application.service.EventServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.Event
+import com.sudosoo.takeItEasy.domain.entity.Heart
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import org.assertj.core.api.AssertionsForClassTypes
 import org.junit.jupiter.api.BeforeEach
@@ -20,14 +22,17 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
-internal class EventServiceImplTest (
+internal class EventServiceImplTest{
     @Mock
-    val eventRepository: EventRepository,
+    lateinit var eventRepository: EventRepository
     @Mock
-    val couponService: CouponService,
+    lateinit var couponService: CouponService
+    @Mock
+    lateinit var jpaService: JpaService<Event, Long>
     @InjectMocks
-    var eventService: EventServiceImpl
-){
+    lateinit var eventService: EventServiceImpl
+
+
     private val requestDto =
         CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10, null, 10)
 

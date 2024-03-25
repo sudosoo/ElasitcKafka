@@ -26,9 +26,8 @@ class CategoryController (val categoryService: CategoryService ){
         @RequestParam categoryId: Long,
         @RequestParam(required = false, defaultValue = "0", value = "page") pageNo: Int
     ): ResponseEntity<CategoryResponseDto> {
-        var pageNo = pageNo
-        pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
-        val pageable: PageRequest = PageRequest.of(pageNo, 10)
+        val currentPageNumber = if ((pageNo == 0)) 0 else (pageNo - 1)
+        val pageable: PageRequest = PageRequest.of(currentPageNumber, 10)
         return ResponseEntity(categoryService.getPosts(categoryId, pageable), HttpStatus.OK)
     }
 }

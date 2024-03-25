@@ -31,19 +31,19 @@ class NoticeServiceImpl(
         send(receiverMemberName, messageContent)
     }
 
-    override fun subscribe(memberName: String, lastEventId: String): SseEmitter {
-        val emitterCreatedTimeByMemberName = makeTimeIncludeMemberName(memberName)
+    override fun subscribe(username: String, lastEventId: String): SseEmitter {
+        val emitterCreatedTimeByMemberName = makeTimeIncludeMemberName(username)
         val emitter = emitterRepository.save(emitterCreatedTimeByMemberName, SseEmitter(DEFAULT_TIMEOUT))
         emitter.onCompletion { emitterRepository.deleteByEmitterCreatedTimeWithMemberName(emitterCreatedTimeByMemberName) }
         emitter.onTimeout { emitterRepository.deleteByEmitterCreatedTimeWithMemberName(emitterCreatedTimeByMemberName) }
 
         //더미 이벤트 전송 (연결때 아무것도 보내지 않으면 503 에러)
-        val eventId = makeTimeIncludeMemberName(memberName)
-        sendNotification(emitter, eventId, emitterCreatedTimeByMemberName, "EventStream Created. [memberName=$memberName]")
+        val eventId = makeTimeIncludeMemberName(username)
+        sendNotification(emitter, eventId, emitterCreatedTimeByMemberName, "EventStream Created. [memberName=$username]")
 
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
         if (hasLostData(lastEventId)) {
-            sendLostData(lastEventId, memberName, emitterCreatedTimeByMemberName, emitter)
+            sendLostData(lastEventId, username, emitterCreatedTimeByMemberName, emitter)
         }
 
         return emitter
@@ -77,13 +77,13 @@ class NoticeServiceImpl(
             .forEach { entry -> sendNotification(emitter, entry.key, emitterCreatedTimeByMemberName, entry.value) }
     }
 
-    override fun send(receiverName: String, content: String) {
-        //TODO: Get user ID by user name (modify magic number)
+    override fun send(receiver: String, content: String) {
+        //TODO: 매직넘버 지우고 receiverId를 받아오도록 수정
         val receiverId: Long = 1L
         val notification = noticeRepository.save(createNotification(receiverId, content))
 
-        val eventCreatedTime = "$receiverName\"+_+\"${System.currentTimeMillis()}"
-        val emitters = emitterRepository.findAllEmitterStartWithByMemberId(receiverName)
+        val eventCreatedTime = "$receiver\"+_+\"${System.currentTimeMillis()}"
+        val emitters = emitterRepository.findAllEmitterStartWithByMemberId(receiver)
         emitters.forEach { (keyOfReceiverName, emitter) ->
             emitterRepository.saveEventCache(keyOfReceiverName, notification)
             sendNotification(emitter, eventCreatedTime, keyOfReceiverName, NoticeResponseDto(notification.content))

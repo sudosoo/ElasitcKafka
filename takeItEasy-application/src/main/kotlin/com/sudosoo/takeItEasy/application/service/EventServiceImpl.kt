@@ -19,12 +19,11 @@ class EventServiceImpl (
     val eventRepository: EventRepository,
     val couponService: CouponService
 ) :EventService , JpaService<Event, Long>{
-
-    override fun getJpaRepository(): JpaRepository<Event, Long> = eventRepository
+    override var jpaRepository: JpaRepository<Event, Long> = eventRepository
     override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
         validateDiscountFields(requestDto)
 
-        val coupon: Coupon = if (requestDto.discountRate !== 0) {
+        val coupon: Coupon = if (requestDto.discountRate != 0) {
             //할인율 적용 쿠폰일때
             couponService.rateCouponCreate(requestDto)
         } else {
@@ -50,7 +49,7 @@ class EventServiceImpl (
         */
         event.decreaseCouponQuantity()
         event.setMember(memberId)
-        save<Event>(event)
+        save(event)
     }
 
     companion object {

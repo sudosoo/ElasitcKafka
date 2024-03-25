@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
 import com.sudosoo.takeItEasy.application.service.CommentService
@@ -26,6 +27,8 @@ class HeartServiceImplTest {
     lateinit var postService: PostService
     @Mock
     lateinit var commentService: CommentService
+    @Mock
+    lateinit var jpaService: JpaService<Heart, Long>
     @InjectMocks
     lateinit var heartService: HeartServiceImpl
 

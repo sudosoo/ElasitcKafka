@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.IOException
@@ -32,12 +33,12 @@ class PostServiceImpl(
     val redisService: RedisService
 ) : PostService ,JpaService<Post, Long>{
     val objectMapper = ObjectMapper()
-    override fun getJpaRepository(): PostRepository = postRepository
+    override var jpaRepository: JpaRepository<Post,Long> = postRepository
 
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
         try {
-            val kafkaResult = kafkaProducer!!.replyRecord(kafkaMemberValidateRequestDto(requestDto.memberId))
+            val kafkaResult = kafkaProducer.replyRecord(kafkaMemberValidateRequestDto(requestDto.memberId))
             kafkaResponseDto = objectMapper.readValue(kafkaResult, KafkaResponseDto::class.java)
         } catch (e: ExecutionException) {
             e.stackTrace
@@ -51,8 +52,7 @@ class PostServiceImpl(
         val post = Post(requestDto.title, requestDto.content)
         val category = categoryService.getById(requestDto.categoryId)
         post.setMemberIdAndWriter(kafkaResponseDto.memberId, kafkaResponseDto.memberName)
-        post.setCategory(category)
-
+        post.category = category
         val result: Post = postRepository.save<Post>(post)
 
         //redis ReadRepository 데이터 삽입

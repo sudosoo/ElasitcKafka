@@ -10,19 +10,20 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CouponServiceImpl(val couponRepository: CouponRepository) : CouponService, JpaService<Coupon, Long>
+class CouponServiceImpl(
+    val couponRepository: CouponRepository) : CouponService, JpaService<Coupon, Long>
 {
-    override fun getJpaRepository(): JpaRepository<Coupon, Long> = couponRepository
+    override var jpaRepository: JpaRepository<Coupon, Long> = couponRepository
     override fun priceCouponCreate(requestDto: CreateEventRequestDto): Coupon {
         val coupon: Coupon = Coupon.priceOf(
             requestDto.eventName,requestDto.couponDeadline,requestDto.discountPrice!!)
 
-        return save<Coupon>(coupon)
+        return save(coupon)
     }
 
     override fun rateCouponCreate(requestDto: CreateEventRequestDto): Coupon {
         val coupon: Coupon = Coupon.rateOf(
             requestDto.eventName,requestDto.couponDeadline,requestDto.discountRate!!)
-        return save<Coupon>(coupon)
+        return save(coupon)
     }
 }
