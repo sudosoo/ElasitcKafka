@@ -21,12 +21,6 @@ allprojects {
         maven ("https://repo.spring.io/milestone/")
         maven ("https:/jitpack.io")
     }
-
-
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 subprojects {
@@ -59,12 +53,13 @@ subprojects {
         }
     }
 
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+    }
+
     //자바 모듈
     if (name == "takeItEasy-domain") {
 
-        java {
-            sourceCompatibility = JavaVersion.VERSION_17
-        }
 
         //코틀린 모듈
     }else{
