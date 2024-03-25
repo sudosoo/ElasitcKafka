@@ -20,10 +20,11 @@ class EventServiceImpl (
     val couponService: CouponService
 ) :EventService , JpaService<Event, Long>{
     override var jpaRepository: JpaRepository<Event, Long> = eventRepository
+
     override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
         validateDiscountFields(requestDto)
 
-        val coupon: Coupon = if (requestDto.discountRate != 0) {
+        val coupon = if (requestDto.discountRate != null) {
             //할인율 적용 쿠폰일때
             couponService.rateCouponCreate(requestDto)
         } else {
@@ -31,8 +32,8 @@ class EventServiceImpl (
             couponService.priceCouponCreate(requestDto)
         }
 
-        val event = Event.of(requestDto.eventName,requestDto.couponQuantity, requestDto.eventDeadline, coupon)
-        save(event)
+        var event = Event.of(requestDto.eventName,requestDto.couponQuantity, requestDto.eventDeadline, coupon)
+        event = save(event)
         return EventResponseDto(event.id, coupon.id)
     }
 
@@ -54,10 +55,9 @@ class EventServiceImpl (
 
     companion object {
         private fun validateDiscountFields(requestDto: CreateEventRequestDto) {
-            require(
-                !(requestDto.discountRate == 0 && requestDto.discountPrice == 0L) &&
-                        !(requestDto.discountRate != 0 && requestDto.discountPrice != 0L)
-            ) { "discountRate 또는 discountPrice 중 하나만 존재 해야 합니다." }
+            require(!(requestDto.discountRate == null && requestDto.discountPrice == null) &&
+                    !(requestDto.discountRate != null && requestDto.discountPrice != null))
+            { "discountRate 또는 discountPrice 중 하나만 존재해야 합니다." }
         }
     }
 }

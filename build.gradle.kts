@@ -85,23 +85,22 @@ subprojects {
         }
 
         tasks{
+
             compileKotlin {
                 kotlinOptions.jvmTarget = "17"
                 kotlinOptions.freeCompilerArgs = listOf(
                     "-Xjsr305=strict",
                 )
             }
-        }
-    }
 
+            val bootJar by getting(BootJar::class)
+            {
+                enabled = false
+            }
+            val jar by getting(Jar::class) {
+                enabled = true
+            }
 
-    tasks {
-        val bootJar by getting(BootJar::class)
-        {
-            enabled = false
-        }
-        val jar by getting(Jar::class) {
-            enabled = true
         }
     }
 

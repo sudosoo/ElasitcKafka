@@ -34,17 +34,19 @@ class RedisServiceImpl(
 
         val jsonValues = redisTemplate.opsForList().range(responseDtoName, start.toLong(), end.toLong())
         //TODO null 체크만들기
-        return jsonValues!!.mapNotNull { jsonValue ->
-            try {
-                objectMapper.readValue(jsonValue, clazz)?.let {
-                    clazz.cast(it) as T
+        checkNotNull(jsonValues)
+            return jsonValues.mapNotNull { jsonValue ->
+                try {
+                    objectMapper.readValue(jsonValue, clazz)?.let {
+                        clazz.cast(it) as T
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    null // Skip invalid entries
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                null // Skip invalid entries
-            }
-        }.toMutableList()
+            }.toMutableList()
     }
+
     override fun <T> getValues(className: String): MutableList<T> {
         return try {
             val fullClassName = "com.sudosoo.takeItEasy.application.dto.$className"

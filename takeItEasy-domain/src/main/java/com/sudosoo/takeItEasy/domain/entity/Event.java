@@ -22,7 +22,15 @@ public class Event {
 
     private LocalDateTime eventDeadline;
 
-    private Event(String eventName, Long memberId, Coupon coupon, int couponQuantity, LocalDateTime eventDeadline) {
+    private Event(String eventName, Coupon coupon, int couponQuantity, LocalDateTime eventDeadline) {
+        this.eventName = eventName;
+        this.coupon = coupon;
+        this.couponQuantity = couponQuantity;
+        this.eventDeadline = eventDeadline;
+    }
+
+    public Event(Long id, String eventName, Long memberId, Coupon coupon, int couponQuantity, LocalDateTime eventDeadline) {
+        this.id = id;
         this.eventName = eventName;
         this.memberId = memberId;
         this.coupon = coupon;
@@ -34,17 +42,7 @@ public class Event {
     }
 
     public static Event of(String eventName, int couponQuantity, String eventDeadline, Coupon coupon) {
-        return Event.builder()
-                .eventName(eventName)
-                .coupon(coupon)
-                .eventDeadline(LocalDateTime.parse(eventDeadline))
-                .couponQuantity(couponQuantity)
-                .build();
-
-    }
-
-    public static EventBuilder builder() {
-        return new EventBuilder();
+        return new Event(eventName, coupon, couponQuantity, LocalDateTime.parse(eventDeadline));
     }
 
     public boolean isDeadlineExpired() {
@@ -134,47 +132,8 @@ public class Event {
         return result;
     }
 
-    public static class EventBuilder {
-        private String eventName;
-        private Long memberId;
-        private Coupon coupon;
-        private int couponQuantity;
-        private LocalDateTime eventDeadline;
-
-        EventBuilder() {
-        }
-
-        public EventBuilder eventName(String eventName) {
-            this.eventName = eventName;
-            return this;
-        }
-
-        public EventBuilder memberId(Long memberId) {
-            this.memberId = memberId;
-            return this;
-        }
-
-        public EventBuilder coupon(Coupon coupon) {
-            this.coupon = coupon;
-            return this;
-        }
-
-        public EventBuilder couponQuantity(int couponQuantity) {
-            this.couponQuantity = couponQuantity;
-            return this;
-        }
-
-        public EventBuilder eventDeadline(LocalDateTime eventDeadline) {
-            this.eventDeadline = eventDeadline;
-            return this;
-        }
-
-        public Event build() {
-            return new Event(this.eventName, this.memberId, this.coupon, this.couponQuantity, this.eventDeadline);
-        }
-
         public String toString() {
             return "Event.EventBuilder(eventName=" + this.eventName + ", memberId=" + this.memberId + ", coupon=" + this.coupon + ", couponQuantity=" + this.couponQuantity + ", eventDeadline=" + this.eventDeadline + ")";
         }
-    }
+
 }

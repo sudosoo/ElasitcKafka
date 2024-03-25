@@ -7,14 +7,12 @@ import com.sudosoo.takeItEasy.application.service.CouponService
 import com.sudosoo.takeItEasy.application.service.EventServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.entity.Heart
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import org.assertj.core.api.AssertionsForClassTypes
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.*
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.springframework.dao.PessimisticLockingFailureException
 import java.time.LocalDateTime
 import java.util.*
@@ -32,9 +30,7 @@ internal class EventServiceImplTest{
     @InjectMocks
     lateinit var eventService: EventServiceImpl
 
-
-    private val requestDto =
-        CreateEventRequestDto("TestEvent", LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10, null, 10)
+    var testEvent = Event(1L, "TestEvent", 1L ,null,10,LocalDateTime.now().plusDays(1) )
 
     @BeforeEach
     fun setUp() {
@@ -44,60 +40,32 @@ internal class EventServiceImplTest{
     @Test
     fun `할인율 쿠폰으로 이벤트 만들기`() {
         val requestDto = CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, null, 10)
-        val mockRateCoupon = Mockito.mock(Coupon::class.java)
-        Mockito.`when`(couponService!!.priceCouponCreate(requestDto)).thenReturn(mockRateCoupon)
-
-        val mockEvent = Mockito.mock(
-            Event::class.java
-        )
-        Mockito.`when`(
-            eventRepository!!.save(
-                ArgumentMatchers.any(
-                    Event::class.java
-                )
-            )
-        ).thenReturn(mockEvent)
+        val testRateCoupon = Coupon.testRateOf(1L,requestDto.eventName, requestDto.eventDeadline,requestDto.discountRate!!)
+        `when`(couponService.rateCouponCreate(requestDto)).thenReturn(testRateCoupon)
+        `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
 
         // When
         eventService.create(requestDto)
 
         // Then
-        Mockito.verify(couponService, Mockito.times(1)).priceCouponCreate(ArgumentMatchers.any())
-        Mockito.verify(eventRepository, Mockito.times(1)).save(
-            ArgumentMatchers.any(
-                Event::class.java
-            )
-        )
+        verify(couponService,times(1)).rateCouponCreate(requestDto)
+        verify(eventRepository,times(1)).save(any(Event::class.java))
     }
 
     @Test
     fun `가격할인 쿠폰으로 이벤트 만들기`() {
         val requestDto =
             CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, 10000L, null)
-        val mockPriceCoupon = Mockito.mock(Coupon::class.java)
-        `when`(couponService.rateCouponCreate(requestDto)).thenReturn(mockPriceCoupon)
-
-        val mockEvent = Mockito.mock(
-            Event::class.java
-        )
-        `when`(
-            eventRepository.save(
-                ArgumentMatchers.any(
-                    Event::class.java
-                )
-            )
-        ).thenReturn(mockEvent)
+        val testPriceCoupon = Coupon.testPriceOf(1L,requestDto.eventName, requestDto.eventDeadline,requestDto.discountPrice!!)
+        `when`(couponService.priceCouponCreate(requestDto)).thenReturn(testPriceCoupon)
+        `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
 
         // When
         eventService.create(requestDto)
 
         // Then
-        Mockito.verify(couponService, Mockito.times(1)).rateCouponCreate(requestDto)
-        Mockito.verify(eventRepository, Mockito.times(1)).save(
-            ArgumentMatchers.any(
-                Event::class.java
-            )
-        )
+        verify(couponService, times(1)).priceCouponCreate(requestDto)
+        verify(eventRepository, times(1)).save(any(Event::class.java))
     }
 
 
@@ -108,12 +76,13 @@ internal class EventServiceImplTest{
         val testEventDeadLine = LocalDateTime.now().toString()
         val successCount = AtomicInteger()
         val numberOfExecute = 100000
+        val requestDto =
+            CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, 10000L, null)
         val service = Executors.newFixedThreadPool(10)
         val latch = CountDownLatch(numberOfExecute)
-        val mockCoupon = Mockito.mock(Coupon::class.java)
+        val mockCoupon = mock(Coupon::class.java)
         val event = Event.of(requestDto.eventName, requestDto.couponQuantity, testEventDeadLine, mockCoupon)
-        `when`(eventRepository.findByEventIdForUpdate(ArgumentMatchers.anyLong()))
-            .thenReturn(Optional.ofNullable(event))
+        `when`(eventRepository.findByEventIdForUpdate(anyLong())).thenReturn(Optional.ofNullable(event))
 
         for (i in 0 until numberOfExecute) {
             val threadNumber = i + 1
