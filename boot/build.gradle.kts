@@ -1,14 +1,13 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-tasks {
-    withType<BootJar> {
-        enabled = true
-    }
-    withType<Jar>{
-        enabled = false
-    }
+tasks.bootJar {
+    enabled = true
 }
+tasks.jar {
+    enabled = false
+}
+
+
 dependencies {
-    api(project(":takeItEasy-presentation"))
+    implementation(project(":takeItEasy-presentation"))
     implementation(project(":takeItEasy-aop"))
 
     implementation("org.springframework.boot:spring-boot-starter")

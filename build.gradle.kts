@@ -22,6 +22,7 @@ allprojects {
         maven ("https:/jitpack.io")
     }
 
+
 }
 
 java {
@@ -34,8 +35,6 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 
-
-
     dependencyManagement {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:3.0.4")
@@ -44,10 +43,20 @@ subprojects {
         }
     }
 
-    tasks.register("prepareKotlinBuildScriptModel"){}
-
     configurations.all {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+    }
+
+    tasks.register("prepareKotlinBuildScriptModel"){}
+
+    tasks{
+        val bootJar by getting(BootJar::class){
+            enabled = false
+        }
+
+        val jar by getting(Jar::class){
+            enabled = true
+        }
     }
 
     //자바 모듈
@@ -84,6 +93,8 @@ subprojects {
             annotation("jakarta.persistence.MappedSuperclass")
         }
 
+
+
         tasks{
 
             compileKotlin {
@@ -92,17 +103,9 @@ subprojects {
                     "-Xjsr305=strict",
                 )
             }
-
-            val bootJar by getting(BootJar::class)
-            {
-                enabled = false
-            }
-            val jar by getting(Jar::class) {
-                enabled = true
-            }
-
         }
     }
+
 
     dependencies {
         implementation("org.springframework.kafka:spring-kafka")
