@@ -31,10 +31,31 @@ public class Coupon {
         this.useCheck = useCheck;
     }
 
+    private Coupon(Long id, String couponName, LocalDateTime couponDeadline, long discountPrice) {
+        this.id = id;
+        this.couponName = couponName + discountPrice;
+        this.couponDeadline = couponDeadline;
+        this.discountPrice = discountPrice;
+    }
+
+    public static Coupon testPriceOf(Long id, String couponName, String couponDeadline, long discountPrice) {
+        return new Coupon(id, couponName, LocalDateTime.parse(couponDeadline), discountPrice);
+    }
+
+    private Coupon(Long id, String couponName, LocalDateTime couponDeadline, int discountRate) {
+        this.id = id;
+        this.couponName = couponName + discountRate;
+        this.couponDeadline = couponDeadline;
+        this.discountRate = discountRate;
+    }
+    public static Coupon testRateOf(Long id, String couponName, String couponDeadline,int discountRate) {
+        return new Coupon(id, couponName, LocalDateTime.parse(couponDeadline), discountRate);
+    }
+
     protected Coupon() {
     }
 
-    public static Coupon priceOf(String couponName, String couponDeadline, long discountPrice) {
+    public static Coupon priceOf(String couponName, String couponDeadline, Long discountPrice) {
         return Coupon.builder()
                 .couponName(couponName + discountPrice)
                 .couponDeadline(LocalDateTime.parse(couponDeadline))
@@ -42,7 +63,7 @@ public class Coupon {
                 .build();
     }
 
-    public static Coupon rateOf(String couponName, String couponDeadline, int discountRate) {
+    public static Coupon rateOf(String couponName, String couponDeadline, Integer discountRate) {
         return Coupon.builder()
                 .couponName(couponName + discountRate)
                 .couponDeadline(LocalDateTime.parse(couponDeadline))

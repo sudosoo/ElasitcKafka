@@ -1,11 +1,13 @@
 rootProject.name = "takeItEasy"
 
 include(
-    "takeItEasy-aop",
-    "takeItEasy-domain",
+    "boot",
     "takeItEasy-presentation",
     "takeItEasy-application",
-    "takeItEasy-batch","boot")
+    "takeItEasy-domain",
+    "takeItEasy-batch",
+    "takeItEasy-aop"
+    )
 
 pluginManagement {
     val kotlinVersion :String by settings
