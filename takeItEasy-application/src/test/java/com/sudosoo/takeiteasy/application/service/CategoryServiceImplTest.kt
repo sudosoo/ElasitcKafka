@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.service.CategoryServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Category
@@ -7,7 +8,6 @@ import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.*
 import org.mockito.Mockito.*
@@ -15,11 +15,13 @@ import java.util.*
 
 class CategoryServiceImplTest {
     @Mock
-    private lateinit var categoryRepository: CategoryRepository
+    lateinit var categoryRepository: CategoryRepository
     @Mock
-    private lateinit var postRepository: PostRepository
+    lateinit var postRepository: PostRepository
+    @Mock
+    lateinit var jpaService: JpaService<Category, Long>
     @InjectMocks
-    private lateinit var categoryService: CategoryServiceImpl
+    lateinit var categoryService: CategoryServiceImpl
 
     private val createCategoryRequestDto = CreateCategoryRequestDto("test 카테고리")
     private val testCategory: Category = Category(createCategoryRequestDto.categoryName)

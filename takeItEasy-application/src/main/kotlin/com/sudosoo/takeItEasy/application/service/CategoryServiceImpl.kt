@@ -1,6 +1,5 @@
 package com.sudosoo.takeItEasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.repository.BaseRepository
 import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CategoryResponseDto
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
@@ -20,10 +19,9 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class CategoryServiceImpl(
     val categoryRepository : CategoryRepository,
-    val postRepository : PostRepository
-) : CategoryService,JpaService<Category,Long> {
-    override fun getJpaRepository(): JpaRepository<Category, Long> = categoryRepository
+    val postRepository : PostRepository ) :CategoryService, JpaService<Category, Long> {
 
+    override var jpaRepository: JpaRepository<Category, Long> = categoryRepository
 
     override fun create(requestDto: CreateCategoryRequestDto): Category {
         val category = Category(requestDto.categoryName)

@@ -1,5 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.service.CouponServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Coupon
@@ -18,6 +19,8 @@ import java.time.LocalDateTime
 class CouponServiceImplTest{
     @Mock
     lateinit var couponRepository: CouponRepository
+    @Mock
+    lateinit var jpaService: JpaService<Coupon,Long>
     @InjectMocks
     lateinit var couponService: CouponServiceImpl
 
@@ -28,7 +31,7 @@ class CouponServiceImplTest{
 
     @Test
     @Throws(Exception::class)
-    fun `가격할인 쿠폰 만들기`() {
+    fun `가격할인 쿠폰이 만들어 져야 한다`() {
         val requestDto = CreateEventRequestDto(
             "TestEvent",
             LocalDateTime.now().toString(),
@@ -50,7 +53,7 @@ class CouponServiceImplTest{
 
     @Test
     @Throws(Exception::class)
-    fun `할인율 쿠폰 만들기 테스트`() {
+    fun `할인율 쿠폰이 만들어 져야 한다`() {
         val requestDto = CreateEventRequestDto(
             "TestEvent",
             LocalDateTime.now().toString(),

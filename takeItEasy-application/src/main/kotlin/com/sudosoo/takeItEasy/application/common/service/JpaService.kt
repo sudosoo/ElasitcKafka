@@ -1,48 +1,40 @@
-package com.sudosoo.takeItEasy.application.common.service;
+package com.sudosoo.takeItEasy.application.common.service
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import com.sudosoo.takeItEasy.application.common.service.CommonService.checkNotNullData
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
-import java.util.List;
+interface JpaService<MODEL, ID> {
+    var jpaRepository: JpaRepository<MODEL, ID>
 
-import static com.sudosoo.takeItEasy.application.common.service.CommonService.checkNotNullData;
-
-public interface JpaService<MODEL, ID> {
-    JpaRepository<MODEL, ID> getJpaRepository();
-
-    default <T extends MODEL> T save(T entity) {
-        return getJpaRepository().save(entity);
+    fun save(model: MODEL) : MODEL {
+        return jpaRepository.save(model as (MODEL & Any))
     }
 
-    default List<MODEL> saveModels(List<MODEL> models) {
-        return getJpaRepository().saveAll(models);
+    fun saveModels(models: List<MODEL>) : List<MODEL> {
+        return jpaRepository.saveAll(models)
     }
 
-    default MODEL findById(ID id) {
-        checkNotNullData(id, "id is null");
-        return getJpaRepository().findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "data is not found by id: " + id));
+    fun findById(id : ID) : MODEL {
+        checkNotNullData(id, "data is not found by id : $id")
+        return jpaRepository.findById(id!!).orElseThrow { IllegalArgumentException("data is not found by id : $id") }
     }
 
-
-    default void deleteById(ID id) {
-        checkNotNullData(id , "id is null");
-        getJpaRepository().deleteById(id);
+    fun deleteById(id : ID) {
+        checkNotNullData(id, "deleteById : id is null")
+        return jpaRepository.deleteById(id!!)
     }
 
-    default Page<MODEL> findAllPagination(PageRequest pageRequest) {
-        checkNotNullData(pageRequest, "pageRequest is null");
-
-        Page<MODEL> pageModel = getJpaRepository().findAll(pageRequest);
-        if (pageModel.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Is Empty.");
+    fun findAllPagination(pageRequest: PageRequest): Page<MODEL> {
+        checkNotNullData(pageRequest, "pageRequest is null")
+        val pageModel = jpaRepository.findAll(pageRequest)
+        if (pageModel.isEmpty) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Data Is Empty.")
         } else {
-            return pageModel;
+            return pageModel
         }
     }
-
-
 }

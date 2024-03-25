@@ -180,8 +180,8 @@ public class Post {
         result = result * PRIME + this.getViewCount();
         return result;
     }
-
     public void setCategory(Category category) {
         this.category = category;
     }
+
 }

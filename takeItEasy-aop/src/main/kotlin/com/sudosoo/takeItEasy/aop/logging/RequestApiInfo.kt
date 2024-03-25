@@ -90,7 +90,7 @@ class RequestApiInfo(joinPoint: JoinPoint, clazz: Class<*>, objectMapper: Object
             .ifPresent { mappingClass ->
                 val annotation = method.getAnnotation(mappingClass)
                 try {
-                    val methodUrl = mappingClass.getMethod("value").invoke(annotation) as Array<String>
+                    val methodUrl = mappingClass.getMethod("value").invoke(annotation) as MutableList<*>
                     this.method = mappingClass.simpleName.replace("Mapping", "").uppercase(Locale.getDefault())
                     url = String.format("%s%s", baseUrl, if (methodUrl.isNotEmpty()) "" + methodUrl[0] else "")
                     name = mappingClass.getMethod("name").invoke(annotation) as String

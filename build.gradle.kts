@@ -96,7 +96,7 @@ subprojects {
 
 
     tasks {
-        val bootJar: BootJar by getting(BootJar::class)
+        val bootJar by getting(BootJar::class)
         {
             enabled = false
         }

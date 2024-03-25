@@ -33,9 +33,8 @@ class PostController(val postService: PostService) {
         @RequestParam postId: Long,
         @RequestParam(required = false, defaultValue = "0", value = "page") pageNo: Int
     ): ResponseEntity<PostDetailResponseDto> {
-        var pageNo = pageNo
-        pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
-        val pageRequest: Pageable = PageRequest.of(pageNo, 10)
+        val currentPageNumber = if ((pageNo == 0)) 0 else (pageNo - 1)
+        val pageRequest: Pageable = PageRequest.of(currentPageNumber, 10)
 
         return ResponseEntity(postService.getPostDetailByPostId(postId, pageRequest), HttpStatus.OK)
     }
@@ -46,11 +45,10 @@ class PostController(val postService: PostService) {
             required = false,
             defaultValue = "0",
             value = "page"
-        ) pageNo: Int
+        ) pageNum: Int
     ): ResponseEntity<List<PostTitleOnlyResponseDto>> {
-        var pageNo = pageNo
-        pageNo = if ((pageNo == 0)) 0 else (pageNo - 1)
-        val pageRequest: PageRequest = PageRequest.of(pageNo, 10)
+        val currentPageNumber = if ((pageNum == 0)) 0 else (pageNum - 1)
+        val pageRequest: PageRequest = PageRequest.of(currentPageNumber, 10)
 
         return ResponseEntity(postService.getPaginationPost(pageRequest), HttpStatus.OK)
     }

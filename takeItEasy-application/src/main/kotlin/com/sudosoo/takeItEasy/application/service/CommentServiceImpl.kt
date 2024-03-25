@@ -18,8 +18,7 @@ class CommentServiceImpl(
     val commentRepository: CommentRepository,
     val postService: PostService
 ) : CommentService, JpaService<Comment, Long>{
-
-    override fun getJpaRepository(): JpaRepository<Comment, Long> = commentRepository
+    override var jpaRepository: JpaRepository<Comment, Long> = commentRepository
 
     override fun create(createCommentRequestDto: CreateCommentRequestDto): Comment {
         //TODO MemberSetting

@@ -5,6 +5,7 @@ import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Message
 import com.sudosoo.takeItEasy.domain.repository.MessageRepository
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,9 +14,8 @@ import org.springframework.transaction.annotation.Transactional
 class MessageServiceImpl(
     val kafkaProducer: KafkaProducer,
     val messageRepository: MessageRepository
-) :MessageService, JpaService<Message, Long> {
-
-    override fun getJpaRepository() = messageRepository
+) : MessageService, JpaService<Message, Long> {
+    override var jpaRepository:JpaRepository<Message,Long> = messageRepository
 
     override fun send(requestDto: MessageSendRequestDto) {
         //TODO MemberSetting

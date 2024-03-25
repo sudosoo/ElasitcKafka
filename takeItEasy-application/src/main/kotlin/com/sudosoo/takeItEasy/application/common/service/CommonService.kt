@@ -1,13 +1,13 @@
-package com.sudosoo.takeItEasy.application.common.service;
+package com.sudosoo.takeItEasy.application.common.service
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
-public class CommonService {
-    public static <E> boolean checkNotNullData(E e, String message) {
+object CommonService {
+    fun <E> checkNotNullData(e: E?, message: String?): Boolean {
         if (e == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, message)
         }
-        return true;
+        return true
     }
 }

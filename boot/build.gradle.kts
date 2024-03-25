@@ -1,11 +1,9 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 tasks {
-    val bootJar: BootJar by getting(BootJar::class)
-    {
+    withType<BootJar> {
         enabled = true
     }
-    val jar by getting(Jar::class) {
+    withType<Jar>{
         enabled = false
     }
 }

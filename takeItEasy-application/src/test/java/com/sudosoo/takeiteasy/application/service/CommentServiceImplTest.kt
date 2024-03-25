@@ -1,11 +1,13 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
 import com.sudosoo.takeItEasy.application.service.CommentServiceImpl
 import com.sudosoo.takeItEasy.application.service.PostService
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
+import com.sudosoo.takeItEasy.domain.repository.CouponRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -21,6 +23,8 @@ internal class CommentServiceImplTest {
     lateinit var commentRepository: CommentRepository
     @Mock
     lateinit var postService: PostService
+    @Mock
+    lateinit var jpaService: JpaService<Comment,Long>
     @InjectMocks
     lateinit var commentService: CommentServiceImpl
 
