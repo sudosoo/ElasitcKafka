@@ -42,7 +42,7 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 ----
 
 <img src="/images/InfraStructureJPG.jpg" width="700">
-<img src="/images/InfraStructureDetail.png" width="700" >
+<img src="/images/InfraStructureDetailPNG.png" width="700" >
 
 ----
 ### AOP 로깅 / 중복 요청 방지 / 실시간 알림 ( SSE + kafka)
