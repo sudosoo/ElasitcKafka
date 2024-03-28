@@ -41,7 +41,7 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 ### Infra structure
 ----
 
-<img src="/images/InfraStructure.jpg" width="700">
+<img src="/images/InfraStructureJPG.jpg" width="700">
 <img src="/images/InfraStructureDetail.png" width="700" >
 
 ----
