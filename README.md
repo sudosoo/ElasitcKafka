@@ -62,6 +62,11 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 https://github.com/sudosoo/TakeItEasy/blob/083b428dc7d47ea18e5e391037c1c5449bddd65d/src/main/java/com/sudosoo/takeiteasy/kafka/KafkaProducer.java#L38-L47
 
 ---
+### 모듈 분리 JAVA -> JAVA + Kotlin (책임 분리) 
+[🦔 계층 별 모듈 분리 (domain JAVA , 그 외 Kotlin) ]
+
+
+---
 ### ELK + filebeat 를 활용한 로그적재  
 <img src="/images/KibanaLog.png" width="700" >
 
