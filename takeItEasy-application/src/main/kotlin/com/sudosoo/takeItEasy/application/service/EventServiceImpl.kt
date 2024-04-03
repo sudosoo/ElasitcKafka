@@ -41,13 +41,7 @@ class EventServiceImpl (
     override fun couponIssuance(requestDto: CouponIssuanceRequestDto) {
         val event: Event = eventRepository.findByEventIdForUpdate(requestDto.eventId)
             .orElseThrow { IllegalArgumentException("Event is not found") }
-        //TODO MemberSetting
         val memberId: Long = requestDto.memberId
-        /* 이벤트 종료 시점은 프론트 or 앞단에서 처리 해 준다.
-        if (event.isDeadlineExpired()) {
-            System.out.println("이벤트가 종료되었습니다.");
-        }
-        */
         event.decreaseCouponQuantity()
         event.setMember(memberId)
         save(event)
