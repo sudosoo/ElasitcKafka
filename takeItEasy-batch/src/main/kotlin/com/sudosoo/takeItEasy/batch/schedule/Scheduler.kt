@@ -17,6 +17,7 @@ class Scheduler(
         fun run(){
         val jobParameter = JobParametersBuilder().addString("date", LocalDate.now().toString()).toJobParameters()
         jobLauncher.run(batchJob.heavyCreatePostJob(), jobParameter)
+        jobLauncher.run(batchJob.oldPostsDeleteJob(), jobParameter)
     }
 
     fun testRun(){

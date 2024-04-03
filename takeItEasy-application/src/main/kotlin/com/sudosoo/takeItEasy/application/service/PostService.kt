@@ -17,4 +17,5 @@ interface PostService {
     fun createBatchPosts(count: Int): Post
     fun redisTest(requestDto: PostRequestDto): TestPostResponseDto
     fun allPost() : List<TestPostResponseDto>
+    fun softDeletePost(postId: Long): Post
 }

@@ -1,9 +1,7 @@
 package com.sudosoo.takeItEasy.batch.step
 
-import com.sudosoo.takeItEasy.application.service.PostService
 import com.sudosoo.takeItEasy.domain.entity.Post
 import jakarta.persistence.EntityManagerFactory
-import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.repository.JobRepository
@@ -20,16 +18,15 @@ import java.time.LocalDate
 import javax.sql.DataSource
 
 @Configuration
-class HeavyCreatePost(
+class OldPostsDelete(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val dataSource: DataSource,
-    private val postService: PostService,
     private val entityManagerFactory: EntityManagerFactory
 ) : StepService<Post> {
 
     companion object {
-        const val JOB_NAME = "heavyCreatePosts"
+        const val JOB_NAME = "oldPostsDelete"
         const val CHUNK_SIZE: Int = 10000
     }
 
@@ -39,44 +36,39 @@ class HeavyCreatePost(
             .chunk<Post, Post>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
             .writer(bulkWriter())
+            .startLimit(2)
             .build()
     }
 
     @Bean(name = [JOB_NAME + "_reader"])
     @StepScope
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Post> {
+        val cutoffDay = LocalDate.parse(date).minusDays(90)
             return JpaPagingItemReaderBuilder<Post>()
                 .entityManagerFactory(entityManagerFactory)
+                .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay;")
+                .parameterValues(mapOf("cutoffDay" to cutoffDay))
                 .saveState(false)
                 .build()
         }
 
     @Bean(name = [JOB_NAME + "_writer"])
     override fun bulkWriter(): ItemWriter<Post> {
-        var count = 0
         return ItemWriter<Post> { items ->
             val con = dataSource.connection ?: throw SQLException("Connection is null")
-            val sql = "INSERT INTO post (title, content, category_id, member_id, writer_name, view_count, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            val sql = "DELETE FROM Post WHERE id = ?;"
             val pstmt = con.prepareStatement(sql)
+                con.autoCommit = false
             try {
                 items.chunked(CHUNK_SIZE).forEach{
-                    con.autoCommit = false
-                    val post = postService.createBatchPosts(count)
-
-                    pstmt.setString(1, post.title)
-                    pstmt.setString(2, post.content)
-                    pstmt.setLong(3, 1L)
-                    pstmt.setLong(4, post.memberId)
-                    pstmt.setString(5, post.writerName)
-                    pstmt.setInt(6, post.viewCount)
-                    pstmt.setBoolean(7, post.isDeleted)
-
-                    pstmt.addBatch()
-                    count++
+                    for (chunk in it) {
+                        pstmt.setLong(1, chunk.id)
+                        pstmt.addBatch()
+                    }
+                    pstmt.executeBatch()
+                    con.commit()
+                    pstmt.clearParameters()
                 }
-                pstmt.executeBatch()
-                con.commit()
-                pstmt.clearParameters()
             } catch (e: Exception) {
                 e.printStackTrace()
                 try {

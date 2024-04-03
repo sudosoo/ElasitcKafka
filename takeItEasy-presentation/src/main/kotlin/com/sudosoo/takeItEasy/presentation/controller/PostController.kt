@@ -57,4 +57,10 @@ class PostController(val postService: PostService) {
     fun allPost(): List<Any>{
         return postService.allPost()
     }
+
+    @PatchMapping("/delete", name = "softDeletePost")
+    fun softDeletePost(@RequestParam postId: Long): ResponseEntity<Void> {
+        postService.softDeletePost(postId)
+        return ResponseEntity.ok().build()
+    }
 }
