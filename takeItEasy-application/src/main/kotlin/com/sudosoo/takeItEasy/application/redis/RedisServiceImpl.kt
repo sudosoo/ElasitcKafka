@@ -21,19 +21,18 @@ class RedisServiceImpl(
         val objectMapper = ObjectMapper()
     }
 
-    override fun <T> findByPaginationPost(responseDtoName: String, pageable: PageRequest): MutableList<T> {
+    override fun <T> findByPagination(responseDtoName: String, pageable: PageRequest): MutableList<T> {
         val clazz = try {
             Class.forName(responseDtoName)
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()
-            return mutableListOf() // Return empty mutable list on class not found
+            return mutableListOf()
         }
 
         val start = pageable.pageNumber * pageable.pageSize
         val end = start + pageable.pageSize - 1
 
         val jsonValues = redisTemplate.opsForList().range(responseDtoName, start.toLong(), end.toLong())
-        //TODO null 체크만들기
         checkNotNull(jsonValues)
             return jsonValues.mapNotNull { jsonValue ->
                 try {
@@ -47,14 +46,14 @@ class RedisServiceImpl(
             }.toMutableList()
     }
 
-    override fun <T> getValues(className: String): MutableList<T> {
+    override fun <T> getValues(methodName: String): MutableList<T> {
         return try {
-            val fullClassName = "com.sudosoo.takeItEasy.application.dto.$className"
+            val fullClassName = "com.sudosoo.takeItEasy.application.dto.$methodName"
             val clazz = Class.forName(fullClassName) as Class<T>
-            val jsonValues = redisTemplate.opsForList().range(className, 0, -1)
+            val jsonValues = redisTemplate.opsForList().range(methodName, 0, -1)
 
-            //TODO null 체크만들기
-            jsonValues!!.mapNotNull { jsonValue ->
+            checkNotNull(jsonValues)
+            jsonValues.mapNotNull { jsonValue ->
                 try {
                     objectMapper.readValue(jsonValue, clazz)
                 } catch (e: Exception) {
@@ -73,8 +72,7 @@ class RedisServiceImpl(
         val jsonObject = try {
             objectMapper.writeValueAsString(value)
         } catch (e: JsonProcessingException) {
-            e.printStackTrace()
-            "" // Use empty string on serialization errors
+            throw IllegalArgumentException("Invalid value")
         }
         redisTemplate.opsForList().leftPush(className, jsonObject)
     }
@@ -87,8 +85,7 @@ class RedisServiceImpl(
             val jsonPost: String = try {
                 objectMapper.writeValueAsString(TestPostResponseDto(post))
             } catch (e: JsonProcessingException) {
-                e.printStackTrace()
-                "" // Use empty string on serialization errors
+                throw IllegalArgumentException("Invalid value")
             }
             redisTemplate.opsForList().leftPush("PostResponseDto", jsonPost)
         }

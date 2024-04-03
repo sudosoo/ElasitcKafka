@@ -21,12 +21,11 @@ class CommentServiceImpl(
     override var jpaRepository: JpaRepository<Comment, Long> = commentRepository
 
     override fun create(createCommentRequestDto: CreateCommentRequestDto): Comment {
-        //TODO MemberSetting
         val memberId: Long = createCommentRequestDto.memberId
         val post: Post = postService.getByPostId(createCommentRequestDto.postId)
         val comment = Comment(createCommentRequestDto.content)
         comment.post = post
-        comment.setMemberId(memberId)
+        comment.memberId = memberId
 
         return save(comment)
     }
