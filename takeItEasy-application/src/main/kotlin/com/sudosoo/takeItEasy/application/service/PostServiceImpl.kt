@@ -13,7 +13,6 @@ import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.IOException
 import java.util.concurrent.ExecutionException
-import java.util.function.Supplier
 
 @Service
 @Transactional
@@ -101,5 +99,11 @@ class PostServiceImpl(
 
     override fun createBatchPosts(count: Int): Post {
         return Post("Title$count",  "content$count",  1L)
+    }
+
+    override fun softDeletePost(postId: Long): Post {
+        val post = findById(postId)
+        post.delete()
+        return save(post)
     }
 }

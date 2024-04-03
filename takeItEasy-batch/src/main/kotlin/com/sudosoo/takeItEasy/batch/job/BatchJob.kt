@@ -17,5 +17,10 @@ class BatchJob(
             .start(adaptStep.getStep(BatchType.HEAVY_CREATE_POST))
             .build()
     }
+    fun oldPostsDeleteJob(): Job {
+        return JobBuilder(BatchType.HEAVY_CREATE_POST.toString(),jobRepository)
+            .start(adaptStep.getStep(BatchType.HEAVY_CREATE_POST))
+            .build()
+    }
 
 }

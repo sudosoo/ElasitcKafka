@@ -1,7 +1,9 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
+import com.sudosoo.takeItEasy.domain.support.BaseEntity;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
 @Table(name = "post", indexes = {
         @Index(name = "idx_title", columnList = "title")
 })
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +23,8 @@ public class Post {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
+    private LocalDate deletedAt = LocalDate.of(9999, 12, 31);
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -28,14 +32,19 @@ public class Post {
     private Long memberId;
     private String writerName;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Heart> hearts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @Column(name = "view_count", nullable = false)
     private int viewCount = 0;
+
+    public void delete() {
+        this.isDeleted = true;
+        this.deletedAt = LocalDate.now();
+    }
 
     public Post(Long id, String title, String content, Category category, Long memberId, String writerName, int viewCount, List<Heart> hearts) {
         this.id = id;
