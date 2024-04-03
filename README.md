@@ -25,13 +25,12 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 - PostgreSQL
   
 ### Libraries
-- Spring Boot 3.0.1
+- Spring Boot 3.x
 - Spring Boot Starter Data JPA
 - Spring Boot Starter Web
 - Spring Boot Starter Validation
 - Spring Boot DevTools
 - Spring Boot Starter Test
-- Spring Boot starter data Redis
 - Spring Boot starter batch
 - Spring RestDocs MockMvc
 - Mockk 1.12.5
@@ -39,7 +38,6 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 
 ### Infra structure
 ----
-
 <img src="/images/InfraStructureJPG.jpg" width="700">
 <img src="/images/InfraStructureDetailPNG.png" width="700" >
 
