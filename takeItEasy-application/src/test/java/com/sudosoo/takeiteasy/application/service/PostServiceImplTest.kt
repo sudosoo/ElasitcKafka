@@ -1,5 +1,8 @@
 package com.sudosoo.takeiteasy.application.service
 
+import com.navercorp.fixturemonkey.FixtureMonkey
+import com.navercorp.fixturemonkey.api.instantiator.Instantiator.constructor
+import com.navercorp.fixturemonkey.kotlin.KotlinPlugin
 import com.sudosoo.takeItEasy.application.common.service.JpaService
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
@@ -48,11 +51,23 @@ class PostServiceImplTest{
 
     @InjectMocks
     lateinit var postService: PostServiceImpl
+    val fixtureMonkey = FixtureMonkey.builder().plugin(KotlinPlugin()).build()
 
-    val mockCategory = Category("카테고리")
-    private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, 1L)
+    private val mockCategory = fixtureMonkey.giveMeOne(Category::class.java)
 
-    private val resultPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
+    private val mockRequestDto :CreatePostRequestDto = fixtureMonkey.giveMeOne(CreatePostRequestDto::class.java)
+
+    private val resultPost = fixtureMonkey.giveMeOne(Post::class.java)
+        .instantiateBy {
+            constructor<Post> {
+                parameter<String>("str")
+                parameter<Long>()
+                parameter<Long>()
+            }
+        }
+        .set("str", "book")
+        .sample()
+
 
     @BeforeEach
     fun setUp() {
@@ -66,7 +81,7 @@ class PostServiceImplTest{
     fun `게시글id로 게시글 가져오기`() {
         val testPost = postService.getByPostId(1L)
 
-        val expectedTitle = testRequestDto.title
+        val expectedTitle = mockRequestDto
         val actualTitle = testPost.title
 
         assertNotNull(testPost, "The created post should not be null")
