@@ -38,7 +38,7 @@ public class Coupon {
         this.discountPrice = discountPrice;
     }
 
-    public static Coupon testPriceOf(Long id, String couponName, String couponDeadline, long discountPrice) {
+    public static Coupon testPriceOf(Long id, String couponName, String couponDeadline, Long discountPrice) {
         return new Coupon(id, couponName, LocalDateTime.parse(couponDeadline), discountPrice);
     }
 
@@ -48,7 +48,7 @@ public class Coupon {
         this.couponDeadline = couponDeadline;
         this.discountRate = discountRate;
     }
-    public static Coupon testRateOf(Long id, String couponName, String couponDeadline,int discountRate) {
+    public static Coupon testRateOf(Long id, String couponName, String couponDeadline,Integer discountRate) {
         return new Coupon(id, couponName, LocalDateTime.parse(couponDeadline), discountRate);
     }
 

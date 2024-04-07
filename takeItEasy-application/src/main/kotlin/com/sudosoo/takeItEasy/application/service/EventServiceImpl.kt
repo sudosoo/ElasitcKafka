@@ -37,21 +37,20 @@ class EventServiceImpl (
         return EventResponseDto(event.id, coupon.id)
     }
 
-    @Transactional(timeout = 5)
-    override fun couponIssuance(requestDto: CouponIssuanceRequestDto) {
-        val event: Event = eventRepository.findByEventIdForUpdate(requestDto.eventId)
-            .orElseThrow { IllegalArgumentException("Event is not found") }
-        val memberId: Long = requestDto.memberId
-        event.decreaseCouponQuantity()
-        event.setMember(memberId)
-        save(event)
-    }
-
     companion object {
         private fun validateDiscountFields(requestDto: CreateEventRequestDto) {
             require(!(requestDto.discountRate == null && requestDto.discountPrice == null) &&
                     !(requestDto.discountRate != null && requestDto.discountPrice != null))
             { "discountRate 또는 discountPrice 중 하나만 존재해야 합니다." }
         }
+    }
+
+    @Transactional(timeout = 5)
+    override fun couponIssuance(requestDto: CouponIssuanceRequestDto) {
+        val event: Event = eventRepository.findByEventIdForUpdate(requestDto.eventId)
+            .orElseThrow { IllegalArgumentException("Event is not found") }
+        event.decreaseCouponQuantity()
+        event.setMember(requestDto.memberId)
+        save(event)
     }
 }

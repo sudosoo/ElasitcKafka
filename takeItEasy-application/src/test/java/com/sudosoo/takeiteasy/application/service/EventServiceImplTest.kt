@@ -9,6 +9,7 @@ import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import org.assertj.core.api.AssertionsForClassTypes
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.*
@@ -38,36 +39,88 @@ internal class EventServiceImplTest{
     }
 
     @Test
-    fun `할인율 쿠폰으로 이벤트 만들기`() {
+    fun `할인율 쿠폰으로 이벤트가 만들어진다`() {
+        //given
         val requestDto = CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, null, 10)
         val testRateCoupon = Coupon.testRateOf(1L,requestDto.eventName, requestDto.eventDeadline,requestDto.discountRate!!)
         `when`(couponService.rateCouponCreate(requestDto)).thenReturn(testRateCoupon)
         `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
 
-        // When
+        //when
         eventService.create(requestDto)
 
-        // Then
+        //then
         verify(couponService,times(1)).rateCouponCreate(requestDto)
         verify(eventRepository,times(1)).save(any(Event::class.java))
     }
 
     @Test
-    fun `가격할인 쿠폰으로 이벤트 만들기`() {
+    fun `가격할인 쿠폰으로 이벤트가 만들어진다`() {
+        //given
         val requestDto =
             CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, 10000L, null)
         val testPriceCoupon = Coupon.testPriceOf(1L,requestDto.eventName, requestDto.eventDeadline,requestDto.discountPrice!!)
         `when`(couponService.priceCouponCreate(requestDto)).thenReturn(testPriceCoupon)
         `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
 
-        // When
+        //when
         eventService.create(requestDto)
 
-        // Then
+        //then
         verify(couponService, times(1)).priceCouponCreate(requestDto)
         verify(eventRepository, times(1)).save(any(Event::class.java))
     }
 
+    @Test
+    fun `요청에 할인율과 할인가격이 둘 다 있으면 생성되지 않는다`() {
+        //given
+        val requestDto =
+            CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, 10000L, 10)
+        val testPriceCoupon = mock(Coupon::class.java)
+        `when`(couponService.priceCouponCreate(requestDto)).thenReturn(testPriceCoupon)
+
+        //when
+        val exception = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            eventService.create(requestDto)
+        }
+
+        //then
+        verify(eventRepository, never())
+        assert(exception.message == "discountRate 또는 discountPrice 중 하나만 존재해야 합니다.")
+    }
+    @Test
+    fun `요청에 할인율과 할인가격이 둘 다 없으면 생성되지 않는다`() {
+        //given
+        val requestDto =
+            CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59", "2024-12-31T23:59:59", 10, null, null)
+        val testPriceCoupon = mock(Coupon::class.java)
+        `when`(couponService.priceCouponCreate(requestDto)).thenReturn(testPriceCoupon)
+
+        //when
+        val exception = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            eventService.create(requestDto)
+        }
+
+        //then
+        verify(eventRepository, never())
+        assert(exception.message == "discountRate 또는 discountPrice 중 하나만 존재해야 합니다.")
+    }
+
+    @Test
+    fun `이벤트가 존재하지 않으면 쿠폰을 사용할 수 없다`() {
+        //given
+        val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
+        `when`(eventRepository.findByEventIdForUpdate(anyLong())).thenReturn(Optional.empty())
+
+        //when
+        val exception = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            eventService.couponIssuance(requestDto)
+        }
+
+        //then
+        verify(eventRepository, never())
+        assert(exception.message == "Event is not found")
+    }
 
     @Test
     @Throws(InterruptedException::class)
