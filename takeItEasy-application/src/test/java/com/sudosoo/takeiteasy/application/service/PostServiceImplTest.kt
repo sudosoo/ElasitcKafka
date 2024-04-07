@@ -20,6 +20,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.springframework.data.domain.Page
@@ -52,19 +53,19 @@ class PostServiceImplTest{
     val mockCategory = Category("카테고리")
     private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, 1L)
 
-    private val resultPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
+    private val testPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
 
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
 
-        `when`(postRepository.save(any(Post::class.java))).thenReturn(resultPost)
-        `when`(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(resultPost))
+        `when`(postRepository.save(any(Post::class.java))).thenReturn(testPost)
+        `when`(postRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testPost))
     }
 
     @Test
     fun `게시글id로 게시글 가져오기`() {
-        val testPost = postService.getByPostId(1L)
+        val testPost = postService.getByPostId(anyLong())
 
         val expectedTitle = testRequestDto.title
         val actualTitle = testPost.title
@@ -75,21 +76,21 @@ class PostServiceImplTest{
 
     @Test
     fun `게시글id로 게시글 상세 내용가져오기 `() {
-        val commentMock1 = Comment(1L, "testM1", "test1")
-        val commentMock2 = Comment(2L, "testM2", "test2")
-        val commentMock3 = Comment(3L, "testM3", "test3")
-        val heart1 = Heart.getCommentHeart( 1L,commentMock1)
-        val heart2 = Heart.getCommentHeart( 2L,commentMock2)
-        val heart3 = Heart.getCommentHeart( 1L,commentMock3)
+        val commentMock1 = mock(Comment::class.java)
+        val commentMock2 = mock(Comment::class.java)
+        val commentMock3 = mock(Comment::class.java)
+        val heart1 = mock(Heart::class.java)
+        val heart2 = mock(Heart::class.java)
+        val heart3 = mock(Heart::class.java)
         commentMock1.setHearts(heart1)
         commentMock1.setHearts(heart2)
         commentMock1.setHearts(heart3)
 
         val pageRequest: Pageable = PageRequest.of(0, 10)
         val commentPage: Page<Comment> = PageImpl(listOf(commentMock1, commentMock2, commentMock3))
-        `when`(commentRepository.findCommentsByPostId(1L, pageRequest)).thenReturn(commentPage)
+        `when`(commentRepository.findCommentsByPostId(testPost.id, pageRequest)).thenReturn(commentPage)
 
-        val result = postService.getPostDetailByPostId(1L, pageRequest)
+        val result = postService.getPostDetailByPostId(testPost.id, pageRequest)
 
         assertEquals(commentPage.content.size, result.comments.size)
     }
