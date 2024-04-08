@@ -7,5 +7,4 @@ import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 interface EventService {
     fun create(requestDto: CreateEventRequestDto): EventResponseDto
 
-    fun couponIssuance(requestDto: CouponIssuanceRequestDto)
 }
