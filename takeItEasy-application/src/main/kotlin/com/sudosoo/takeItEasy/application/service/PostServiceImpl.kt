@@ -24,11 +24,11 @@ import java.util.concurrent.ExecutionException
 @Service
 @Transactional
 class PostServiceImpl(
-    val postRepository: PostRepository,
-    val categoryService: CategoryService,
-    val commentRepository: CommentRepository,
-    val kafkaProducer: KafkaProducer,
-    val redisService: RedisService
+    private val postRepository: PostRepository,
+    private val categoryService: CategoryService,
+    private val commentRepository: CommentRepository,
+    private val kafkaProducer: KafkaProducer,
+    private val redisService: RedisService
 ) : PostService ,JpaService<Post, Long>{
     val objectMapper = ObjectMapper()
     override var jpaRepository: JpaRepository<Post,Long> = postRepository

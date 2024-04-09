@@ -1,75 +1,109 @@
 package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.service.JpaService
-import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
+import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
 import com.sudosoo.takeItEasy.application.service.CouponServiceImpl
+import com.sudosoo.takeItEasy.application.service.CouponWrapperServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Coupon
+import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
+import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.CouponRepository
+import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
+import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
-import java.time.LocalDateTime
-class CouponServiceImplTest{
+
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.mockito.*
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.Mockito.never
+import org.mockito.Mockito.`when`
+import org.springframework.dao.PessimisticLockingFailureException
+import java.time.LocalDate
+import java.util.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.Executors
+
+class CouponServiceImplTest(
+) {
+    @Mock
+    lateinit var couponWrapperRepository: CouponWrapperRepository
+
+    @Mock
+    lateinit var eventRepository: EventRepository
+
     @Mock
     lateinit var couponRepository: CouponRepository
     @Mock
-    lateinit var jpaService: JpaService<Coupon,Long>
+    lateinit var jpaService: JpaService<Coupon, Long>
+
     @InjectMocks
     lateinit var couponService: CouponServiceImpl
+
+    @Mock
+    val mockEvent: Event = Mockito.mock(Event::class.java)
+
 
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
     }
 
-    @Test
-    @Throws(Exception::class)
-    fun `가격할인 쿠폰이 만들어 져야 한다`() {
-        val requestDto = CreateEventRequestDto(
-            "TestEvent",
-            LocalDateTime.now().toString(),
-            LocalDateTime.now().toString(),
-            10,
-            10000L,
-            null
-        )
-        val testCoupon = Coupon.priceOf(requestDto.eventName, requestDto.couponDeadline, requestDto.discountPrice!!)
-        `when`(couponRepository.save(testCoupon)).thenReturn(testCoupon)
-
-        // When
-        val createdCoupon = couponService.priceCouponCreate(requestDto)
-
-        // Then
-        assertThat(createdCoupon.equals(testCoupon))
-        verify(couponRepository, times(1)).save(createdCoupon)
-    }
 
     @Test
-    @Throws(Exception::class)
-    fun `할인율 쿠폰이 만들어 져야 한다`() {
-        val requestDto = CreateEventRequestDto(
-            "TestEvent",
-            LocalDateTime.now().toString(),
-            LocalDateTime.now().toString(),
-            10,
-            null,
-            10
-        )
-        val testCoupon = Coupon.rateOf(requestDto.eventName, requestDto.couponDeadline, requestDto.discountRate!!)
-        `when`(couponRepository.save(testCoupon)).thenReturn(testCoupon)
+    fun `이벤트가 존재하지 않으면 쿠폰을 사용할 수 없다`() {
+        //given
+        val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
+        `when`(eventRepository.findById(anyLong())).thenReturn(Optional.empty())
 
-        // When
-        val createdCoupon = couponService.rateCouponCreate(requestDto)
+        //when
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            couponService.couponIssuance(requestDto)
+        }
 
-        // Then
-        assertThat(createdCoupon.equals(testCoupon))
-        verify(couponRepository, times(1)).save(createdCoupon)
+        //then
+        Mockito.verify(eventRepository, never())
+        assert(exception.message == "Event is not found")
     }
+
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun `멀티 스레드 환경 선착순 쿠폰 발급 테스트`() {
+        val maxCouponCount = 10
+        val couponWrapper = CouponWrapper.testRateOf(1L, 1L, "testEvent", maxCouponCount, LocalDate.now().toString(), 10)
+        val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
+        val successCount = AtomicInteger()
+        val numberOfExecute = 10000
+        val service = Executors.newFixedThreadPool(10)
+        val latch = CountDownLatch(numberOfExecute)
+
+        `when`(eventRepository.existsById(anyLong())).thenReturn(true)
+        `when`(couponWrapperRepository.existsById(anyLong())).thenReturn(true)
+        `when`(couponWrapperRepository.findByIdForUpdate(anyLong())).thenReturn(Optional.of(couponWrapper))
+
+
+        for (i in 0 until numberOfExecute) {
+            val threadNumber = i + 1
+            service.execute {
+                try {
+                    couponService.couponIssuance(requestDto)
+                    successCount.getAndIncrement()
+                    println("Thread $threadNumber - 성공")
+                } catch (e: PessimisticLockingFailureException) {
+                    println("Thread $threadNumber - 락 충돌 감지")
+                } catch (e: Exception) {
+                    println("Thread " + threadNumber + " - " + e.message)
+                }
+                latch.countDown()
+            }
+        }
+        latch.await()
+
+        // 성공한 경우의 수가 10개라고 가정.
+        assertThat(successCount.get()).isEqualTo(maxCouponCount)
+    }
+
 }

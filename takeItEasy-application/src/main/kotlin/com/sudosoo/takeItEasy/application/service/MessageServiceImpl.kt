@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class MessageServiceImpl(
-    val kafkaProducer: KafkaProducer,
-    val messageRepository: MessageRepository
+    private val kafkaProducer: KafkaProducer,
+    private val messageRepository: MessageRepository
 ) : MessageService, JpaService<Message, Long> {
     override var jpaRepository:JpaRepository<Message,Long> = messageRepository
 
