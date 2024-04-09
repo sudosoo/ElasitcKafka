@@ -9,18 +9,17 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional
 @Service
+@Transactional
 class EventServiceImpl (
-    val eventRepository: EventRepository,
-    val couponService: CouponService
+    private val eventRepository: EventRepository,
 ) :EventService , JpaService<Event, Long>{
     override var jpaRepository: JpaRepository<Event, Long> = eventRepository
 
     override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
-        var event = Event.of(requestDto.eventName,requestDto.couponQuantity, requestDto.eventDeadline, coupon)
+        var event = Event.of(requestDto.eventName,requestDto.eventDeadline)
         event = save(event)
-        return EventResponseDto(event.id, coupon.id)
+        return EventResponseDto(event.id)
     }
 
 }

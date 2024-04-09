@@ -14,16 +14,19 @@ public class Coupon {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @Column(nullable = false)
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    @JoinColumn(name = "coupon_wrapper_id")
+    private CouponWrapper couponWrapperId;
     @Column(nullable = false)
     @JoinColumn(name = "member_id")
     private Long memberId;
     private boolean useCheck = false;
 
-    public Coupon(Coupon coupon, Long memberId) {
-        this.coupon = coupon;
+    private Coupon(CouponWrapper couponWrapper, Long memberId) {
+        this.couponWrapperId = couponWrapper;
         this.memberId = memberId;
+    }
+    public static Coupon of(CouponWrapper couponWrapper, Long memberId) {
+        return new Coupon(couponWrapper, memberId);
     }
     public void useCoupon() {
         this.useCheck = true;

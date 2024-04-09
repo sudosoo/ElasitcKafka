@@ -18,8 +18,9 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class CategoryServiceImpl(
-    val categoryRepository : CategoryRepository,
-    val postRepository : PostRepository ) :CategoryService, JpaService<Category, Long> {
+    private val categoryRepository : CategoryRepository,
+    private val postRepository : PostRepository
+) :CategoryService, JpaService<Category, Long> {
 
     override var jpaRepository: JpaRepository<Category, Long> = categoryRepository
 

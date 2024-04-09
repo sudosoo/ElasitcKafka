@@ -1,6 +1,7 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
@@ -9,13 +10,10 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @NotBlank
     private String eventName;
-
     private Long memberId;
-
     private LocalDateTime eventDeadline;
-
     private Event(String eventName, LocalDateTime eventDeadline) {
         this.eventName = eventName;
         this.eventDeadline = eventDeadline;

@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class HeartServiceImpl(
-    val heartRepository: HeartRepository,
-    val postService: PostService,
-    val commentService: CommentService
+    private val heartRepository: HeartRepository,
+    private val postService: PostService,
+    private val commentService: CommentService
 ) : HeartService , JpaService<Heart, Long> {
     override var jpaRepository: JpaRepository<Heart,Long> = heartRepository
 
