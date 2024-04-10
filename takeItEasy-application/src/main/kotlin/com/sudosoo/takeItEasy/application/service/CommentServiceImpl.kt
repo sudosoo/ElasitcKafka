@@ -1,8 +1,7 @@
 package com.sudosoo.takeItEasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.service.JpaService
+import com.sudosoo.takeItEasy.application.common.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
-import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class CommentServiceImpl(
     private val commentRepository: CommentRepository,
     private val postService: PostService
-) : CommentService, JpaService<Comment, Long>{
+) : CommentService, JpaService<Comment, Long> {
     override var jpaRepository: JpaRepository<Comment, Long> = commentRepository
 
     override fun create(createCommentRequestDto: CreateCommentRequestDto): Comment {
