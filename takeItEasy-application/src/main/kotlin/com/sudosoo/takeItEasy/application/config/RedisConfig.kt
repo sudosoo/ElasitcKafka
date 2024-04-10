@@ -28,8 +28,8 @@ class RedisConfig (
         var redisTemplate: RedisTemplate<String, String> = RedisTemplate()
         redisTemplate.keySerializer = StringRedisSerializer.UTF_8
         redisTemplate.valueSerializer = StringRedisSerializer.UTF_8
-        redisTemplate.setDefaultSerializer(RedisSerializer.string())
-        redisTemplate.setConnectionFactory(redisConnectionFactory())
+        redisTemplate.connectionFactory = redisConnectionFactory()
+        redisTemplate.defaultSerializer = RedisSerializer.string()
         return redisTemplate
     }
 
