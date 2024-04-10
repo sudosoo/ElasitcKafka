@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.service.JpaService
+import com.sudosoo.takeItEasy.application.common.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
 import com.sudosoo.takeItEasy.application.service.CommentServiceImpl
 import com.sudosoo.takeItEasy.application.service.PostService
@@ -22,7 +22,7 @@ internal class CommentServiceImplTest {
     @Mock
     lateinit var postService: PostService
     @Mock
-    lateinit var jpaService: JpaService<Comment,Long>
+    lateinit var jpaService: JpaService<Comment, Long>
     @InjectMocks
     lateinit var commentService: CommentServiceImpl
 

@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.service.JpaService
+import com.sudosoo.takeItEasy.application.common.JpaService
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.service.EventServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Event

@@ -1,9 +1,7 @@
 package com.sudosoo.takeItEasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.service.JpaService
-import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
+import com.sudosoo.takeItEasy.application.common.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
-import com.sudosoo.takeItEasy.application.dto.coupon.CreateCouponRequestDto
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
 import com.sudosoo.takeItEasy.domain.repository.EventRepository

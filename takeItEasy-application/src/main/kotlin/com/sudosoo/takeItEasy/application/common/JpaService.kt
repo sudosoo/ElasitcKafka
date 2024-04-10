@@ -1,6 +1,6 @@
-package com.sudosoo.takeItEasy.application.common.service
+package com.sudosoo.takeItEasy.application.common
 
-import com.sudosoo.takeItEasy.application.common.service.CommonService.checkNotNullData
+import com.sudosoo.takeItEasy.application.common.CommonService.checkNotNullData
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.repository.JpaRepository
@@ -14,7 +14,7 @@ interface JpaService<MODEL, ID> {
         return jpaRepository.save(model as (MODEL & Any))
     }
 
-    fun saveModels(models: List<MODEL>) : List<MODEL> {
+    fun saveAll(models: List<MODEL>) : List<MODEL> {
         return jpaRepository.saveAll(models)
     }
 

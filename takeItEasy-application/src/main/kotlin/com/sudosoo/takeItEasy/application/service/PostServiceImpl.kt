@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.application.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.common.service.JpaService
+import com.sudosoo.takeItEasy.application.common.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CommentResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.KafkaResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDto
@@ -29,7 +29,7 @@ class PostServiceImpl(
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
-) : PostService ,JpaService<Post, Long>{
+) : PostService , JpaService<Post, Long> {
     val objectMapper = ObjectMapper()
     override var jpaRepository: JpaRepository<Post,Long> = postRepository
 

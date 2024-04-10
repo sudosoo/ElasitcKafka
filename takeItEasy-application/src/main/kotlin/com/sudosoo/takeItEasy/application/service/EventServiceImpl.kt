@@ -1,6 +1,6 @@
 package com.sudosoo.takeItEasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.service.JpaService
+import com.sudosoo.takeItEasy.application.common.JpaService
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Event
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class EventServiceImpl (
     private val eventRepository: EventRepository,
-) :EventService , JpaService<Event, Long>{
+) :EventService , JpaService<Event, Long> {
     override var jpaRepository: JpaRepository<Event, Long> = eventRepository
 
     override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
