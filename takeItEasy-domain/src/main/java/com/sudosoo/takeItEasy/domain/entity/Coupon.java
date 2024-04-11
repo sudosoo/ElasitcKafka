@@ -1,23 +1,16 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 @Entity
-@NoArgsConstructor
-@Getter
 public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
     @JoinColumn(name = "coupon_wrapper_id")
     private CouponWrapper couponWrapperId;
     @Column(nullable = false)
-    @JoinColumn(name = "member_id")
     private Long memberId;
     private boolean useCheck = false;
 
@@ -32,5 +25,22 @@ public class Coupon {
         this.useCheck = true;
     }
 
+    public Coupon(){
 
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public CouponWrapper getCouponWrapperId() {
+        return couponWrapperId;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public boolean isUseCheck() {
+        return useCheck;
+    }
 }

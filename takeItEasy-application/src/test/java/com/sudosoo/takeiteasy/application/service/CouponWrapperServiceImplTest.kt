@@ -5,6 +5,7 @@ import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
 import com.sudosoo.takeItEasy.application.service.CouponWrapperServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
+import com.sudosoo.takeItEasy.domain.entity.CouponWrapper.testRateOf
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
@@ -60,7 +61,6 @@ class CouponWrapperServiceImplTest {
         couponWrapperService.create(requestDto)
 
         // Then
-        // Assertions
         verify(eventRepository, times(1)).findById(requestDto.eventId);
         verify(couponWrapperRepository, times(1)).save(any(CouponWrapper::class.java))
     }
@@ -76,22 +76,16 @@ class CouponWrapperServiceImplTest {
             10,
             null
         )
-        val testCoupon = CouponWrapper.testRateOf(
-            1L,
-            1L,
-            requestDto.eventName,
-            10,
-            requestDto.couponDeadline,
-            requestDto.discountRate!!
-        )
-        `when`(couponWrapperRepository.save(testCoupon)).thenReturn(testCoupon)
+        val testRateCoupon = testRateOf(
+            1L, 1L, requestDto.eventName,10, requestDto.couponDeadline, requestDto.discountRate!!)
+        `when`(couponWrapperRepository.save(testRateCoupon)).thenReturn(testRateCoupon)
         `when`(eventRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
         couponWrapperService.create(requestDto)
 
         // Then
-        verify(eventRepository, times(1)).findById(requestDto.eventId);
+        verify(eventRepository, times(1)).findById(requestDto.eventId)
         verify(couponWrapperRepository, times(1)).save(any(CouponWrapper::class.java))
     }
 

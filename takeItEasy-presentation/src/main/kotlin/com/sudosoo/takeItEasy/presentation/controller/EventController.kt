@@ -19,11 +19,6 @@ class EventController(val eventService: EventService) {
         return ResponseEntity.ok(eventService.create(requestDto))
     }
 
-    @PostMapping("/couponIssuance", name = "couponIssuance")
-    fun couponIssuance(@Valid @RequestBody requestDto: CouponIssuanceRequestDto): ResponseEntity<Unit> {
-        eventService.couponIssuance(requestDto)
 
-        return ResponseEntity.ok().build()
-    }
 
 }
