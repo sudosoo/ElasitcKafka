@@ -62,6 +62,8 @@ class HeartServiceImplTest {
         //then
         assertNotNull(heart, "The actual heart should not be null")
     }
+
+    @Test
     fun `같은 게시판하트가 저장되면 에러가 난다`(){
         val postHeartRequestDto = PostHeartRequestDto(1L, 1L)
         `when`(heartRepository.save(any())).thenReturn(testPostHeart)
