@@ -64,7 +64,7 @@ class PostServiceImplTest{
     }
 
     @Test
-    fun `게시글id로 게시글 가져오기`() {
+    fun `게시글id로 게시글이 나와야 한다`() {
         val testPost = postService.getByPostId(anyLong())
 
         val expectedTitle = testRequestDto.title
@@ -75,7 +75,7 @@ class PostServiceImplTest{
     }
 
     @Test
-    fun `게시글id로 게시글 상세 내용가져오기 `() {
+    fun `게시글에는 댓글들을 가질 수 있다`() {
         val commentMock1 = mock(Comment::class.java)
         val commentMock2 = mock(Comment::class.java)
         val commentMock3 = mock(Comment::class.java)
@@ -91,7 +91,6 @@ class PostServiceImplTest{
         `when`(commentRepository.findCommentsByPostId(testPost.id, pageRequest)).thenReturn(commentPage)
 
         val result = postService.getPostDetailByPostId(testPost.id, pageRequest)
-
         assertEquals(commentPage.content.size, result.comments.size)
     }
 }

@@ -106,7 +106,7 @@ class CouponWrapperServiceImplTest {
     }
 
     @Test
-    fun `요청에 할인율과 할인가격이 둘 다 없으면 생성되지 않는다`() {
+    fun `요청에 할인율과 할인가격이 둘 다 없으면 생성 되지 않는다`() {
         //given
         val requestDto =
             CouponWrapperCreateDto(1L, "2024-12-31T23:59:59", 10, null, null, null)

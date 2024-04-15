@@ -36,7 +36,6 @@ internal class CommentServiceImplTest {
     }
 
     @Test
-    @DisplayName("createdComment")
     fun `코멘트 만들기`() {
         //given
         `when`<Any>(commentRepository.save(ArgumentMatchers.any())).thenReturn(testComment)
