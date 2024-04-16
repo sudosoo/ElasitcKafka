@@ -9,7 +9,7 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 ### Environment
 - Java Version: 17
 - Build Tool: Gradle
-- Dependency Management: io.spring.dependency-management 1.1.3
+- Dependency Management: Spring.dependency-management 
 
 ### Event Sourcing
 - Kafka
@@ -33,7 +33,8 @@ MemberInfo(Kotlin) : https://github.com/sudosoo/TakeItEasyAdmin/
 - Spring Boot Starter Test
 - Spring Boot starter batch
 - Spring RestDocs MockMvc
-- Mockk 1.12.5
+- Mockk
+- JUnit5
 
 
 ### Infra structure
@@ -105,7 +106,9 @@ https://github.com/sudosoo/TakeItEasy/blob/23a67017267ed0e9166b0fe0d1eeb87bff194
 
 ---
 ### TODO 
-- Bulk Update 대량의 데이터 중 몇건의 데이터 수정하기 (진행중)
+- Bulk Update 대량의 데이터 중 몇건의 데이터 수정하기 (완료)
+- 
+
 
 
 <details><summary>Project Structure tree
