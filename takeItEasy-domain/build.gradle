@@ -10,7 +10,4 @@ dependencies {
     // slf4j & logback
     implementation 'org.slf4j:jcl-over-slf4j'
     implementation 'ch.qos.logback:logback-classic'
-
-    //fixture-monkey
-    testImplementation "com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.15"
 }
