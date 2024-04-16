@@ -107,7 +107,7 @@ https://github.com/sudosoo/TakeItEasy/blob/23a67017267ed0e9166b0fe0d1eeb87bff194
 ---
 ### Jasypt 중요 정보 암호화  
 [🐵 Jasypt 중요 정보 암호화 Blog Visit (https://soobysu.tistory.com/149)
-https://github.com/sudosoo/TakeItEasy/blob/35e7723caa267473cf6497b8197fb55a230d60a4/boot/src/main/resources/application.properties#L12C1-L15C65
+https://github.com/sudosoo/TakeItEasy/blob/35e7723caa267473cf6497b8197fb55a230d60a4/boot/src/main/resources/application.properties#L12-L15
 
 
 ---
