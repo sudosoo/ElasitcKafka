@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 @EnableJpaAuditing
 @EnableAspectJAutoProxy
 @SpringBootApplication
-
 class TakeItEasyApplication
     fun main(args: Array<String>) {
         runApplication<TakeItEasyApplication>(*args)

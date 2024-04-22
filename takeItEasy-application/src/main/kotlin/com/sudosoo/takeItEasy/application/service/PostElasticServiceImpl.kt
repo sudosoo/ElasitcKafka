@@ -4,6 +4,7 @@ import com.sudosoo.takeItEasy.application.dto.post.*
 import com.sudosoo.takeItEasy.domain.entity.EsPost
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
@@ -25,12 +26,12 @@ class PostElasticServiceImpl (
 
     }
 
-    override fun findByTitle(title: String, pageRequest: PageRequest): List<Post> {
-        TODO("Not yet implemented")
+    override fun findByTitle(title: String, pageRequest: PageRequest): Page<EsPost> {
+        return postElasticRepository.findByTitle(title, pageRequest)
     }
 
-    override fun findByContent(content: String, pageRequest: PageRequest): List<Post> {
-        TODO("Not yet implemented")
+    override fun findByContent(content: String, pageRequest: PageRequest): Page<EsPost> {
+        return postElasticRepository.findByContent(content, pageRequest)
     }
 
 
