@@ -1,13 +1,13 @@
 package com.sudosoo.takeItEasy.domain.repository;
 
-import com.sudosoo.takeItEasy.domain.entity.Post;
+import com.sudosoo.takeItEasy.domain.entity.EsPost;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface PostElasticRepository extends ElasticsearchRepository<Post, Long> {
+public interface PostElasticRepository extends ElasticsearchRepository<EsPost, Long> {
 
-    Page<Post> findByTitle(String title, Pageable pageable);
+    Page<EsPost> findByTitle(String title, Pageable pageable);
 
-    Page<Post> findByContent(String content, Pageable pageable);
+    Page<EsPost> findByContent(String content, Pageable pageable);
 }

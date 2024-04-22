@@ -60,6 +60,8 @@ class PostServiceImpl(
     }
 
 
+
+
     override fun redisTest(requestDto: PostRequestDto): TestPostResponseDto {
         val post = Post(requestDto.title, requestDto.memberName)
         val category = categoryService.getById(requestDto.categoryId)

@@ -12,6 +12,8 @@ class CreatePostRequestDto(
     val content: String,
     @NotBlank(message = "멤버아이디를 입력해 주세요.")
     val memberId: Long,
+    @NotBlank(message = "작성자를 입력해 주세요.")
+    val writerName: String,
     @NotBlank(message = "카테고리아이디를 입력해 주세요.")
     val categoryId: Long
 )
