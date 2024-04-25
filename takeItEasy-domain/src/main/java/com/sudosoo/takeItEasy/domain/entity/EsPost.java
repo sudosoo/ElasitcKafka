@@ -2,18 +2,14 @@ package com.sudosoo.takeItEasy.domain.entity;
 
 import com.sudosoo.takeItEasy.domain.support.BaseEntity;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.Setting;
 
 import java.time.LocalDate;
 
-@Entity
 @Document(indexName = "es_post")
-@Setting(settingPath = "elastic/setting.json")
 public class EsPost extends BaseEntity {
     @Id
     @Field(name = "es_post_id", type = FieldType.Long)

@@ -18,4 +18,5 @@ interface PostService {
     fun redisTest(requestDto: PostRequestDto): TestPostResponseDto
     fun allPost() : List<TestPostResponseDto>
     fun softDeletePost(postId: Long): Post
+    fun createElastic(requestDto: CreatePostRequestDto)
 }
