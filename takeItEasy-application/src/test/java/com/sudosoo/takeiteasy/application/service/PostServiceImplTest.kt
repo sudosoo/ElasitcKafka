@@ -51,7 +51,7 @@ class PostServiceImplTest{
     lateinit var postService: PostServiceImpl
 
     val mockCategory = Category("카테고리")
-    private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, 1L)
+    private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, "작성자",1L)
 
     private val testPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
 
