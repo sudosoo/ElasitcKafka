@@ -18,7 +18,6 @@ class JasyptConfig (
 
     @Bean("jasyptStringEncryptor")
     fun stringEncryptor(): StringEncryptor {
-        val encryptor = PooledPBEStringEncryptor()
         val config = StandardPBEStringEncryptor()
         config.setPassword(password)
         config.setAlgorithm("PBEWithMD5AndDES")

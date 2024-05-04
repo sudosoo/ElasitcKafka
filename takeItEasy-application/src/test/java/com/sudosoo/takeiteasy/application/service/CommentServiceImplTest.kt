@@ -26,7 +26,7 @@ internal class CommentServiceImplTest {
     @InjectMocks
     lateinit var commentService: CommentServiceImpl
 
-    private val createCommentRequestDto = CreateCommentRequestDto(1L, 1L, "TestContent")
+    private val createCommentRequestDto = CreateCommentRequestDto(1L, 1L, "tent")
     private val testComment = Comment(createCommentRequestDto.content)
     @BeforeEach
     fun setUp() {
