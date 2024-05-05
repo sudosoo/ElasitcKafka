@@ -107,6 +107,10 @@ public class Post extends BaseEntity {
         return this.category;
     }
 
+    public LocalDate getDeletedAt() {
+        return deletedAt;
+    }
+
     public Long getMemberId() {
         return this.memberId;
     }

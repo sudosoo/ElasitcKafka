@@ -10,9 +10,9 @@ import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
-import com.sudosoo.takeItEasy.domain.entity.EsPost
+//import com.sudosoo.takeItEasy.domain.entity.EsPost
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
-import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
+//import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -30,8 +30,7 @@ class PostServiceImpl(
     private val categoryService: CategoryService,
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
-    private val redisService: RedisService,
-    private val elasticRepository: PostElasticRepository
+    private val redisService: RedisService
 ) : PostService , JpaService<Post, Long> {
     val objectMapper = ObjectMapper()
     override var jpaRepository: JpaRepository<Post,Long> = postRepository
@@ -63,13 +62,6 @@ class PostServiceImpl(
     }
 
 
-    override fun createElastic(requestDto: CreatePostRequestDto) {
-        val esPost = EsPost(requestDto.title,requestDto.content,requestDto.categoryId,requestDto.memberId,requestDto.writerName)
-        elasticRepository.save(esPost)
-
-    }
-
-
     override fun redisTest(requestDto: PostRequestDto): TestPostResponseDto {
         val post = Post(requestDto.title, requestDto.memberName)
         val category = categoryService.getById(requestDto.categoryId)
@@ -77,7 +69,6 @@ class PostServiceImpl(
         val result = save(post)
         return TestPostResponseDto(result)
     }
-
 
     override fun getByPostId(postId: Long): Post {
         return findById(postId) }

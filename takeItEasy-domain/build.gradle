@@ -10,4 +10,9 @@ dependencies {
     // slf4j & logback
     implementation 'org.slf4j:jcl-over-slf4j'
     implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+
+    implementation 'jakarta.json:jakarta.json-api:2.0.1'
+
 }
