@@ -5,5 +5,6 @@ import com.sudosoo.takeItEasy.domain.entity.Post
 class TestPostResponseDto (val title: String, val writer: String){
     constructor(post : Post) : this(
         title = post.title,
-        writer=  post.writerName)
+        writer = post.writer
+    )
 }

@@ -14,7 +14,7 @@ class PostTitleOnlyResponseDto(
         title = post.title,
         likeCount = post.hearts.size,
         viewCount = post.viewCount,
-        writerName = post.writerName
+        writerName = post.writer
     )
 
 

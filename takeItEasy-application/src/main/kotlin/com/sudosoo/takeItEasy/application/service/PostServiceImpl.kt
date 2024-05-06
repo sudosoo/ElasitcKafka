@@ -10,7 +10,7 @@ import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
-//import com.sudosoo.takeItEasy.domain.entity.EsPost
+//import com.sudosoo.takeItEasy.domain.entity.
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 //import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
@@ -34,6 +34,15 @@ class PostServiceImpl(
 ) : PostService , JpaService<Post, Long> {
     val objectMapper = ObjectMapper()
     override var jpaRepository: JpaRepository<Post,Long> = postRepository
+
+    override fun defaultCreatePost(requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto {
+        val post = Post(requestDto.title, requestDto.content,requestDto.memberId, requestDto.writer)
+        val category = categoryService.getById(requestDto.categoryId)
+        post.category = category
+        val result: Post = save(post)
+
+        return PostTitleOnlyResponseDto(result)
+    }
 
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
@@ -62,8 +71,9 @@ class PostServiceImpl(
     }
 
 
-    override fun redisTest(requestDto: PostRequestDto): TestPostResponseDto {
-        val post = Post(requestDto.title, requestDto.memberName)
+
+    override fun redisTest(requestDto: CreatePostRequestDto): TestPostResponseDto {
+        val post = Post(requestDto.title, requestDto.writer)
         val category = categoryService.getById(requestDto.categoryId)
         post.setCategory(category)
         val result = save(post)
@@ -99,7 +109,7 @@ class PostServiceImpl(
     }
 
     override fun createBatchPosts(count: Int): Post {
-        return Post("Title$count",  "content$count",  1L)
+        return Post("Title$count",  "content$count",  count.toLong())
     }
 
     override fun softDeletePost(postId: Long): Post {
