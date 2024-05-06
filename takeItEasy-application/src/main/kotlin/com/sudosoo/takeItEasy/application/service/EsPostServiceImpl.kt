@@ -13,7 +13,7 @@ class EsPostServiceImpl(
     override fun exportPostsToElasticsearch (){
         val posts = postRepository.findAll()
         for (post in posts){
-            val esPost = EsPost(post.id, post.title, post.content ,post.isDeleted, post.deletedAt, post.category.id, post.writerName ,post.viewCount)
+            val esPost = EsPost(post)
             esPostRepository.save(esPost)
         }
     }

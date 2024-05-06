@@ -30,7 +30,7 @@ public class Post extends BaseEntity {
     private Category category;
 
     private Long memberId;
-    private String writerName;
+    private String writer;
 
     @OneToMany(mappedBy = "post",orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Heart> hearts = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Post extends BaseEntity {
         this.content = content;
         this.category = category;
         this.memberId = memberId;
-        this.writerName = writerName;
+        this.writer = writerName;
         this.viewCount = viewCount;
         this.hearts = hearts;
     }
@@ -60,7 +60,7 @@ public class Post extends BaseEntity {
     public Post(String title, String content, String writerName) {
         this.title = title;
         this.content = content;
-        this.writerName = writerName;
+        this.writer = writerName;
     }
 
     public Post(String title, String content) {
@@ -79,7 +79,7 @@ public class Post extends BaseEntity {
 
     public void setMemberIdAndWriter(Long memberId, String writerName) {
         this.memberId = memberId;
-        this.writerName = writerName;
+        this.writer = writerName;
     }
 
     public void incrementViewCount() {
@@ -115,8 +115,8 @@ public class Post extends BaseEntity {
         return this.memberId;
     }
 
-    public String getWriterName() {
-        return this.writerName;
+    public String getWriter() {
+        return this.writer;
     }
 
     public List<Heart> getHearts() {
@@ -152,8 +152,8 @@ public class Post extends BaseEntity {
         final Object this$memberId = this.getMemberId();
         final Object other$memberId = other.getMemberId();
         if (this$memberId == null ? other$memberId != null : !this$memberId.equals(other$memberId)) return false;
-        final Object this$writerName = this.getWriterName();
-        final Object other$writerName = other.getWriterName();
+        final Object this$writerName = this.getWriter();
+        final Object other$writerName = other.getWriter();
         if (this$writerName == null ? other$writerName != null : !this$writerName.equals(other$writerName))
             return false;
         final Object this$hearts = this.getHearts();
@@ -184,7 +184,7 @@ public class Post extends BaseEntity {
         result = result * PRIME + ($category == null ? 43 : $category.hashCode());
         final Object $memberId = this.getMemberId();
         result = result * PRIME + ($memberId == null ? 43 : $memberId.hashCode());
-        final Object $writerName = this.getWriterName();
+        final Object $writerName = this.getWriter();
         result = result * PRIME + ($writerName == null ? 43 : $writerName.hashCode());
         final Object $hearts = this.getHearts();
         result = result * PRIME + ($hearts == null ? 43 : $hearts.hashCode());

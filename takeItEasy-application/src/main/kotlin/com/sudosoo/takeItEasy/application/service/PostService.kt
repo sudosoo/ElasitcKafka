@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeoutException
 
 interface PostService {
+
+    fun defaultCreatePost(requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto
     @Throws(ExecutionException::class, InterruptedException::class, IOException::class, TimeoutException::class)
     fun create(createPostRequestDto: CreatePostRequestDto): TestPostResponseDto
     fun getByPostId(postId: Long): Post

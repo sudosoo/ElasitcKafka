@@ -35,6 +35,15 @@ class PostServiceImpl(
     val objectMapper = ObjectMapper()
     override var jpaRepository: JpaRepository<Post,Long> = postRepository
 
+    override fun defaultCreatePost(requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto {
+        val post = Post(requestDto.title, requestDto.content)
+        val category = categoryService.getById(requestDto.categoryId)
+        post.category = category
+        val result: Post = save(post)
+
+        return PostTitleOnlyResponseDto(result)
+    }
+
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
         try {
@@ -60,6 +69,7 @@ class PostServiceImpl(
         redisService.saveReadValue(responseDto)
         return responseDto
     }
+
 
 
     override fun redisTest(requestDto: PostRequestDto): TestPostResponseDto {

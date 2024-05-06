@@ -15,7 +15,7 @@ class TestController (
     val scheduler: Scheduler,
     val redisService: RedisService,
     val postService: PostService,
-//    val esPostService: EsPostService
+    val esPostService: EsPostService
 )
 {
     @PostMapping("/batchCreateDummyPost", name = "batchCreateDummyPost")
@@ -41,9 +41,9 @@ class TestController (
         redisService.postRepositoryRedisSynchronization()
     }
 
-//    @PostMapping("/export", name = "exportPostsToElasticsearch")
-//    fun exportPostsToElasticsearch() {
-//        esPostService.exportPostsToElasticsearch()
-//    }
+    @PostMapping("/export", name = "exportPostsToElasticsearch")
+    fun exportPostsToElasticsearch() {
+        esPostService.exportPostsToElasticsearch()
+    }
 
 }
