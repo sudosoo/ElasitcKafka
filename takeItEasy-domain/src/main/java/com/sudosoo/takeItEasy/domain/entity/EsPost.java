@@ -4,8 +4,9 @@ import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.WriteTypeHint;
 
-@Document(indexName = "es_post")
+@Document(indexName = "es_post",createIndex = false, writeTypeHint = WriteTypeHint.FALSE)
 public class EsPost {
     @Id
     private Long id;
@@ -77,16 +78,9 @@ public class EsPost {
         return viewCount;
     }
 
-    public EsPost(Long id, String title, String content, Long categoryId, String writerName, int viewCount) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.categoryId = categoryId;
-        this.writerName = writerName;
-        this.viewCount = viewCount;
-    }
 
     public EsPost(Post post) {
+        this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.categoryId = post.getCategory().getId();

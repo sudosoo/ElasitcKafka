@@ -17,7 +17,7 @@ interface PostService {
     fun getPostDetailByPostId(postId: Long, pageRequest: Pageable): PostDetailResponseDto
     fun getPaginationPost(pageRequest: PageRequest): List<PostTitleOnlyResponseDto>
     fun createBatchPosts(count: Int): Post
-    fun redisTest(requestDto: PostRequestDto): TestPostResponseDto
+    fun redisTest(requestDto: CreatePostRequestDto): TestPostResponseDto
     fun allPost() : List<TestPostResponseDto>
     fun softDeletePost(postId: Long): Post
 }

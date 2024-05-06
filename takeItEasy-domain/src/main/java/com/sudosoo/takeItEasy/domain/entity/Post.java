@@ -57,10 +57,10 @@ public class Post extends BaseEntity {
         this.hearts = hearts;
     }
 
-    public Post(String title, String content, String writerName) {
+    public Post(String title, String content, Long memberId) {
         this.title = title;
         this.content = content;
-        this.writer = writerName;
+        this.memberId = memberId;
     }
 
     public Post(String title, String content) {
@@ -68,10 +68,11 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public Post(String title, String content, Long memberId) {
+    public Post(String title, String content,Long memberId, String writerName) {
         this.title = title;
         this.content = content;
         this.memberId = memberId;
+        this.writer = writerName;
     }
 
     public Post() {
