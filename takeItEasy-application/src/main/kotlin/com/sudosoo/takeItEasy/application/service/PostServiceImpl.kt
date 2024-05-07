@@ -1,22 +1,28 @@
 package com.sudosoo.takeItEasy.application.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.common.JpaService
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
+import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.comment.CommentResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.KafkaResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.*
+import com.sudosoo.takeItEasy.application.dto.post.specification.PostSpec
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
+import com.sudosoo.takeItEasy.domain.entity.EsPost
 //import com.sudosoo.takeItEasy.domain.entity.
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
+import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 //import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.elasticsearch.core.query.Query.findAll
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,9 +37,13 @@ class PostServiceImpl(
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
-) : PostService , JpaService<Post, Long> {
-    val objectMapper = ObjectMapper()
+) : PostService , JpaService<Post, Long>,JpaSpecificService<Post,Long> {
+
     override var jpaRepository: JpaRepository<Post,Long> = postRepository
+    override val jpaSpecRepository: BaseRepository<Post, Long> = postRepository
+
+    val objectMapper = ObjectMapper()
+    private val specifyInstance = PostSpec()
 
     override fun defaultCreatePost(requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto {
         val post = Post(requestDto.title, requestDto.content,requestDto.memberId, requestDto.writer)
@@ -117,4 +127,5 @@ class PostServiceImpl(
         post.delete()
         return save(post)
     }
+
 }
