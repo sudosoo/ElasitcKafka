@@ -4,7 +4,6 @@ import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.redis.RedisService
-import com.sudosoo.takeItEasy.application.service.EsPostService
 import com.sudosoo.takeItEasy.application.service.PostService
 import com.sudosoo.takeItEasy.batch.schedule.Scheduler
 import org.springframework.http.ResponseEntity
@@ -16,7 +15,6 @@ class TestController (
     val scheduler: Scheduler,
     val redisService: RedisService,
     val postService: PostService,
-    val esPostService: EsPostService
 )
 {
     @PostMapping("/batchCreateDummyPost", name = "batchCreateDummyPost")
@@ -40,11 +38,6 @@ class TestController (
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
         redisService.postRepositoryRedisSynchronization()
-    }
-
-    @PostMapping("/export", name = "exportPostsToElasticsearch")
-    fun exportPostsToElasticsearch() {
-        esPostService.exportPostsToElasticsearch()
     }
 
     @PostMapping("/createPost", name = "createPost")

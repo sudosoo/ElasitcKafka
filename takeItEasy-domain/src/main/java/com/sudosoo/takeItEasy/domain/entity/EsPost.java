@@ -21,7 +21,7 @@ public class EsPost {
     private Long categoryId;
 
     @Field(type = FieldType.Keyword)
-    private String writerName;
+    private String writer;
 
     @Field(type = FieldType.Integer)
     private int viewCount = 0;
@@ -45,8 +45,8 @@ public class EsPost {
         this.categoryId = categoryId;
     }
 
-    public void setWriterName(String writerName) {
-        this.writerName = writerName;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public void setViewCount(int viewCount) {
@@ -70,8 +70,8 @@ public class EsPost {
         return categoryId;
     }
 
-    public String getWriterName() {
-        return writerName;
+    public String getWriter() {
+        return writer;
     }
 
     public int getViewCount() {
@@ -84,7 +84,7 @@ public class EsPost {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.categoryId = post.getCategory().getId();
-        this.writerName = post.getWriter();
+        this.writer = post.getWriter();
         this.viewCount = post.getViewCount();
     }
 }
