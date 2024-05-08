@@ -37,22 +37,12 @@ class PostServiceImpl(
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
-) : PostService , JpaService<Post, Long>,JpaSpecificService<Post,Long> {
+) : PostService , JpaService<Post, Long> {
 
     override var jpaRepository: JpaRepository<Post,Long> = postRepository
-    override val jpaSpecRepository: BaseRepository<Post, Long> = postRepository
 
     val objectMapper = ObjectMapper()
-    private val specifyInstance = PostSpec()
 
-    override fun defaultCreatePost(requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto {
-        val post = Post(requestDto.title, requestDto.content,requestDto.memberId, requestDto.writer)
-        val category = categoryService.getById(requestDto.categoryId)
-        post.category = category
-        val result: Post = save(post)
-
-        return PostTitleOnlyResponseDto(result)
-    }
 
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
@@ -113,10 +103,10 @@ class PostServiceImpl(
         return posts.stream().map { o -> TestPostResponseDto(o)}.toList()
     }
 
-
-    override fun getPaginationPost(pageRequest: PageRequest): List<PostTitleOnlyResponseDto> {
-        return findAllPagination(pageRequest).map { o -> PostTitleOnlyResponseDto(o) }.toList()
-    }
+  //#TODO Read 엘라스틱서치로 대체
+//    override fun getPaginationPost(pageRequest: PageRequest): List<PostTitleOnlyResponseDto> {
+//        return findAllPagination(pageRequest).map { o -> PostTitleOnlyResponseDto(o) }.toList()
+//    }
 
     override fun createBatchPosts(count: Int): Post {
         return Post("Title$count",  "content$count",  count.toLong())

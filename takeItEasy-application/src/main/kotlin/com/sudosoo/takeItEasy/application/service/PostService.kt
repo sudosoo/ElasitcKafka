@@ -10,12 +10,10 @@ import java.util.concurrent.TimeoutException
 
 interface PostService {
 
-    fun defaultCreatePost(requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto
     @Throws(ExecutionException::class, InterruptedException::class, IOException::class, TimeoutException::class)
     fun create(createPostRequestDto: CreatePostRequestDto): TestPostResponseDto
     fun getByPostId(postId: Long): Post
     fun getPostDetailByPostId(postId: Long, pageRequest: Pageable): PostDetailResponseDto
-    fun getPaginationPost(pageRequest: PageRequest): List<PostTitleOnlyResponseDto>
     fun createBatchPosts(count: Int): Post
     fun redisTest(requestDto: CreatePostRequestDto): TestPostResponseDto
     fun allPost() : List<TestPostResponseDto>

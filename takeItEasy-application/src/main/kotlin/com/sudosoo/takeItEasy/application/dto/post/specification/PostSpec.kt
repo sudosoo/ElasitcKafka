@@ -4,7 +4,7 @@ import com.sudosoo.takeItEasy.application.common.specification.BaseSpecification
 import com.sudosoo.takeItEasy.application.common.specification.SpecificationDto
 import com.sudosoo.takeItEasy.domain.entity.EsPost
 
-class PostSpec: BaseSpecification<EsPost> {
+object PostSpec: BaseSpecification<EsPost> {
     override val equalColumns: List<SpecificationDto>
         get() =
             listOf(
