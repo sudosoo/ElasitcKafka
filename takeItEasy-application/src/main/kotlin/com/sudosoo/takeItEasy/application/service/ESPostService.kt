@@ -6,8 +6,8 @@ import com.sudosoo.takeItEasy.domain.entity.EsPost
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 
-internal interface ESPostService {
+interface ESPostService {
     fun exportToElasticsearch()
-    fun searchBy(requestDto : PostSearchDto, pageRequest : PageRequest): Page<PostTitleOnlyResponseDto>
+    fun searchBy(requestDto: PostSearchDto, pageRequest : PageRequest): Page<PostTitleOnlyResponseDto>
 
 }

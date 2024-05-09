@@ -49,7 +49,7 @@ class PostServiceImpl(
         try {
             val kafkaResult = kafkaProducer.replyRecord(kafkaMemberValidateRequestDto(requestDto.memberId))
             kafkaResponseDto = objectMapper.readValue(kafkaResult, KafkaResponseDto::class.java)
-        } catch (e: ExecutionException) {
+        } catch (e: ExecutionException ) {
             e.stackTrace
         } catch (e: InterruptedException) {
             e.stackTrace

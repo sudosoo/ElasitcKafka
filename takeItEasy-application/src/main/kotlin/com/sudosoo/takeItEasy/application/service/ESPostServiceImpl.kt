@@ -33,7 +33,6 @@ class ESPostServiceImpl(
     override fun searchBy(
         requestDto : PostSearchDto,
         pageRequest : PageRequest) : Page<PostTitleOnlyResponseDto> {
-
             val specification = specific.bySearchDto(requestDto)
             val posts = findAllBy(
                 specification = specification,
