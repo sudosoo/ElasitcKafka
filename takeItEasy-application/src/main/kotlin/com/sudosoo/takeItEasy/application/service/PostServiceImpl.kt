@@ -70,16 +70,6 @@ class PostServiceImpl(
         return responseDto
     }
 
-
-
-    override fun redisTest(requestDto: CreatePostRequestDto): TestPostResponseDto {
-        val post = Post(requestDto.title, requestDto.writer)
-        val category = categoryService.getById(requestDto.categoryId)
-        post.setCategory(category)
-        val result = save(post)
-        return TestPostResponseDto(result)
-    }
-
     override fun getByPostId(postId: Long): Post {
         return findById(postId) }
 
@@ -96,17 +86,6 @@ class PostServiceImpl(
         return PostDetailResponseDto(post,responseCommentDtos)
     }
 
-    @Transactional(readOnly = true)
-    override fun allPost () : List<TestPostResponseDto>{
-            val posts: List<Post> = postRepository.findAll()
-
-        return posts.stream().map { o -> TestPostResponseDto(o)}.toList()
-    }
-
-  //#TODO Read 엘라스틱서치로 대체
-//    override fun getPaginationPost(pageRequest: PageRequest): List<PostTitleOnlyResponseDto> {
-//        return findAllPagination(pageRequest).map { o -> PostTitleOnlyResponseDto(o) }.toList()
-//    }
 
     override fun createBatchPosts(count: Int): Post {
         return Post("Title$count",  "content$count",  count.toLong())
@@ -117,5 +96,6 @@ class PostServiceImpl(
         post.delete()
         return save(post)
     }
+
 
 }
