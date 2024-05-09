@@ -1,9 +1,8 @@
 package com.sudosoo.takeItEasy.application.dto.post
 
 class PostSearchDto (
-    var memberId: Long? = null,
-    var categoryId : Long? = null,
-    var title : String? ,
-    var content : String? ,
-){
-}
+    val memberId: Long?,
+    val categoryId : Long?,
+    val title : String? ,
+    val content : String? ,
+)

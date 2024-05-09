@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 
 internal interface ESPostService {
-    fun exportPostsToElasticsearch()
+    fun exportToElasticsearch()
     fun searchBy(requestDto : PostSearchDto, pageRequest : PageRequest): Page<PostTitleOnlyResponseDto>
 
 }

@@ -21,7 +21,8 @@ class ESPostServiceImpl(
 
     override val jpaSpecRepository: BaseRepository<EsPost, Long> = esPostRepository
     private val specific = PostSpec
-    override fun exportPostsToElasticsearch (){
+
+    override fun exportToElasticsearch (){
         val posts = postRepository.findAll()
         for (post in posts){
             val esPost = EsPost(post)
