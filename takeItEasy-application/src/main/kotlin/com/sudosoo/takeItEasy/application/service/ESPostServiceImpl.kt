@@ -5,10 +5,11 @@ import com.sudosoo.takeItEasy.application.dto.post.PostSearchDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.specification.PostSpec
 import com.sudosoo.takeItEasy.domain.entity.EsPost
-import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
@@ -21,11 +22,7 @@ class ESPostServiceImpl(
     override val jpaSpecRepository: BaseRepository<EsPost, Long> = esPostRepository
     private val specific = PostSpec
 
-    fun findBySpecify(searchDto : PostSearchDto , pageRequest:PageRequest){
-
-    }
-
-    override fun exportPostsToElasticsearch (){
+    override fun exportToElasticsearch (){
         val posts = postRepository.findAll()
         for (post in posts){
             val esPost = EsPost(post)
@@ -33,18 +30,20 @@ class ESPostServiceImpl(
         }
     }
 
-    override fun searchBy(requestDto : PostSearchDto, pageRequest : PageRequest) {
-        val specification = specific.bySearchDto(requestDto)
-        val posts = findAllBy(
-            specification = specification,
-            pageable = pageRequest)
-        val count = countBy(specification)
-        posts.map {
-            PostTitleOnlyResponseDto(it)
+    override fun searchBy(
+        requestDto : PostSearchDto,
+        pageRequest : PageRequest) : Page<PostTitleOnlyResponseDto> {
+            val specification = specific.bySearchDto(requestDto)
+            val posts = findAllBy(
+                specification = specification,
+                pageable = pageRequest)
+            val count = countBy(specification)
 
-        }
-
-        }
+            val response = posts.map {
+                PostTitleOnlyResponseDto(it)
+            }
+        return PageImpl(response,pageRequest,count)
+    }
 
 
 

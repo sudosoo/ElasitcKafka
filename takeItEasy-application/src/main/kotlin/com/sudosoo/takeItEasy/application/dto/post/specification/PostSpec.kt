@@ -10,8 +10,7 @@ object PostSpec: BaseSpecification<EsPost> {
             listOf(
                 SpecificationDto("title"),
                 SpecificationDto("content"),
-                SpecificationDto("writer")
+                SpecificationDto("writer"),
+                SpecificationDto("categoryId")
             )
-
-
 }

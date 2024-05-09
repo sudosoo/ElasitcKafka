@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable
 interface CategoryService {
     fun create(requestDto: CreateCategoryRequestDto): Category
     fun getById(categoryId: Long): Category
-    fun getPosts(categoryId: Long, pageable: Pageable): CategoryResponseDto
+//    fun getPosts(categoryId: Long, pageable: Pageable): CategoryResponseDto
 }

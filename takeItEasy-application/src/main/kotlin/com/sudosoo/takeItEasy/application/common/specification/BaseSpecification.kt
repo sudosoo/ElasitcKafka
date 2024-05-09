@@ -9,8 +9,8 @@ import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
 
 interface BaseSpecification<MODEL> {
-    val equalColumns : List<SpecificationDto>
 
+    val equalColumns : List<SpecificationDto>
     fun <REQ>bySearchDto(searchDto : REQ) : Specification<MODEL>{
         return Specification { root, query, criteriaBuilder ->
 
