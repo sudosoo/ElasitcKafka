@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.domain.repository;
 
 import com.sudosoo.takeItEasy.domain.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository;
 
-public interface CategoryRepository extends JpaRepository<Category,Long> {
+public interface CategoryRepository extends BaseRepository<Category,Long> {
 }

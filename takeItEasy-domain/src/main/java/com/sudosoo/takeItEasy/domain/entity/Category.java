@@ -11,12 +11,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String categoryName;
+    private String title;
     private boolean isDeleted = false;
 
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
+    public Category(String title) {
+        this.title = title;
     }
 
     protected Category() {
@@ -26,8 +25,8 @@ public class Category {
         return this.id;
     }
 
-    public String getCategoryName() {
-        return this.categoryName;
+    public String getTitle() {
+        return this.title;
     }
 
     public boolean isDeleted() {
@@ -42,8 +41,8 @@ public class Category {
         final Object this$id = this.getId();
         final Object other$id = other.getId();
         if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
-        final Object this$categoryName = this.getCategoryName();
-        final Object other$categoryName = other.getCategoryName();
+        final Object this$categoryName = this.getTitle();
+        final Object other$categoryName = other.getTitle();
         if (this$categoryName == null ? other$categoryName != null : !this$categoryName.equals(other$categoryName))
             return false;
         if (this.isDeleted() != other.isDeleted()) return false;
@@ -59,9 +58,13 @@ public class Category {
         int result = 1;
         final Object $id = this.getId();
         result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-        final Object $categoryName = this.getCategoryName();
+        final Object $categoryName = this.getTitle();
         result = result * PRIME + ($categoryName == null ? 43 : $categoryName.hashCode());
         result = result * PRIME + (this.isDeleted() ? 79 : 97);
         return result;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
     }
 }

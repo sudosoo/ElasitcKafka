@@ -1,9 +1,12 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
+import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.notice.NoticeResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Notice
 import com.sudosoo.takeItEasy.domain.repository.EmitterRepository
 import com.sudosoo.takeItEasy.domain.repository.NoticeRepository
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import jakarta.transaction.Transactional
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
@@ -16,7 +19,9 @@ import java.io.IOException
 class NoticeServiceImpl(
     private val noticeRepository: NoticeRepository,
     private val emitterRepository: EmitterRepository
-) : NoticeService{
+) : NoticeService , JpaService<Notice,Long>, JpaSpecificService<Notice,Long>{
+    override var jpaRepository: BaseRepository<Notice, Long> = noticeRepository
+    override var jpaSpecRepository: BaseRepository<Notice, Long> = noticeRepository
 
     companion object {
         private const val DEFAULT_TIMEOUT = 60L * 1000 * 60
@@ -79,7 +84,7 @@ class NoticeServiceImpl(
 
     override fun send(receiver: String, content: String) {
         //TODO: 매직넘버 지우고 receiverId를 받아오도록 수정
-        val receiverId: Long = 1L
+        val receiverId = 1L
         val notification = noticeRepository.save(createNotification(receiverId, content))
 
         val eventCreatedTime = "$receiver\"+_+\"${System.currentTimeMillis()}"
@@ -91,7 +96,7 @@ class NoticeServiceImpl(
     }
 
     private fun createNotification(receiverId: Long, content: String): Notice {
-        return Notice.of(receiverId, content)
+        return save(Notice.of(receiverId, content))
     }
 
 }

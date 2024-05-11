@@ -5,7 +5,7 @@ open class SpecificationDto(
     val paramName : String = columnName,
 ) {
     open fun isEmpty(value : Any) : Boolean{
-        if (value is String) return value.isNullOrEmpty()
+        if (value is String) return value.isEmpty()
         return value.equals(null)
     }
 }
