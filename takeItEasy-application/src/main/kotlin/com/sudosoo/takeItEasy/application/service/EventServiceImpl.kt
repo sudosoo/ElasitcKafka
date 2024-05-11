@@ -7,7 +7,6 @@ import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

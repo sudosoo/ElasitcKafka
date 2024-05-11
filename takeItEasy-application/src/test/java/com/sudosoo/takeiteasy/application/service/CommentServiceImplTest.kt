@@ -35,7 +35,7 @@ internal class CommentServiceImplTest {
     }
 
     @Test
-    fun `코멘트 만들기`() {
+    fun `댓글이 만들어져야 한다`() {
         //given
         `when`<Any>(commentRepository.save(ArgumentMatchers.any())).thenReturn(testComment)
 
@@ -48,7 +48,7 @@ internal class CommentServiceImplTest {
     }
 
     @Test
-    fun `코멘트 아이디로 코멘트 가져오기`() {
+    fun `댓글이 불러져 와야 한다`() {
         // given
         `when`(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment))
 

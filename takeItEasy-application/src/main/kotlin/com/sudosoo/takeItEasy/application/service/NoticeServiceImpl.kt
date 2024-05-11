@@ -20,7 +20,6 @@ class NoticeServiceImpl(
     private val noticeRepository: NoticeRepository,
     private val emitterRepository: EmitterRepository
 ) : NoticeService , JpaService<Notice,Long>, JpaSpecificService<Notice,Long>{
-
     override var jpaRepository: BaseRepository<Notice, Long> = noticeRepository
     override var jpaSpecRepository: BaseRepository<Notice, Long> = noticeRepository
 

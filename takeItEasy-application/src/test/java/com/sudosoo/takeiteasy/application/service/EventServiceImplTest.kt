@@ -50,7 +50,7 @@ internal class EventServiceImplTest{
     }
 
     @Test
-    fun `잘못된 요청이 오면 생성에 실패를 해야 한다`() {
+    fun `잘못된 요청이 오면 이벤트 생성에 실패를 해야 한다`() {
         //given
         val requestDto =
             CreateEventRequestDto(null, "")

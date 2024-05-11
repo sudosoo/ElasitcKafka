@@ -4,15 +4,14 @@ import com.sudosoo.takeItEasy.application.common.CommonService.checkNotNullData
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
 interface JpaService<MODEL, ID> {
     var jpaRepository: BaseRepository<MODEL, ID>
 
-    fun save(model: MODEL) : MODEL {
-        return jpaRepository.save(model as (MODEL & Any))
+    fun save(model: MODEL & Any) : MODEL {
+        return jpaRepository.save(model)
     }
 
     fun saveAll(models: List<MODEL>) : List<MODEL> {

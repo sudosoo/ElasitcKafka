@@ -8,7 +8,6 @@ import com.sudosoo.takeItEasy.domain.repository.CouponRepository
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
