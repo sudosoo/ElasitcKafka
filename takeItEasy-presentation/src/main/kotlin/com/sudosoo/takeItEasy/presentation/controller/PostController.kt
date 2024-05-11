@@ -7,6 +7,7 @@ import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.service.PostService
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -46,16 +47,11 @@ class PostController(val postService: PostService) {
             defaultValue = "0",
             value = "page"
         ) pageNum: Int
-    ): ResponseEntity<List<PostTitleOnlyResponseDto>> {
+    ): ResponseEntity<Page<PostTitleOnlyResponseDto>> {
         val currentPageNumber = if ((pageNum == 0)) 0 else (pageNum - 1)
-        val pageRequest: PageRequest = PageRequest.of(currentPageNumber, 10)
+        val pageRequest:PageRequest = PageRequest.of(currentPageNumber, 10)
 
         return ResponseEntity(postService.getPaginationPost(pageRequest), HttpStatus.OK)
-    }
-
-    @GetMapping("/getAll", name = "getAll")
-    fun allPost(): List<Any>{
-        return postService.allPost()
     }
 
     @PatchMapping("/delete", name = "softDeletePost")

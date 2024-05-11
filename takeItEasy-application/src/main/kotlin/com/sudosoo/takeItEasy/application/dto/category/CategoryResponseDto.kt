@@ -9,7 +9,7 @@ class CategoryResponseDto(
     val postTitleDtos: Page<PostTitleOnlyResponseDto>
 ){
     constructor(category: Category, postTitleDtoPage: Page<PostTitleOnlyResponseDto>):this(
-        category.categoryName,
+        category.title,
         postTitleDtoPage
     )
 

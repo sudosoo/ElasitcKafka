@@ -18,4 +18,12 @@ class PostTitleOnlyResponseDto(
         writerName = post.writer
     )
 
+    constructor(post: Post):this(
+        postId = post.id,
+        title = post.title,
+        likeCount = post.hearts.size,
+        viewCount = post.viewCount,
+        writerName = post.writer
+    )
+
 }

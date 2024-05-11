@@ -30,19 +30,14 @@ class TestController (
         return redisService.getValues(methodName)
     }
 
-    @PostMapping("/redisTest", name = "redisTest")
-    fun redisTestPost(@RequestBody requestDto: CreatePostRequestDto): TestPostResponseDto {
-        return postService.redisTest(requestDto)
-    }
-
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
         redisService.postRepositoryRedisSynchronization()
     }
 
     @PostMapping("/createPost", name = "createPost")
-    fun createPost(@RequestBody requestDto: CreatePostRequestDto): PostTitleOnlyResponseDto {
-        return postService.defaultCreatePost(requestDto)
+    fun createPost(@RequestBody requestDto: CreatePostRequestDto) {
+        postService.defaultCreate(requestDto)
     }
 
 }

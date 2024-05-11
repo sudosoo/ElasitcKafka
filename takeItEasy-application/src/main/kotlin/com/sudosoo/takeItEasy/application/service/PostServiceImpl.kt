@@ -20,6 +20,7 @@ import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 //import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.elasticsearch.core.query.Query.findAll
@@ -43,6 +44,13 @@ class PostServiceImpl(
 
     val objectMapper = ObjectMapper()
 
+
+    override fun defaultCreate(requestDto: CreatePostRequestDto) {
+        val post = Post(requestDto.title, requestDto.content)
+        val category = categoryService.getById(requestDto.categoryId)
+        post.category = category
+        postRepository.save(post)
+    }
 
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
@@ -84,6 +92,12 @@ class PostServiceImpl(
             comments.stream().map{ o -> CommentResponseDto(o) }.toList()
 
         return PostDetailResponseDto(post,responseCommentDtos)
+    }
+
+    override fun getPaginationPost(pageRequest: Pageable): Page<PostTitleOnlyResponseDto> {
+        val posts: Page<Post> = postRepository.findAll(pageRequest)
+        val titleOnlyPost = posts.stream().map{ o -> PostTitleOnlyResponseDto(o)}.toList()
+        return PageImpl(titleOnlyPost, pageRequest, posts.totalElements)
     }
 
 
