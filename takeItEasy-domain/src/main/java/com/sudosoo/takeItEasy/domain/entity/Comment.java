@@ -14,7 +14,7 @@ public class Comment {
 
     private Long memberId;
 
-    private String writerName;
+    private String writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -23,19 +23,19 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<Heart> hearts = new ArrayList<>();
 
-    public Comment(Long id , String content, Long memberId, String writerName, Post post, List<Heart> hearts) {
+    public Comment(Long id , String content, Long memberId, String writer, Post post, List<Heart> hearts) {
         this.id = id;
         this.content = content;
         this.memberId = memberId;
-        this.writerName = writerName;
+        this.writer = writer;
         this.post = post;
         this.hearts = hearts;
     }
 
-    public Comment(Long id, String content, String writerName) {
+    public Comment(Long id, String content, String writer) {
         this.id = id;
         this.content = content;
-        this.writerName = writerName;
+        this.writer = writer;
     }
 
     public Comment(String content) {
@@ -69,8 +69,8 @@ public class Comment {
         return this.memberId;
     }
 
-    public String getWriterName() {
-        return this.writerName;
+    public String getWriter() {
+        return this.writer;
     }
 
     public Post getPost() {
@@ -95,8 +95,8 @@ public class Comment {
         final Object this$memberId = this.getMemberId();
         final Object other$memberId = other.getMemberId();
         if (this$memberId == null ? other$memberId != null : !this$memberId.equals(other$memberId)) return false;
-        final Object this$writerName = this.getWriterName();
-        final Object other$writerName = other.getWriterName();
+        final Object this$writerName = this.getWriter();
+        final Object other$writerName = other.getWriter();
         if (this$writerName == null ? other$writerName != null : !this$writerName.equals(other$writerName))
             return false;
         final Object this$post = this.getPost();
@@ -121,7 +121,7 @@ public class Comment {
         result = result * PRIME + ($content == null ? 43 : $content.hashCode());
         final Object $memberId = this.getMemberId();
         result = result * PRIME + ($memberId == null ? 43 : $memberId.hashCode());
-        final Object $writerName = this.getWriterName();
+        final Object $writerName = this.getWriter();
         result = result * PRIME + ($writerName == null ? 43 : $writerName.hashCode());
         final Object $post = this.getPost();
         result = result * PRIME + ($post == null ? 43 : $post.hashCode());

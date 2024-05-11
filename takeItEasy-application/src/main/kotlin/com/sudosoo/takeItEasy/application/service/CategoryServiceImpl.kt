@@ -7,7 +7,6 @@ import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

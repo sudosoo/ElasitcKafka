@@ -51,6 +51,7 @@ class PostServiceImplTest{
     lateinit var postService: PostServiceImpl
 
     val mockCategory = Category("카테고리")
+
     private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, "작성자",1L)
 
     private val testPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
@@ -75,10 +76,10 @@ class PostServiceImplTest{
     }
 
     @Test
-    fun `게시글에는 댓글들을 가질 수 있다`() {
-        val commentMock1 = mock(Comment::class.java)
-        val commentMock2 = mock(Comment::class.java)
-        val commentMock3 = mock(Comment::class.java)
+    fun `게시글은 댓글들을 가질 수 있다`() {
+        val commentMock1 = Comment(1L, "내용", 1L, "작성자", testPost, mutableListOf())
+        val commentMock2 = Comment(2L, "내용", 1L, "작성자", testPost, mutableListOf())
+        val commentMock3 = Comment(3L, "내용", 1L, "작성자", testPost, mutableListOf())
         val heart1 = mock(Heart::class.java)
         val heart2 = mock(Heart::class.java)
         val heart3 = mock(Heart::class.java)

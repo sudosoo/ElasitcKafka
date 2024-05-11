@@ -34,7 +34,6 @@ class PostServiceImpl(
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
 ) : PostService , JpaService<Post, Long>, JpaSpecificService<Post, Long>{
-
     override var jpaRepository: BaseRepository<Post, Long> = postRepository
     override val jpaSpecRepository: BaseRepository<Post, Long> = postRepository
     val objectMapper = ObjectMapper()
@@ -81,10 +80,9 @@ class PostServiceImpl(
             .orElseThrow{ IllegalArgumentException("해당 게시물이 존재 하지 않습니다.") }
 
         post.incrementViewCount()
-        val comments: Page<Comment> = commentRepository.findCommentsByPostId(postId, pageRequest)
+        val comments = commentRepository.findCommentsByPostId(postId, pageRequest)
         val responseCommentDtos : MutableList<CommentResponseDto> =
-            comments.stream().map{ o -> CommentResponseDto(o) }.toList()
-
+            comments.stream().map{ o -> CommentResponseDto(o)}.toList()
         return PostDetailResponseDto(post,responseCommentDtos)
     }
 
