@@ -6,6 +6,7 @@ import com.sudosoo.takeItEasy.application.dto.category.UpdateCategoryRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,8 +17,7 @@ class CategoryServiceImpl(
     private val categoryRepository : CategoryRepository,
     private val postRepository : PostRepository
 ) :CategoryService, JpaService<Category, Long> {
-
-    override var jpaRepository: JpaRepository<Category, Long> = categoryRepository
+    override var jpaRepository: BaseRepository<Category, Long> = categoryRepository
 
     override fun create(requestDto: CreateCategoryRequestDto){
         save(Category(requestDto.title))

@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service
 @Service
 class ESPostServiceImpl(
     private val esPostRepository : PostElasticRepository,
-    private  val postRepository : PostRepository
-) : ESPostService,JpaSpecificService<EsPost,Long> {
+    private val postRepository : PostRepository
+) : ESPostService{
 
-    override val jpaSpecRepository: BaseRepository<EsPost, Long> = esPostRepository
     private val specific = PostSpec
 
     override fun exportToElasticsearch (){
@@ -30,20 +29,7 @@ class ESPostServiceImpl(
         }
     }
 
-    override fun searchBy(
-        requestDto : PostSearchDto,
-        pageRequest : PageRequest) : Page<PostTitleOnlyResponseDto> {
-            val specification = specific.bySearchDto(requestDto)
-            val posts = findAllBy(
-                specification = specification,
-                pageable = pageRequest)
-            val count = countBy(specification)
 
-            val response = posts.map {
-                PostTitleOnlyResponseDto(it)
-            }
-        return PageImpl(response,pageRequest,count)
-    }
 
 
 

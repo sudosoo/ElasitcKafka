@@ -1,10 +1,12 @@
 package com.sudosoo.takeItEasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
+import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional
 class CouponWrapperServiceImpl(
     private val couponWrapperRepository: CouponWrapperRepository,
     private val eventRepository: EventRepository
-    ) : CouponWrapperService, JpaService<CouponWrapper, Long>
-{
-    override var jpaRepository: JpaRepository<CouponWrapper, Long> = couponWrapperRepository
+    ) : CouponWrapperService, JpaService<CouponWrapper, Long>,JpaSpecificService<CouponWrapper, Long> {
+    override var jpaRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
+    override var jpaSpecRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
 
     override fun create(requestDto: CouponWrapperCreateDto){
         validateDiscountFields(requestDto)

@@ -16,7 +16,7 @@ interface PostService {
     fun getByPostId(postId: Long): Post
     fun getPostDetailByPostId(postId: Long, pageRequest: Pageable): PostDetailResponseDto
     fun createBatchPosts(count: Int): Post
-    fun softDeletePost(postId: Long): Post
+    fun softDeletePost(postId: Long)
     fun getPaginationPost(pageRequest: Pageable) : Page<PostTitleOnlyResponseDto>
 
 }

@@ -14,6 +14,7 @@ import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.domain.entity.EsPost
+import com.sudosoo.takeItEasy.domain.entity.Event
 //import com.sudosoo.takeItEasy.domain.entity.
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
@@ -38,18 +39,16 @@ class PostServiceImpl(
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
-) : PostService , JpaService<Post, Long> {
-
-    override var jpaRepository: JpaRepository<Post,Long> = postRepository
-
+) : PostService , JpaService<Post, Long>, JpaSpecificService<Post, Long>{
+    override var jpaRepository: BaseRepository<Post, Long> = postRepository
+    override val jpaSpecRepository: BaseRepository<Post, Long> = postRepository
     val objectMapper = ObjectMapper()
-
 
     override fun defaultCreate(requestDto: CreatePostRequestDto) {
         val post = Post(requestDto.title, requestDto.content)
         val category = categoryService.getById(requestDto.categoryId)
         post.category = category
-        postRepository.save(post)
+        save(post)
     }
 
     override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
@@ -70,7 +69,7 @@ class PostServiceImpl(
         val category = categoryService.getById(requestDto.categoryId)
         post.setMemberIdAndWriter(kafkaResponseDto.memberId, kafkaResponseDto.memberName)
         post.category = category
-        val result: Post = postRepository.save<Post>(post)
+        val result: Post = postRepository.save(post)
 
         //redis ReadRepository 데이터 삽입
         val responseDto = TestPostResponseDto(result)
@@ -100,15 +99,14 @@ class PostServiceImpl(
         return PageImpl(titleOnlyPost, pageRequest, posts.totalElements)
     }
 
-
     override fun createBatchPosts(count: Int): Post {
         return Post("Title$count",  "content$count",  count.toLong())
     }
 
-    override fun softDeletePost(postId: Long): Post {
+    override fun softDeletePost(postId: Long) {
         val post = findById(postId)
         post.delete()
-        return save(post)
+        save(post)
     }
 
 
