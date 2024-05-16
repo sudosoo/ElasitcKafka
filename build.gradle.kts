@@ -60,7 +60,6 @@ subprojects {
     //자바 모듈
     if (name == "takeItEasy-domain") {
 
-
         //코틀린 모듈
     }else{
         apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -77,17 +76,6 @@ subprojects {
                 extendsFrom(configurations.annotationProcessor.get())
             }
         }
-
-        noArg{
-            annotation("javax.persistence.Entity")
-        }
-
-        allOpen{
-            annotation("jakarta.persistence.Entity")
-            annotation("jakarta.persistence.Embeddable")
-            annotation("jakarta.persistence.MappedSuperclass")
-        }
-
 
 
         tasks{

@@ -14,10 +14,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
+
+
+
 class CommentServiceImpl(
     private val commentRepository: CommentRepository,
     private val postService: PostService
 ) : CommentService, JpaService<Comment, Long>,JpaSpecificService<Comment, Long> {
+
     override var jpaRepository: BaseRepository<Comment, Long> = commentRepository
     override val jpaSpecRepository: BaseRepository<Comment, Long> = commentRepository
 
