@@ -8,9 +8,9 @@ include("takeItEasy-application")
 include("takeItEasy-domain")
 
 pluginManagement {
-    val kotlinVersion :String by settings
-    val springDependencyManagerVersion :String by settings
-    val springBootVersion :String by settings
+    val kotlinVersion : String by settings
+    val springDependencyManagerVersion : String by settings
+    val springBootVersion : String by settings
 
     resolutionStrategy{
         eachPlugin{
