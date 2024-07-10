@@ -9,6 +9,7 @@ import com.sudosoo.takeItEasy.application.service.PostService
 import com.sudosoo.takeItEasy.domain.entity.*
 import com.sudosoo.takeItEasy.domain.repository.HeartRepository
 import org.hibernate.validator.internal.util.Contracts.assertNotNull
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -76,7 +77,7 @@ class HeartServiceImplTest {
             heartService.createPostHeart(postHeartRequestDto)
         }
         //then
-        assert(exception.message == "Duplicated Like !")
+        assertEquals(exception.message, "Duplicated Like !")
     }
 
     @Test
