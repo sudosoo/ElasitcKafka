@@ -26,13 +26,14 @@ internal class EventServiceImplTest{
     @InjectMocks
     lateinit var eventService: EventServiceImpl
 
-    private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
+    private lateinit var validator: Validator
 
     var testEvent = Event(1L, "TestEvent", 1L ,LocalDateTime.now().plusDays(1) )
 
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
+        validator = Validation.buildDefaultValidatorFactory().validator
     }
     @Test
     fun `이벤트가 생성 되어야 한다`() {
@@ -60,7 +61,7 @@ internal class EventServiceImplTest{
             val validate= validator.validate(requestDto)
         //then
         assertThat(validate).hasSize(2)
-        verify(eventRepository, never())
+        verify(eventRepository, never()).save(any(Event::class.java))
     }
 
 

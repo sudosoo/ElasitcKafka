@@ -14,6 +14,8 @@ public class Event {
     private String eventName;
     private Long memberId;
     private LocalDateTime eventDeadline;
+    private String body;
+
     private Event(String eventName, LocalDateTime eventDeadline) {
         this.eventName = eventName;
         this.eventDeadline = eventDeadline;

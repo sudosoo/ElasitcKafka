@@ -76,10 +76,10 @@ class PostServiceImplTest{
     }
 
     @Test
-    fun `게시글은 댓글들을 가질 수 있다`() {
-        val commentMock1 = Comment(1L, "내용", 1L, "작성자", testPost, mutableListOf())
-        val commentMock2 = Comment(2L, "내용", 1L, "작성자", testPost, mutableListOf())
-        val commentMock3 = Comment(3L, "내용", 1L, "작성자", testPost, mutableListOf())
+    fun `게시물 id를 넣으면 관련된 댓글이 나와야 한다`() {
+        val commentMock1 = Comment(1L,"댓글1", 1L, "작성자1", testPost, mutableListOf())
+        val commentMock2 = Comment(2L,"댓글2", 1L, "작성자2", testPost, mutableListOf())
+        val commentMock3 = Comment(3L,"댓글3", 1L, "작성자3", testPost, mutableListOf())
         val heart1 = mock(Heart::class.java)
         val heart2 = mock(Heart::class.java)
         val heart3 = mock(Heart::class.java)
@@ -87,8 +87,8 @@ class PostServiceImplTest{
         commentMock1.setHearts(heart2)
         commentMock1.setHearts(heart3)
 
-        val pageRequest: Pageable = PageRequest.of(0, 10)
-        val commentPage: Page<Comment> = PageImpl(listOf(commentMock1, commentMock2, commentMock3))
+        val pageRequest = PageRequest.of(0, 10)
+        val commentPage = PageImpl(listOf(commentMock1, commentMock2, commentMock3))
         `when`(commentRepository.findCommentsByPostId(testPost.id, pageRequest)).thenReturn(commentPage)
 
         val result = postService.getPostDetailByPostId(testPost.id, pageRequest)
