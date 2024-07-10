@@ -3,7 +3,6 @@ package com.sudosoo.takeItEasy.batch.step
 import com.sudosoo.takeItEasy.application.service.PostService
 import com.sudosoo.takeItEasy.domain.entity.Post
 import jakarta.persistence.EntityManagerFactory
-import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.repository.JobRepository
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
-import java.time.LocalDate
 import javax.sql.DataSource
 
 @Configuration
@@ -67,7 +65,7 @@ class HeavyCreatePost(
                     pstmt.setString(2, post.content)
                     pstmt.setLong(3, 1L)
                     pstmt.setLong(4, post.memberId)
-                    pstmt.setString(5, post.writerName)
+                    pstmt.setString(5, post.writer)
                     pstmt.setInt(6, post.viewCount)
                     pstmt.setBoolean(7, post.isDeleted)
 

@@ -1,13 +1,14 @@
 package com.sudosoo.takeItEasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.JpaService
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
+import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Heart
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.HeartRepository
-import org.springframework.data.jpa.repository.JpaRepository
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,8 +18,9 @@ class HeartServiceImpl(
     private val heartRepository: HeartRepository,
     private val postService: PostService,
     private val commentService: CommentService
-) : HeartService , JpaService<Heart, Long> {
-    override var jpaRepository: JpaRepository<Heart,Long> = heartRepository
+) : HeartService , JpaService<Heart, Long>, JpaSpecificService<Heart,Long> {
+    override var jpaRepository: BaseRepository<Heart, Long> = heartRepository
+    override var jpaSpecRepository: BaseRepository<Heart,Long> = heartRepository
 
     override fun createPostHeart(requestDto: PostHeartRequestDto): Heart {
         //TODO MemberSetting

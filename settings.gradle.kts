@@ -8,9 +8,9 @@ include("takeItEasy-application")
 include("takeItEasy-domain")
 
 pluginManagement {
-    val kotlinVersion :String by settings
-    val springDependencyManagerVersion :String by settings
-    val springBootVersion :String by settings
+    val kotlinVersion : String by settings
+    val springDependencyManagerVersion : String by settings
+    val springBootVersion : String by settings
 
     resolutionStrategy{
         eachPlugin{
@@ -20,7 +20,6 @@ pluginManagement {
                 "org.jetbrains.kotlin.jvm" -> useVersion(kotlinVersion)
                 "org.jetbrains.kotlin.plugin.spring" -> useVersion(kotlinVersion)
                 "org.jetbrains.kotlin.plugin.jpa" -> useVersion(kotlinVersion)
-                "org.jetbrains.kotlin.plugin.allopen" -> useVersion(kotlinVersion)
                 "org.gradle.core" -> useVersion(kotlinVersion)
 
             }
@@ -34,5 +33,5 @@ pluginManagement {
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }

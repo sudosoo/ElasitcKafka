@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.JpaService
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.service.CategoryServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Category
@@ -24,7 +24,7 @@ class CategoryServiceImplTest {
     lateinit var categoryService: CategoryServiceImpl
 
     private val createCategoryRequestDto = CreateCategoryRequestDto("test 카테고리")
-    private val testCategory: Category = Category(createCategoryRequestDto.categoryName)
+    private val testCategory: Category = Category(createCategoryRequestDto.title)
 
     @BeforeEach
     fun setUp() {
@@ -57,8 +57,8 @@ class CategoryServiceImplTest {
         val actualCategory = categoryService.getById(1L)
 
         //then
-        val expectedName = testCategory.categoryName
-        val actualName = actualCategory.categoryName
+        val expectedName = testCategory.title
+        val actualName = actualCategory.title
 
         Assertions.assertNotNull(actualCategory, "The created post should not be null")
         Assertions.assertEquals(

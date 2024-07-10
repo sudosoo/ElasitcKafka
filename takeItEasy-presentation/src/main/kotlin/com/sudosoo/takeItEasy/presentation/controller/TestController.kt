@@ -1,6 +1,7 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
-import com.sudosoo.takeItEasy.application.dto.post.PostRequestDto
+import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
+import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.application.service.PostService
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.*
 class TestController (
     val scheduler: Scheduler,
     val redisService: RedisService,
-    val postService: PostService )
+    val postService: PostService,
+)
 {
     @PostMapping("/batchCreateDummyPost", name = "batchCreateDummyPost")
     fun batchCreateDummyPost(): ResponseEntity<Void> {
@@ -22,21 +24,20 @@ class TestController (
         return ResponseEntity.ok().build()
     }
 
-
     @GetMapping("/getV", name = "getV")
     fun redisGetTest(): List<TestPostResponseDto> {
         val methodName = "PostResponseDto"
         return redisService.getValues(methodName)
     }
 
-
-    @PostMapping("/createPost", name = "createPost")
-    fun createPost(@RequestBody requestDto: PostRequestDto): TestPostResponseDto {
-        return postService.redisTest(requestDto)
-    }
-
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
         redisService.postRepositoryRedisSynchronization()
     }
+
+    @PostMapping("/createPost", name = "createPost")
+    fun createPost(@RequestBody requestDto: CreatePostRequestDto) {
+        postService.defaultCreate(requestDto)
+    }
+
 }

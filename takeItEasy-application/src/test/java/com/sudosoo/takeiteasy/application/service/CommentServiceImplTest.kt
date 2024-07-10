@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.JpaService
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
 import com.sudosoo.takeItEasy.application.service.CommentServiceImpl
 import com.sudosoo.takeItEasy.application.service.PostService
@@ -9,7 +9,6 @@ import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.*
 import org.mockito.ArgumentMatchers.anyLong
@@ -26,7 +25,7 @@ internal class CommentServiceImplTest {
     @InjectMocks
     lateinit var commentService: CommentServiceImpl
 
-    private val createCommentRequestDto = CreateCommentRequestDto(1L, 1L, "TestContent")
+    private val createCommentRequestDto = CreateCommentRequestDto(1L, 1L, "tent")
     private val testComment = Comment(createCommentRequestDto.content)
     @BeforeEach
     fun setUp() {
@@ -36,7 +35,7 @@ internal class CommentServiceImplTest {
     }
 
     @Test
-    fun `코멘트 만들기`() {
+    fun `댓글이 만들어져야 한다`() {
         //given
         `when`<Any>(commentRepository.save(ArgumentMatchers.any())).thenReturn(testComment)
 
@@ -49,7 +48,7 @@ internal class CommentServiceImplTest {
     }
 
     @Test
-    fun `코멘트 아이디로 코멘트 가져오기`() {
+    fun `댓글이 가져와야 한다`() {
         // given
         `when`(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment))
 

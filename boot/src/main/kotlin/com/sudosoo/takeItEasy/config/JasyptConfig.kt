@@ -1,9 +1,7 @@
 package com.sudosoo.takeItEasy.config
 
 import org.jasypt.encryption.StringEncryptor
-import org.jasypt.encryption.pbe.PooledPBEStringEncryptor
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig
 import org.jasypt.iv.NoIvGenerator
 import org.jasypt.salt.RandomSaltGenerator
 import org.springframework.beans.factory.annotation.Value
@@ -18,7 +16,6 @@ class JasyptConfig (
 
     @Bean("jasyptStringEncryptor")
     fun stringEncryptor(): StringEncryptor {
-        val encryptor = PooledPBEStringEncryptor()
         val config = StandardPBEStringEncryptor()
         config.setPassword(password)
         config.setAlgorithm("PBEWithMD5AndDES")

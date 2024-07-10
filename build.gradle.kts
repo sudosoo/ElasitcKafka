@@ -1,7 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot") apply false
+    id("org.springframework.boot")
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
@@ -21,6 +21,7 @@ allprojects {
         maven ("https://repo.spring.io/milestone/")
         maven ("https:/jitpack.io")
     }
+
 }
 
 subprojects {
@@ -28,6 +29,7 @@ subprojects {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
     dependencyManagement {
         imports {
@@ -60,7 +62,6 @@ subprojects {
     //자바 모듈
     if (name == "takeItEasy-domain") {
 
-
         //코틀린 모듈
     }else{
         apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -77,17 +78,6 @@ subprojects {
                 extendsFrom(configurations.annotationProcessor.get())
             }
         }
-
-        noArg{
-            annotation("javax.persistence.Entity")
-        }
-
-        allOpen{
-            annotation("jakarta.persistence.Entity")
-            annotation("jakarta.persistence.Embeddable")
-            annotation("jakarta.persistence.MappedSuperclass")
-        }
-
 
 
         tasks{

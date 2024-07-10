@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.JpaService
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
@@ -51,7 +51,8 @@ class PostServiceImplTest{
     lateinit var postService: PostServiceImpl
 
     val mockCategory = Category("카테고리")
-    private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, 1L)
+
+    private val testRequestDto = CreatePostRequestDto("제목", "내용", 1L, "작성자",1L)
 
     private val testPost = Post( 1L, "제목", "내용", mockCategory, 1L, "작성자", 0, mutableListOf() )
 

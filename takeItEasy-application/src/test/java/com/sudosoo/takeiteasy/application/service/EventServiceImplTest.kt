@@ -1,6 +1,6 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.common.JpaService
+import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.service.EventServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Event
@@ -51,7 +51,7 @@ internal class EventServiceImplTest{
     }
 
     @Test
-    fun `잘못된 요청이 오면 생성에 실패를 해야 한다`() {
+    fun `잘못된 요청이 오면 이벤트 생성에 실패를 해야 한다`() {
         //given
         val requestDto =
             CreateEventRequestDto(null, "")
