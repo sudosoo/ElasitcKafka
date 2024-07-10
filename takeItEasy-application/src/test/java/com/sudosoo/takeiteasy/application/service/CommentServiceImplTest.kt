@@ -48,7 +48,7 @@ internal class CommentServiceImplTest {
     }
 
     @Test
-    fun `댓글이 불러져 와야 한다`() {
+    fun `댓글이 가져와야 한다`() {
         // given
         `when`(commentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testComment))
 

@@ -1,6 +1,5 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -9,19 +8,16 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Nullable
     private Long id;
 
     private Long memberId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
-    @Nullable
     private Post post;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch=LAZY)
     @JoinColumn(name = "comment_id")
-    @Nullable
     private Comment comment;
 
     @Enumerated(EnumType.STRING)
