@@ -1,8 +1,8 @@
 package com.sudosoo.takeItEasy.domain.repository;
 
 import com.sudosoo.takeItEasy.domain.entity.Event;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository;
 
-public interface EventRepository extends JpaRepository<Event,Long> {
+public interface EventRepository extends BaseRepository<Event,Long> {
 }
 

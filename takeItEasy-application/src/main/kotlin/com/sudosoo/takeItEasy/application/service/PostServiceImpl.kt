@@ -1,5 +1,6 @@
 package com.sudosoo.takeItEasy.application.service
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -12,6 +13,7 @@ import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
+import com.sudosoo.takeItEasy.application.redis.RedisServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
@@ -100,6 +102,12 @@ class PostServiceImpl(
         val post = findById(postId)
         post.delete()
         save(post)
+    }
+
+    override fun postRepositoryRedisSynchronization() {
+        val posts = postRepository.findAll()
+        val topicName = "PostResponseDto"
+        redisService.resetRedisCacheWithAllPosts(topicName, posts.toList())
     }
 
 

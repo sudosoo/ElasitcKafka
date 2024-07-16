@@ -12,7 +12,7 @@ public class Event {
     private Long id;
     @NotBlank
     private String eventName;
-    private Long memberId;
+    private EventOperation operation;
     private LocalDateTime eventDeadline;
     private String body;
 
@@ -21,17 +21,17 @@ public class Event {
         this.eventDeadline = eventDeadline;
     }
 
-    public Event(Long id, String eventName, Long memberId, LocalDateTime eventDeadline) {
+    public Event(Long id, String eventName, EventOperation operation, LocalDateTime eventDeadline) {
         this.id = id;
         this.eventName = eventName;
-        this.memberId = memberId;
+        this.operation = operation;
         this.eventDeadline = eventDeadline;
     }
 
     protected Event() {
     }
 
-    public static Event of(String eventName,String eventDeadline) {
+    public static Event of(String eventName, String eventDeadline) {
         return new Event(eventName, LocalDateTime.parse(eventDeadline));
     }
 
@@ -40,22 +40,12 @@ public class Event {
         return eventDeadline.isBefore(currentDateTime);
     }
 
-
-
-    public void setMember(Long memberId) {
-        this.memberId = memberId;
-    }
-
     public Long getId() {
         return this.id;
     }
 
     public String getEventName() {
         return this.eventName;
-    }
-
-    public Long getMemberId() {
-        return this.memberId;
     }
 
     public LocalDateTime getEventDeadline() {
@@ -73,9 +63,6 @@ public class Event {
         final Object this$eventName = this.getEventName();
         final Object other$eventName = other.getEventName();
         if (this$eventName == null ? other$eventName != null : !this$eventName.equals(other$eventName)) return false;
-        final Object this$memberId = this.getMemberId();
-        final Object other$memberId = other.getMemberId();
-        if (this$memberId == null ? other$memberId != null : !this$memberId.equals(other$memberId)) return false;
         final Object this$eventDeadline = this.getEventDeadline();
         final Object other$eventDeadline = other.getEventDeadline();
         if (this$eventDeadline == null ? other$eventDeadline != null : !this$eventDeadline.equals(other$eventDeadline))
@@ -94,15 +81,9 @@ public class Event {
         result = result * PRIME + ($id == null ? 43 : $id.hashCode());
         final Object $eventName = this.getEventName();
         result = result * PRIME + ($eventName == null ? 43 : $eventName.hashCode());
-        final Object $memberId = this.getMemberId();
-        result = result * PRIME + ($memberId == null ? 43 : $memberId.hashCode());
         final Object $eventDeadline = this.getEventDeadline();
         result = result * PRIME + ($eventDeadline == null ? 43 : $eventDeadline.hashCode());
         return result;
     }
-
-        public String toString() {
-            return "Event.EventBuilder(eventName=" + this.eventName + ", memberId=" + this.memberId + ", eventDeadline=" + this.eventDeadline + ")";
-        }
 
 }

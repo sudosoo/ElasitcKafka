@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class EventServiceImpl (
-    private val eventRepository: EventRepository,
+    private val repository: EventRepository,
 ) :EventService ,JpaService<Event, Long>, JpaSpecificService<Event, Long> {
-    override var jpaRepository: BaseRepository<Event, Long> = eventRepository
-    override val jpaSpecRepository: BaseRepository<Event, Long> = eventRepository
+    override var jpaRepository: BaseRepository<Event, Long> = repository
+    override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
     override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
         var event = Event.of(requestDto.eventName,requestDto.eventDeadline)

@@ -3,6 +3,7 @@ package com.sudosoo.takeItEasy.application.redis
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
+import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.redis.core.RedisTemplate
@@ -14,7 +15,6 @@ import java.io.IOException
 @Transactional
 class RedisServiceImpl(
     val redisTemplate: RedisTemplate<String, String>,
-    val postRepository: PostRepository
 ) : RedisService {
 
     private companion object {
@@ -77,10 +77,8 @@ class RedisServiceImpl(
         redisTemplate.opsForList().leftPush(className, jsonObject)
     }
 
-    override fun postRepositoryRedisSynchronization() {
-        redisTemplate.delete("PostResponseDto")
-        val posts = postRepository.findAll()
-
+    override fun resetRedisCacheWithAllPosts(topicName: String, posts: List<Post>) {
+        redisTemplate.delete(topicName)
         posts.forEach { post ->
             val jsonPost: String = try {
                 objectMapper.writeValueAsString(TestPostResponseDto(post))
@@ -90,4 +88,7 @@ class RedisServiceImpl(
             redisTemplate.opsForList().leftPush("PostResponseDto", jsonPost)
         }
     }
+
+
+
 }

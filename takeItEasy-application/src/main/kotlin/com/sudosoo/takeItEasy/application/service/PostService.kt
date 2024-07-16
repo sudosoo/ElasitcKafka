@@ -18,5 +18,6 @@ interface PostService {
     fun createBatchPosts(count: Int): Post
     fun softDeletePost(postId: Long)
     fun getPaginationPost(pageRequest: Pageable) : Page<PostTitleOnlyResponseDto>
+    fun postRepositoryRedisSynchronization()
 
 }

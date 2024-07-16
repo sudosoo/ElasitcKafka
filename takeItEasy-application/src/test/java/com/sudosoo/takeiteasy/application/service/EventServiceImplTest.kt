@@ -4,6 +4,7 @@ import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.service.EventServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Event
+import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import jakarta.validation.Validation
 import jakarta.validation.Validator
@@ -28,7 +29,7 @@ internal class EventServiceImplTest{
 
     private lateinit var validator: Validator
 
-    var testEvent = Event(1L, "TestEvent", 1L ,LocalDateTime.now().plusDays(1) )
+    var testEvent = Event(1L, "TestEvent", EventOperation.CREATE ,LocalDateTime.now().plusDays(1) )
 
     @BeforeEach
     fun setUp() {
@@ -55,7 +56,7 @@ internal class EventServiceImplTest{
         //given
         val requestDto =
             CreateEventRequestDto(null, "")
-        val testEvent = (Event(1L, null, 1L ,LocalDateTime.now().plusDays(1)))
+        val testEvent = (Event(1L, null, EventOperation.CREATE ,LocalDateTime.now().plusDays(1)))
         `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
         //when
             val validate= validator.validate(requestDto)
