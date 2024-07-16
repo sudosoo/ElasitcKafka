@@ -29,7 +29,7 @@ internal class EventServiceImplTest{
 
     private lateinit var validator: Validator
 
-    var testEvent = Event(1L, "TestEvent", EventOperation.CREATE ,LocalDateTime.now().plusDays(1) )
+    var testEvent = Event(1L, "TestEvent", EventOperation.CREATED ,LocalDateTime.now().plusDays(1) )
 
     @BeforeEach
     fun setUp() {
@@ -56,7 +56,7 @@ internal class EventServiceImplTest{
         //given
         val requestDto =
             CreateEventRequestDto(null, "")
-        val testEvent = (Event(1L, null, EventOperation.CREATE ,LocalDateTime.now().plusDays(1)))
+        val testEvent = (Event(1L, null, EventOperation.CREATED ,LocalDateTime.now().plusDays(1)))
         `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
         //when
             val validate= validator.validate(requestDto)
