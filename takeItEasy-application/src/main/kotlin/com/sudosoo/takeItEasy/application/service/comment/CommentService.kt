@@ -21,14 +21,14 @@ import org.springframework.transaction.annotation.Transactional
 class CommentService(
     private val commentRepository: CommentRepository,
     private val postService: PostService
-) : JpaService<Comment, Long>,JpaSpecificService<Comment, Long> {
+): JpaService<Comment, Long>, JpaSpecificService<Comment, Long> {
 
     override var jpaRepository: BaseRepository<Comment, Long> = commentRepository
     override val jpaSpecRepository: BaseRepository<Comment, Long> = commentRepository
 
     fun create(createCommentRequestDto: CreateCommentRequestDto): Comment {
-        val memberId: Long = createCommentRequestDto.memberId
-        val post: Post = postService.getByPostId(createCommentRequestDto.postId)
+        val memberId = createCommentRequestDto.memberId
+        val post = postService.getByPostId(createCommentRequestDto.postId)
         val comment = Comment(createCommentRequestDto.content)
         comment.post = post
         comment.memberId = memberId

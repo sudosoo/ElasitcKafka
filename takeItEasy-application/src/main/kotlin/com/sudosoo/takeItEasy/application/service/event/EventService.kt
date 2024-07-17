@@ -19,8 +19,9 @@ class EventService(
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
     fun create(requestDto: CreateEventRequestDto): EventResponseDto {
-        var event = Event.of(requestDto.eventName,requestDto.eventDeadline)
-        event = save(event)
+        val event = Event.of(requestDto.eventName,requestDto.eventDeadline)
+        save(event)
+
         return EventResponseDto(event.id)
     }
 

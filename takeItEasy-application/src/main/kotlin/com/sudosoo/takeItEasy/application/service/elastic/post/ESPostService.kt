@@ -11,9 +11,6 @@ class ESPostService(
     private val esPostRepository : PostElasticRepository,
     private val postRepository : PostRepository
 ){
-
-    private val specific = PostSpec
-
     fun exportToElasticsearch (){
         val posts = postRepository.findAll()
         for (post in posts){
