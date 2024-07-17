@@ -3,6 +3,7 @@ package com.sudosoo.takeiteasy.application.service
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
+import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.Category

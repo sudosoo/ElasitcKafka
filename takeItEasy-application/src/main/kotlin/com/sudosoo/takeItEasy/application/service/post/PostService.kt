@@ -11,6 +11,7 @@ import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
+import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
@@ -102,6 +103,7 @@ class PostService(
     }
 
     fun postRepositoryRedisSynchronization() {
+        //TODO 데이터량 많아지면 청크단위로 배치 작업 추가
         val posts = postRepository.findAll()
         val topicName = "PostResponseDto"
         redisService.resetRedisCacheWithAllPosts(topicName, posts.toList())
