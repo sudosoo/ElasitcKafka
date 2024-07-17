@@ -2,6 +2,7 @@ package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.dto.category.UpdateCategoryRequestDto
+import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

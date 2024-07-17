@@ -2,8 +2,7 @@ package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
-import com.sudosoo.takeItEasy.application.service.comment.CommentServiceImpl
-import com.sudosoo.takeItEasy.application.service.post.PostService
+import com.sudosoo.takeItEasy.application.service.comment.CommentService
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
@@ -15,7 +14,7 @@ import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.*
 import java.util.*
 
-internal class CommentServiceImplTest {
+internal class CommentServiceTest {
     @Mock
     lateinit var commentRepository: CommentRepository
     @Mock
@@ -23,7 +22,7 @@ internal class CommentServiceImplTest {
     @Mock
     lateinit var jpaService: JpaService<Comment, Long>
     @InjectMocks
-    lateinit var commentService: CommentServiceImpl
+    lateinit var commentService: CommentService
 
     private val createCommentRequestDto = CreateCommentRequestDto(1L, 1L, "tent")
     private val testComment = Comment(createCommentRequestDto.content)

@@ -2,7 +2,7 @@ package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
-import com.sudosoo.takeItEasy.application.service.event.EventServiceImpl
+import com.sudosoo.takeItEasy.application.service.event.EventService
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
@@ -19,13 +19,13 @@ import org.mockito.MockitoAnnotations
 import java.time.LocalDateTime
 
 
-internal class EventServiceImplTest{
+internal class EventServiceTest{
     @Mock
     lateinit var eventRepository: EventRepository
     @Mock
     lateinit var jpaService: JpaService<Event, Long>
     @InjectMocks
-    lateinit var eventService: EventServiceImpl
+    lateinit var eventService: EventService
 
     private lateinit var validator: Validator
 

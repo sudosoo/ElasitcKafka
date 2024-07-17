@@ -4,7 +4,7 @@ import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
 import com.sudosoo.takeItEasy.application.service.comment.CommentService
-import com.sudosoo.takeItEasy.application.service.heart.HeartServiceImpl
+import com.sudosoo.takeItEasy.application.service.heart.HeartService
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.*
 import com.sudosoo.takeItEasy.domain.repository.HeartRepository
@@ -22,7 +22,7 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import java.util.*
 
-class HeartServiceImplTest {
+class HeartServiceTest {
     @Mock
     lateinit var heartRepository: HeartRepository
     @Mock
@@ -32,7 +32,7 @@ class HeartServiceImplTest {
     @Mock
     lateinit var jpaService: JpaService<Heart, Long>
     @InjectMocks
-    lateinit var heartService: HeartServiceImpl
+    lateinit var heartService: HeartService
 
     private val testCategory = Category("카테고리")
     private val testPost = Post(1L, "제목", "내용", testCategory, 1L, "작성자", 0, mutableListOf())
