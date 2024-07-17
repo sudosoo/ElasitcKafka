@@ -1,6 +1,5 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.post
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -13,8 +12,6 @@ import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
-import com.sudosoo.takeItEasy.application.redis.RedisServiceImpl
-import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
@@ -35,7 +32,7 @@ class PostServiceImpl(
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
-) : PostService , JpaService<Post, Long>, JpaSpecificService<Post, Long>{
+) : PostService, JpaService<Post, Long>, JpaSpecificService<Post, Long>{
     override var jpaRepository: BaseRepository<Post, Long> = postRepository
     override val jpaSpecRepository: BaseRepository<Post, Long> = postRepository
     val objectMapper = ObjectMapper()

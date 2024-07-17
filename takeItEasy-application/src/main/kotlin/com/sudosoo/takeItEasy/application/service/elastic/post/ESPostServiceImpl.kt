@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.elastic.post
 
 import com.sudosoo.takeItEasy.application.dto.post.specification.PostSpec
 import com.sudosoo.takeItEasy.domain.entity.EsPost
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class ESPostServiceImpl(
     private val esPostRepository : PostElasticRepository,
     private val postRepository : PostRepository
-) : ESPostService{
+) : ESPostService {
 
     private val specific = PostSpec
 

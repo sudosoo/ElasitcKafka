@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.event
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class EventServiceImpl (
     private val repository: EventRepository,
-) :EventService ,JpaService<Event, Long>, JpaSpecificService<Event, Long> {
+) : EventService,JpaService<Event, Long>, JpaSpecificService<Event, Long> {
     override var jpaRepository: BaseRepository<Event, Long> = repository
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 

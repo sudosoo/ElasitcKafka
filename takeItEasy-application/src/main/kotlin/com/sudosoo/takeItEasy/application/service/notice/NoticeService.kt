@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.notice
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter

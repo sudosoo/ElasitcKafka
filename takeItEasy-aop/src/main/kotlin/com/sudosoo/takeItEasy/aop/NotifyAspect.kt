@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.aop
 
 
-import com.sudosoo.takeItEasy.application.service.NoticeService
+import com.sudosoo.takeItEasy.application.service.notice.NoticeService
 import com.sudosoo.takeItEasy.aop.notice.NotifyInfo
 
 

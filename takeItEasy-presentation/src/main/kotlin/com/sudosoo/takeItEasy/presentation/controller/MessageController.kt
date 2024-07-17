@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
-import com.sudosoo.takeItEasy.application.service.MessageService
+import com.sudosoo.takeItEasy.application.service.message.MessageService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

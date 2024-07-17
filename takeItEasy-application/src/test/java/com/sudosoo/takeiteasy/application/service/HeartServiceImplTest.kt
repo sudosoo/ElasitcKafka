@@ -3,9 +3,9 @@ package com.sudosoo.takeiteasy.application.service
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
-import com.sudosoo.takeItEasy.application.service.CommentService
-import com.sudosoo.takeItEasy.application.service.HeartServiceImpl
-import com.sudosoo.takeItEasy.application.service.PostService
+import com.sudosoo.takeItEasy.application.service.comment.CommentService
+import com.sudosoo.takeItEasy.application.service.heart.HeartServiceImpl
+import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.*
 import com.sudosoo.takeItEasy.domain.repository.HeartRepository
 import org.hibernate.validator.internal.util.Contracts.assertNotNull

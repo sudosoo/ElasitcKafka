@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.heart
 
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto

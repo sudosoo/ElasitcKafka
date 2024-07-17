@@ -1,6 +1,6 @@
 package com.sudosoo.takeItEasy.batch.step
 
-import com.sudosoo.takeItEasy.application.service.PostService
+import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.Post
 import jakarta.persistence.EntityManagerFactory
 import org.springframework.batch.core.Step

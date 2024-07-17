@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.message
 
 import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
 

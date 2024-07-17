@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.post
 
 import com.sudosoo.takeItEasy.application.dto.post.*
 import com.sudosoo.takeItEasy.domain.entity.Post

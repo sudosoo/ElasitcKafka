@@ -2,7 +2,7 @@ package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
-import com.sudosoo.takeItEasy.application.service.HeartService
+import com.sudosoo.takeItEasy.application.service.heart.HeartService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

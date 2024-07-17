@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.notice
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -19,7 +19,7 @@ import java.io.IOException
 class NoticeServiceImpl(
     private val noticeRepository: NoticeRepository,
     private val emitterRepository: EmitterRepository
-) : NoticeService , JpaService<Notice,Long>, JpaSpecificService<Notice,Long>{
+) : NoticeService, JpaService<Notice,Long>, JpaSpecificService<Notice,Long>{
     override var jpaRepository: BaseRepository<Notice, Long> = noticeRepository
     override var jpaSpecRepository: BaseRepository<Notice, Long> = noticeRepository
 

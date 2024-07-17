@@ -2,7 +2,7 @@ package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
-import com.sudosoo.takeItEasy.application.service.CouponWrapperServiceImpl
+import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper.testRateOf
@@ -18,7 +18,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 import java.util.*
 

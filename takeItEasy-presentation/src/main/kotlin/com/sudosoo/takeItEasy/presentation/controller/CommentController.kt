@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
-import com.sudosoo.takeItEasy.application.service.CommentService
+import com.sudosoo.takeItEasy.application.service.comment.CommentService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

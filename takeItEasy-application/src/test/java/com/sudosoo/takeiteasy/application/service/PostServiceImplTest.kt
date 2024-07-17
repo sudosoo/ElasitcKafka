@@ -4,8 +4,7 @@ import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
-import com.sudosoo.takeItEasy.application.service.CategoryService
-import com.sudosoo.takeItEasy.application.service.PostServiceImpl
+import com.sudosoo.takeItEasy.application.service.post.PostServiceImpl
 import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Heart
@@ -23,10 +22,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import java.util.*
 
 class PostServiceImplTest{

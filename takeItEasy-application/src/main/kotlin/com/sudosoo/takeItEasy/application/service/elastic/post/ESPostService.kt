@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.elastic.post
 
 import com.sudosoo.takeItEasy.application.dto.post.PostSearchDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto

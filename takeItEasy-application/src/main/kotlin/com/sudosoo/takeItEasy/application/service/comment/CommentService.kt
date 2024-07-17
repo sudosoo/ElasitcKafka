@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.comment
 
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Comment
