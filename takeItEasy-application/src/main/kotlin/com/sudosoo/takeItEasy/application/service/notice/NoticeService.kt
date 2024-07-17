@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.notice
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -16,10 +16,10 @@ import java.io.IOException
 
 @Service
 @Transactional
-class NoticeServiceImpl(
+class NoticeService(
     private val noticeRepository: NoticeRepository,
     private val emitterRepository: EmitterRepository
-) : NoticeService , JpaService<Notice,Long>, JpaSpecificService<Notice,Long>{
+) :JpaService<Notice,Long>, JpaSpecificService<Notice,Long>{
     override var jpaRepository: BaseRepository<Notice, Long> = noticeRepository
     override var jpaSpecRepository: BaseRepository<Notice, Long> = noticeRepository
 
@@ -28,7 +28,7 @@ class NoticeServiceImpl(
     }
 
     @KafkaListener(topics = ["\${devsoo.kafka.notice.topic}"], groupId = "notion-group")
-    override fun kafkaSend(record: ConsumerRecord<String?, Any?>) {
+    fun kafkaSend(record: ConsumerRecord<String?, Any?>) {
         val receiverMemberName: String = record.key() ?: ""
         val messageContent: String = record.value()?.toString() ?: ""
 
@@ -36,7 +36,7 @@ class NoticeServiceImpl(
         send(receiverMemberName, messageContent)
     }
 
-    override fun subscribe(username: String, lastEventId: String): SseEmitter {
+    fun subscribe(username: String, lastEventId: String): SseEmitter {
         val emitterCreatedTimeByMemberName = makeTimeIncludeMemberName(username)
         val emitter = emitterRepository.save(emitterCreatedTimeByMemberName, SseEmitter(DEFAULT_TIMEOUT))
         emitter.onCompletion { emitterRepository.deleteByEmitterCreatedTimeWithMemberName(emitterCreatedTimeByMemberName) }
@@ -82,7 +82,7 @@ class NoticeServiceImpl(
             .forEach { entry -> sendNotification(emitter, entry.key, emitterCreatedTimeByMemberName, entry.value) }
     }
 
-    override fun send(receiver: String, content: String) {
+    fun send(receiver: String, content: String) {
         //TODO: 매직넘버 지우고 receiverId를 받아오도록 수정
         val receiverId = 1L
         val notification = noticeRepository.save(createNotification(receiverId, content))

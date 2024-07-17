@@ -1,8 +1,9 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.coupon
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
+import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
@@ -12,14 +13,16 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CouponWrapperServiceImpl(
+class CouponWrapperService(
     private val couponWrapperRepository: CouponWrapperRepository,
     private val eventRepository: EventRepository
-    ) : CouponWrapperService, JpaService<CouponWrapper, Long>,JpaSpecificService<CouponWrapper, Long> {
-    override var jpaRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
-    override var jpaSpecRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
 
-    override fun create(requestDto: CouponWrapperCreateDto){
+): JpaService<CouponWrapper, Long>, JpaSpecificService<CouponWrapper, Long> {
+
+    override var jpaRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
+    override val jpaSpecRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
+
+    fun create(requestDto: CouponWrapperCreateDto){
         validateDiscountFields(requestDto)
         val event = eventRepository.findById(requestDto.eventId).orElseThrow{IllegalArgumentException("Event is not found")}
         requestDto.eventName = event.eventName

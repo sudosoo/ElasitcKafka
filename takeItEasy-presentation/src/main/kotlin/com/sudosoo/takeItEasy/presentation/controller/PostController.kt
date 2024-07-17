@@ -5,7 +5,7 @@ import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
-import com.sudosoo.takeItEasy.application.service.PostService
+import com.sudosoo.takeItEasy.application.service.post.PostService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest

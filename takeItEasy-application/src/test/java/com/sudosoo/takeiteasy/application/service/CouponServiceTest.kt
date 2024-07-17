@@ -2,7 +2,7 @@ package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
-import com.sudosoo.takeItEasy.application.service.CouponServiceImpl
+import com.sudosoo.takeItEasy.application.service.coupon.CouponService
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.entity.Event
@@ -25,7 +25,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.Executors
 
-class CouponServiceImplTest(
+class CouponServiceTest(
 ) {
     @Mock
     lateinit var couponWrapperRepository: CouponWrapperRepository
@@ -39,7 +39,7 @@ class CouponServiceImplTest(
     lateinit var jpaService: JpaService<Coupon, Long>
 
     @InjectMocks
-    lateinit var couponService: CouponServiceImpl
+    lateinit var couponService: CouponService
 
     @Mock
     val mockEvent: Event = Mockito.mock(Event::class.java)

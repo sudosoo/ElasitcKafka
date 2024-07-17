@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.coupon
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -13,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CouponServiceImpl(
+class CouponService(
     private val couponRepository: CouponRepository,
     private val eventRepository: EventRepository,
     private val couponWrapperRepository: CouponWrapperRepository
-    ) : CouponService, JpaService<Coupon, Long>,JpaSpecificService<Coupon, Long> {
+    ): JpaService<Coupon, Long>,JpaSpecificService<Coupon, Long> {
     override var jpaRepository: BaseRepository<Coupon, Long> = couponRepository
     override val jpaSpecRepository: BaseRepository<Coupon, Long> = couponRepository
 
     @Transactional(timeout = 5)
-    override fun couponIssuance(requestDto: CouponIssuanceRequestDto) {
+    fun couponIssuance(requestDto: CouponIssuanceRequestDto) {
         if (!eventRepository.existsById(requestDto.eventId)){
             throw IllegalArgumentException("Event is not found") }
         if(!couponWrapperRepository.existsById(requestDto.couponWrapperId)){

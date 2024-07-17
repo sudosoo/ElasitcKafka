@@ -1,10 +1,9 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
-import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.redis.RedisService
-import com.sudosoo.takeItEasy.application.service.PostService
+import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.batch.schedule.Scheduler
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -32,7 +31,7 @@ class TestController (
 
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
-        redisService.postRepositoryRedisSynchronization()
+        postService.postRepositoryRedisSynchronization()
     }
 
     @PostMapping("/createPost", name = "createPost")

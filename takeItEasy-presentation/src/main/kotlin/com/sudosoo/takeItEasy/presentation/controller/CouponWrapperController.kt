@@ -1,10 +1,8 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
-import com.sudosoo.takeItEasy.application.dto.coupon.CreateCouponRequestDto
-import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
-import com.sudosoo.takeItEasy.application.service.CouponWrapperService
+import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

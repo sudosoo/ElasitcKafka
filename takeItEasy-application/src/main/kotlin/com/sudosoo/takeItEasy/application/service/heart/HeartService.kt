@@ -1,9 +1,11 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.heart
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
+import com.sudosoo.takeItEasy.application.service.comment.CommentService
+import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Heart
 import com.sudosoo.takeItEasy.domain.entity.Post
@@ -14,15 +16,15 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class HeartServiceImpl(
+class HeartService(
     private val heartRepository: HeartRepository,
     private val postService: PostService,
     private val commentService: CommentService
-) : HeartService , JpaService<Heart, Long>, JpaSpecificService<Heart,Long> {
+) :JpaService<Heart, Long>, JpaSpecificService<Heart,Long> {
     override var jpaRepository: BaseRepository<Heart, Long> = heartRepository
     override var jpaSpecRepository: BaseRepository<Heart,Long> = heartRepository
 
-    override fun createPostHeart(requestDto: PostHeartRequestDto): Heart {
+    fun createPostHeart(requestDto: PostHeartRequestDto): Heart {
         //TODO MemberSetting
         val memberId: Long = requestDto.memberId
         val post: Post = postService.getByPostId(requestDto.postId)
@@ -33,7 +35,7 @@ class HeartServiceImpl(
         return save(heart)
     }
 
-    override fun createCommentHeart(requestDto: CommentHeartRequestDto): Heart {
+    fun createCommentHeart(requestDto: CommentHeartRequestDto): Heart {
         //TODO MemberSetting
         val memberId: Long = requestDto.memberId
         val comment = commentService.getByCommentId(requestDto.commentId)
@@ -45,7 +47,7 @@ class HeartServiceImpl(
     }
 
 
-    override fun postDisHeart(requestDto: PostHeartRequestDto) {
+    fun postDisHeart(requestDto: PostHeartRequestDto) {
         //TODO MemberSetting
         val memberId: Long = requestDto.memberId
         val post: Post = postService.getByPostId(requestDto.postId)
@@ -56,7 +58,7 @@ class HeartServiceImpl(
         deleteById(heart.id)
     }
 
-    override fun commentDisHeart(requestDto: CommentHeartRequestDto) {
+    fun commentDisHeart(requestDto: CommentHeartRequestDto) {
         //TODO MemberSetting
         val memberId: Long = requestDto.memberId
         val comment = commentService.getByCommentId(requestDto.commentId)

@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
-import com.sudosoo.takeItEasy.application.service.CouponService
+import com.sudosoo.takeItEasy.application.service.coupon.CouponService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

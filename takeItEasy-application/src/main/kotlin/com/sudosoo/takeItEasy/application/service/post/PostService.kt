@@ -1,6 +1,5 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.post
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -13,8 +12,7 @@ import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
-import com.sudosoo.takeItEasy.application.redis.RedisServiceImpl
-import com.sudosoo.takeItEasy.domain.entity.Comment
+import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
@@ -29,25 +27,25 @@ import java.util.concurrent.ExecutionException
 
 @Service
 @Transactional
-class PostServiceImpl(
+class PostService(
     private val postRepository: PostRepository,
     private val categoryService: CategoryService,
     private val commentRepository: CommentRepository,
     private val kafkaProducer: KafkaProducer,
     private val redisService: RedisService
-) : PostService , JpaService<Post, Long>, JpaSpecificService<Post, Long>{
+) :JpaService<Post, Long>, JpaSpecificService<Post, Long>{
     override var jpaRepository: BaseRepository<Post, Long> = postRepository
     override val jpaSpecRepository: BaseRepository<Post, Long> = postRepository
     val objectMapper = ObjectMapper()
 
-    override fun defaultCreate(requestDto: CreatePostRequestDto) {
+    fun defaultCreate(requestDto: CreatePostRequestDto) {
         val post = Post(requestDto.title, requestDto.content)
         val category = categoryService.getById(requestDto.categoryId)
         post.category = category
         save(post)
     }
 
-    override fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
+    fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
         var kafkaResponseDto: KafkaResponseDto? = null
         try {
             val kafkaResult = kafkaProducer.replyRecord(kafkaMemberValidateRequestDto(requestDto.memberId))
@@ -73,11 +71,11 @@ class PostServiceImpl(
         return responseDto
     }
 
-    override fun getByPostId(postId: Long): Post {
+    fun getByPostId(postId: Long): Post {
         return findById(postId) }
 
     @Transactional(readOnly = true)
-    override fun getPostDetailByPostId(postId: Long, pageRequest: Pageable): PostDetailResponseDto {
+    fun getPostDetailByPostId(postId: Long, pageRequest: Pageable): PostDetailResponseDto {
         val post: Post = postRepository.findById(postId)
             .orElseThrow{ IllegalArgumentException("해당 게시물이 존재 하지 않습니다.") }
 
@@ -88,23 +86,24 @@ class PostServiceImpl(
         return PostDetailResponseDto(post,responseCommentDtos)
     }
 
-    override fun getPaginationPost(pageRequest: Pageable): Page<PostTitleOnlyResponseDto> {
+    fun getPaginationPost(pageRequest: Pageable): Page<PostTitleOnlyResponseDto> {
         val posts: Page<Post> = postRepository.findAll(pageRequest)
         val titleOnlyPost = posts.stream().map{ o -> PostTitleOnlyResponseDto(o)}.toList()
         return PageImpl(titleOnlyPost, pageRequest, posts.totalElements)
     }
 
-    override fun createBatchPosts(count: Int): Post {
+    fun createBatchPosts(count: Int): Post {
         return Post("Title$count",  "content$count",  count.toLong())
     }
 
-    override fun softDeletePost(postId: Long) {
+    fun softDeletePost(postId: Long) {
         val post = findById(postId)
         post.delete()
         save(post)
     }
 
-    override fun postRepositoryRedisSynchronization() {
+    fun postRepositoryRedisSynchronization() {
+        //TODO 데이터량 많아지면 청크단위로 배치 작업 추가
         val posts = postRepository.findAll()
         val topicName = "PostResponseDto"
         redisService.resetRedisCacheWithAllPosts(topicName, posts.toList())

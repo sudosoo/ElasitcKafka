@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.event
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -12,15 +12,16 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class EventServiceImpl (
+class EventService(
     private val repository: EventRepository,
-) :EventService ,JpaService<Event, Long>, JpaSpecificService<Event, Long> {
+) :JpaService<Event, Long>, JpaSpecificService<Event, Long> {
     override var jpaRepository: BaseRepository<Event, Long> = repository
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
-    override fun create(requestDto: CreateEventRequestDto): EventResponseDto {
-        var event = Event.of(requestDto.eventName,requestDto.eventDeadline)
-        event = save(event)
+    fun create(requestDto: CreateEventRequestDto): EventResponseDto {
+        val event = Event.of(requestDto.eventName,requestDto.eventDeadline)
+        save(event)
+
         return EventResponseDto(event.id)
     }
 

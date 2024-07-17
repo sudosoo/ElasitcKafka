@@ -1,6 +1,6 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
-import com.sudosoo.takeItEasy.application.service.NoticeService
+import com.sudosoo.takeItEasy.application.service.notice.NoticeService
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 

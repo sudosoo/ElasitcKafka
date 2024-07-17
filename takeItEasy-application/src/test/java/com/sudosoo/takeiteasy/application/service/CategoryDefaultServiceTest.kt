@@ -2,7 +2,7 @@ package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
-import com.sudosoo.takeItEasy.application.service.CategoryServiceImpl
+import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
 import com.sudosoo.takeItEasy.domain.repository.PostRepository
@@ -13,7 +13,7 @@ import org.mockito.*
 import org.mockito.Mockito.*
 import java.util.*
 
-class CategoryServiceImplTest {
+class CategoryServiceTest {
     @Mock
     lateinit var categoryRepository: CategoryRepository
     @Mock
@@ -21,7 +21,7 @@ class CategoryServiceImplTest {
     @Mock
     lateinit var jpaService: JpaService<Category, Long>
     @InjectMocks
-    lateinit var categoryService: CategoryServiceImpl
+    lateinit var categoryService: CategoryService
 
     private val createCategoryRequestDto = CreateCategoryRequestDto("test 카테고리")
     private val testCategory: Category = Category(createCategoryRequestDto.title)

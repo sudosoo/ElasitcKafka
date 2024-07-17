@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.service
+package com.sudosoo.takeItEasy.application.service.message
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class MessageServiceImpl(
+class MessageService(
     private val kafkaProducer: KafkaProducer,
     private val messageRepository: MessageRepository
-) : MessageService, JpaService<Message, Long> , JpaSpecificService<Message, Long>{
+) :JpaService<Message, Long> , JpaSpecificService<Message, Long>{
     override var jpaRepository: BaseRepository<Message, Long> = messageRepository
     override var jpaSpecRepository: BaseRepository<Message, Long> = messageRepository
 
-    override fun send(requestDto: MessageSendRequestDto) {
+    fun send(requestDto: MessageSendRequestDto) {
         //TODO MemberSetting
         val senderId: Long = requestDto.memberId
         val receiverId: Long = requestDto.targetMemberId
