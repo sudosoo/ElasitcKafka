@@ -1,11 +1,11 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
 
 @Entity
+
 public class Order {
     @Id
     private Long id;
@@ -25,7 +25,6 @@ public class Order {
         this.shippingMemo = shippingMemo;
     }
 
-
     public Order of(String orderOwner, String shippingAddress, String shippingMemo){
         return new Order(orderOwner, shippingAddress, shippingMemo);
     }
@@ -34,5 +33,7 @@ public class Order {
         this.products.addAll(products);
     }
 
-
+    public Long getId() {
+        return id;
+    }
 }

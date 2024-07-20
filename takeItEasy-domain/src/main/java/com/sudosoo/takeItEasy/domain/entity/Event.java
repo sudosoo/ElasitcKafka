@@ -26,4 +26,7 @@ public class Event {
         this.body = body;
     }
 
+    public Long getId() {
+        return id;
+    }
 }

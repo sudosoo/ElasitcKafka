@@ -2,6 +2,7 @@ package com.sudosoo.takeItEasy.application.service.order
 
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.order.CreateOrderRequestDto
+import com.sudosoo.takeItEasy.application.dto.order.OrderResponseDto
 import com.sudosoo.takeItEasy.application.service.event.EventService
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.Order
@@ -28,18 +29,8 @@ class OrderService(
         order.addProducts(requestDto.orderItems)
         save(order)
         //결제 시스템이 있다고 가정하고 이벤트를 발생시킴
-        eventService.publish(EventOperation.ORDER_COMPLETED, order)
-
-        return OrderResponseDto(order.id)
-    }
-
-
-    @KafkaListener(topics = ["\${devsoo.kafka.notice.topic}"], groupId = "notion-group")
-    fun kafkaSend(record: ConsumerRecord<String?, Any?>) {
-        val receiverMemberName: String = record.key() ?: ""
-        val messageContent: String = record.value()?.toString() ?: ""
-
-        send(receiverMemberName, messageContent)
+        val event = eventService.publish(EventOperation.ORDER_COMPLETED, order)
+        return OrderResponseDto(order.id, event.eventId)
     }
 
 }
