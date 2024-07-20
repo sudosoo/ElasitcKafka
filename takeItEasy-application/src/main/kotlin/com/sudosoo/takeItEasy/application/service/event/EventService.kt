@@ -27,7 +27,7 @@ class EventService(
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
     fun publish(topicName : KafkaTopics, operation :EventOperation, body: Any): EventResponseDto {
-        val event = Event(topicName ,operation, body.toString())
+        val event = Event(topicName,operation,body.toString())
         save(event)
         return EventResponseDto(event.id)
     }
@@ -35,8 +35,8 @@ class EventService(
     @Transactional
     fun outboxPoll() {
         val outboxes = repository.findAll() // 모든 outbox 데이터 조회
-        outboxes.forEach { event ->
-            kafkaProducer.sendEvent(event.topicName, event.body) // Kafka로 데이터 전송
+        outboxes.forEach { outbox ->
+            kafkaProducer.sendEvent(outbox.targetName, outbox.operation, outbox.body)
         }
         repository.deleteAll(outboxes) // 조회한 데이터 모두 삭제
     }

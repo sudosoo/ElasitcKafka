@@ -30,4 +30,20 @@ public class Event {
     public Long getId() {
         return id;
     }
+
+    public KafkaTopics getTargetName() {
+        return targetName;
+    }
+
+    public EventOperation getOperation() {
+        return operation;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getBody() {
+        return body;
+    }
 }
