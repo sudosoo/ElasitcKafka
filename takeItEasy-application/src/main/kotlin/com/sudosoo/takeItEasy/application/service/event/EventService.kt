@@ -5,6 +5,7 @@ import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificServic
 import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Event
+import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.stereotype.Service
@@ -18,8 +19,8 @@ class EventService(
     override var jpaRepository: BaseRepository<Event, Long> = repository
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
-    fun create(requestDto: CreateEventRequestDto): EventResponseDto {
-        val event = Event.of(requestDto.eventName,requestDto.eventDeadline)
+    fun publish(operation :EventOperation, body: Any): EventResponseDto {
+        val event = Event(operation, body.toString())
         save(event)
 
         return EventResponseDto(event.id)
