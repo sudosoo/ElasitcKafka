@@ -7,6 +7,7 @@ import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
+import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
 import com.sudosoo.takeItEasy.domain.repository.EventRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -25,26 +26,17 @@ class EventService(
     override var jpaRepository: BaseRepository<Event, Long> = repository
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
-    fun publish(operation :EventOperation, body: Any): EventResponseDto {
-        val event = Event(operation, body.toString())
+    fun publish(topicName : KafkaTopics, operation :EventOperation, body: Any): EventResponseDto {
+        val event = Event(topicName ,operation, body.toString())
         save(event)
-
         return EventResponseDto(event.id)
     }
     @Scheduled(fixedDelay = 10000) // 10초에 한 번씩 실행
     @Transactional
     fun outboxPoll() {
         val outboxes = repository.findAll() // 모든 outbox 데이터 조회
-
-        outboxes.forEach { outbox ->
-            println("outbox: $outbox")
-            // outbox 데이터를 이벤트로 변환
-
-            val event = Event(outbox.operation, outbox.body)
-            // 이벤트 발행
-
-            kafkaProducer.replyRecord()
-            publish(event.operation, event.body)
+        outboxes.forEach { event ->
+            kafkaProducer.sendEvent(event.topicName, event.body) // Kafka로 데이터 전송
         }
         repository.deleteAll(outboxes) // 조회한 데이터 모두 삭제
     }

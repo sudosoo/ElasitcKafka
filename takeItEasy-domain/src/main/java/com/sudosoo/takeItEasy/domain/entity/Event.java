@@ -1,9 +1,6 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -13,6 +10,9 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    private KafkaTopics targetName;
+    @Enumerated(EnumType.STRING)
     private EventOperation operation;
     @CreatedDate
     private LocalDateTime createdAt;
@@ -21,7 +21,8 @@ public class Event {
     protected Event() {
     }
 
-    public Event(EventOperation operation, String body) {
+    public Event(KafkaTopics topicName, EventOperation operation, String body) {
+        this.targetName = topicName;
         this.operation = operation;
         this.body = body;
     }

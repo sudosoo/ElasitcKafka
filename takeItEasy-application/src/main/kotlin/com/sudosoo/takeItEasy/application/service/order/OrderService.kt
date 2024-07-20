@@ -5,6 +5,7 @@ import com.sudosoo.takeItEasy.application.dto.order.CreateOrderRequestDto
 import com.sudosoo.takeItEasy.application.dto.order.OrderResponseDto
 import com.sudosoo.takeItEasy.application.service.event.EventService
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
+import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
 import com.sudosoo.takeItEasy.domain.entity.Order
 import com.sudosoo.takeItEasy.domain.repository.OrderRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
@@ -29,7 +30,7 @@ class OrderService(
         order.addProducts(requestDto.orderItems)
         save(order)
         //결제 시스템이 있다고 가정하고 이벤트를 발생시킴
-        val event = eventService.publish(EventOperation.ORDER_COMPLETED, order)
+        val event = eventService.publish(KafkaTopics.ORDER,EventOperation.ORDER_COMPLETED, order)
         return OrderResponseDto(order.id, event.eventId)
     }
 
