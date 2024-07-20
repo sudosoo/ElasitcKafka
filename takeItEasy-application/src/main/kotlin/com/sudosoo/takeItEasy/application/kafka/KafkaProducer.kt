@@ -2,6 +2,8 @@ package com.sudosoo.takeItEasy.application.kafka
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.sudosoo.takeItEasy.domain.entity.EventOperation
+import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
@@ -26,6 +28,11 @@ class KafkaProducer(
     val kafkaTemplate: KafkaTemplate<String, String>,
     val replyingKafkaTemplate: ReplyingKafkaTemplate<String, String, String>
 ) {
+
+    fun sendEvent(topic: KafkaTopics, eventOperation: EventOperation, eventPayload: String) {
+        val record = ProducerRecord(topic.toString() ,eventOperation.toString(), eventPayload)
+        kafkaTemplate.send(record)
+    }
 
     fun sendNotice(memberId: String, requestMessage: String) {
         kafkaTemplate.send(kafkaNoticeTopic, memberId, requestMessage)
