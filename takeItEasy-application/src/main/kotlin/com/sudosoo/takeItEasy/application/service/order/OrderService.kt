@@ -3,6 +3,7 @@ package com.sudosoo.takeItEasy.application.service.order
 import com.sudosoo.takeItEasy.application.common.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.order.CreateOrderRequestDto
 import com.sudosoo.takeItEasy.application.dto.order.OrderResponseDto
+import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.service.event.EventService
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service
 @Transactional
 class OrderService(
     private val repository: OrderRepository,
-    private val eventService: EventService
+    private val kafkaProducer: KafkaProducer
     ) :JpaService<Order,Long>{
     override var jpaRepository: BaseRepository<Order, Long> = repository
 
@@ -31,7 +32,7 @@ class OrderService(
         save(order)
 
         //결제 시스템 완료 후 주문 완료 이벤트 발행
-        val event = eventService.publish(KafkaTopics.ORDER,EventOperation.ORDER_COMPLETED, order)
+        val event = kafkaProducer.sendEvent(KafkaTopics.ORDER,EventOperation.ORDER_COMPLETED, order)
         return OrderResponseDto(order.id, event.eventId)
     }
 

@@ -39,9 +39,10 @@ class KafkaProducer(
 
     @Async
     @Transactional
-    fun sendEvent(topic: KafkaTopics, eventOperation: EventOperation, eventPayload: String):EventResponseDto {
-        val event = Event(topic, eventOperation, eventPayload)
-        val record = ProducerRecord(topic.toString() ,eventOperation.toString(), eventPayload)
+    fun sendEvent(topic: KafkaTopics, eventOperation: EventOperation, eventPayload: Any):EventResponseDto {
+        val body = objectMapper.writeValueAsString(eventPayload)
+        val event = Event(topic, eventOperation, body)
+        val record = ProducerRecord(topic.toString() ,eventOperation.toString(), body)
         try {
             kafkaTemplate.send(record)
         }catch (e: Exception){
