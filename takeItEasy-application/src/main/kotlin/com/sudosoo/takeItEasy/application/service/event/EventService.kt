@@ -26,7 +26,7 @@ class EventService(
     fun outboxPoll() {
         val outboxes = repository.findAll() // 모든 outbox 데이터 조회
         outboxes.forEach { outbox ->
-            kafkaProducer.sendEvent(outbox.targetName, outbox.operation, outbox.body)
+            kafkaProducer.send(outbox.targetName, outbox.operation, outbox.body)
         }
         repository.deleteAll(outboxes) // 조회한 데이터 모두 삭제
     }
