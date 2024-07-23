@@ -13,6 +13,7 @@ import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.event.KafkaEvent
+import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,11 +27,18 @@ class EventService(
     override var jpaRepository: BaseRepository<Event, Long> = repository
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
+    @Async
     fun publish(topicName : KafkaTopics, operation :EventOperation, body: Any): EventResponseDto {
         val event = Event(topicName,operation,body.toString())
         save(event)
+        try {
+        kafkaProducer.sendEvent(topicName,operation,event.body)
+
+        }catch ()
+
         return EventResponseDto(event.id)
     }
+
     @Scheduled(fixedDelay = 10000) // 10초에 한 번씩 실행
     @Transactional
     fun outboxPoll() {
