@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-@Transactional
 class OrderService(
     private val repository: OrderRepository,
     private val kafkaProducer: KafkaProducer
@@ -23,7 +22,6 @@ class OrderService(
 
     @Transactional
     fun create(requestDto: CreateOrderRequestDto): OrderResponseDto {
-
         val order = Order(requestDto.orderer,requestDto.shippingAddr,requestDto.shippingMemo)
         order.addProducts(requestDto.orderItems)
         save(order)

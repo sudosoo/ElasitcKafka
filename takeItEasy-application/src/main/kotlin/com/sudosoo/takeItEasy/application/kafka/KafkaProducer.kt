@@ -23,8 +23,6 @@ import java.util.concurrent.ExecutionException
 
 @Component
 class KafkaProducer(
-
-
     private val repository: DeadLetterRepository,
     @Value("\${devsoo.kafka.restapi.request.topic}")
     val kafkaRestApiRequestTopic: String,

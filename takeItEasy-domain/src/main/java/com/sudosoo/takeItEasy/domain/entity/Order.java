@@ -2,6 +2,7 @@ package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Order {
     private String shippingMemo;
     @ElementCollection(targetClass = Product.class)
     @CollectionTable(name="order_products", joinColumns = @JoinColumn(name="order_id"))
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     protected Order() {
     }
