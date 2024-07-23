@@ -5,7 +5,7 @@ import com.sudosoo.takeItEasy.application.dto.event.CreateEventRequestDto
 import com.sudosoo.takeItEasy.application.service.event.EventService
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
-import com.sudosoo.takeItEasy.domain.repository.EventRepository
+import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
 import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.assertj.core.api.Assertions.assertThat
@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 
 internal class EventServiceTest{
     @Mock
-    lateinit var eventRepository: EventRepository
+    lateinit var deadLetterRepository: DeadLetterRepository
     @Mock
     lateinit var jpaService: JpaService<Event, Long>
     @InjectMocks
@@ -41,14 +41,14 @@ internal class EventServiceTest{
         //given
         val requestDto =
             CreateEventRequestDto("TestEvent", "2024-12-31T23:59:59")
-        `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
+        `when`(deadLetterRepository.save(any(Event::class.java))).thenReturn(testEvent)
 
         //when
         val responseDto = eventService.create(requestDto)
 
         //then
         assertNotNull( responseDto.eventId)
-        verify(eventRepository, times(1)).save(any(Event::class.java))
+        verify(deadLetterRepository, times(1)).save(any(Event::class.java))
     }
 
     @Test
@@ -57,12 +57,12 @@ internal class EventServiceTest{
         val requestDto =
             CreateEventRequestDto(null, "")
         val testEvent = (Event(1L, null, EventOperation.CREATED ,LocalDateTime.now().plusDays(1)))
-        `when`(eventRepository.save(any(Event::class.java))).thenReturn(testEvent)
+        `when`(deadLetterRepository.save(any(Event::class.java))).thenReturn(testEvent)
         //when
             val validate= validator.validate(requestDto)
         //then
         assertThat(validate).hasSize(2)
-        verify(eventRepository, never()).save(any(Event::class.java))
+        verify(deadLetterRepository, never()).save(any(Event::class.java))
     }
 
 

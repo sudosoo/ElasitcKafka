@@ -40,7 +40,7 @@ class KafkaConfig (
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = ErrorHandlingDeserializer::class.java
         props[ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS] = StringDeserializer::class.java
         props[ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS] = StringDeserializer::class.java
-        props[ConsumerConfig.GROUP_ID_CONFIG] = "post-server-consumer-group"
+        props[ConsumerConfig.GROUP_ID_CONFIG] = "post-group"
         props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "latest"
         props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = true
         return DefaultKafkaConsumerFactory(props)
