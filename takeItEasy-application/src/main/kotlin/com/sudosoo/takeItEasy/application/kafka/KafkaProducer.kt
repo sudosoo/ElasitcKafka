@@ -2,8 +2,12 @@ package com.sudosoo.takeItEasy.application.kafka
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
+import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
+import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
+import jakarta.transaction.Transactional
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
@@ -12,26 +16,38 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate
 import org.springframework.kafka.requestreply.RequestReplyFuture
 import org.springframework.kafka.support.KafkaHeaders
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.concurrent.ExecutionException
 
 @Component
 class KafkaProducer(
-    @Value("\${devsoo.kafka.notice.topic}")
-    val kafkaNoticeTopic: String,
+
+
+    private val repository: DeadLetterRepository,
     @Value("\${devsoo.kafka.restapi.request.topic}")
     val kafkaRestApiRequestTopic: String,
     @Value("\${devsoo.kafka.restapi.reply.topic}")
     val kafkaRestApiReplyTopic: String,
+    @Value("\${devsoo.kafka.notice.topic}")
+    val kafkaNoticeTopic: String,
     val objectMapper: ObjectMapper,
     val kafkaTemplate: KafkaTemplate<String, String>,
     val replyingKafkaTemplate: ReplyingKafkaTemplate<String, String, String>
 ) {
 
-    fun sendEvent(topic: KafkaTopics, eventOperation: EventOperation, eventPayload: String) {
+    @Async
+    @Transactional
+    fun sendEvent(topic: KafkaTopics, eventOperation: EventOperation, eventPayload: String):EventResponseDto {
+        val event = Event(topic, eventOperation, eventPayload)
         val record = ProducerRecord(topic.toString() ,eventOperation.toString(), eventPayload)
-        kafkaTemplate.send(record)
+        try {
+            kafkaTemplate.send(record)
+        }catch (e: Exception){
+            repository.save(event)
+        }
+        return EventResponseDto(event.id)
     }
 
     fun sendNotice(memberId: String, requestMessage: String) {

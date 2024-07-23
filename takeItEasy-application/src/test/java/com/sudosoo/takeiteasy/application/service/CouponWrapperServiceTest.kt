@@ -8,7 +8,7 @@ import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.entity.CouponWrapper.testRateOf
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
-import com.sudosoo.takeItEasy.domain.repository.EventRepository
+import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,7 +26,7 @@ class CouponWrapperServiceTest {
     lateinit var couponWrapperRepository: CouponWrapperRepository
 
     @Mock
-    lateinit var eventRepository: EventRepository
+    lateinit var deadLetterRepository: DeadLetterRepository
 
     @Mock
     lateinit var jpaService: JpaService<Coupon, Long>
@@ -55,13 +55,13 @@ class CouponWrapperServiceTest {
         )
         val testPriceCoupon = CouponWrapper.testPriceOf(1L, 1L, "testEvent", 100, LocalDate.now().toString(), 10000L)
         `when`(couponWrapperRepository.save(testPriceCoupon)).thenReturn(testPriceCoupon)
-        `when`(eventRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
+        `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
         couponWrapperService.create(requestDto)
 
         // Then
-        verify(eventRepository, times(1)).findById(requestDto.eventId);
+        verify(deadLetterRepository, times(1)).findById(requestDto.eventId);
         verify(couponWrapperRepository, times(1)).save(any(CouponWrapper::class.java))
     }
 
@@ -79,13 +79,13 @@ class CouponWrapperServiceTest {
         val testRateCoupon = testRateOf(
             1L, 1L, requestDto.eventName,10, requestDto.couponDeadline, requestDto.discountRate!!)
         `when`(couponWrapperRepository.save(testRateCoupon)).thenReturn(testRateCoupon)
-        `when`(eventRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
+        `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
         couponWrapperService.create(requestDto)
 
         // Then
-        verify(eventRepository, times(1)).findById(requestDto.eventId)
+        verify(deadLetterRepository, times(1)).findById(requestDto.eventId)
         verify(couponWrapperRepository, times(1)).save(any(CouponWrapper::class.java))
     }
 
@@ -101,7 +101,7 @@ class CouponWrapperServiceTest {
         }
 
         //then
-        verify(eventRepository, never())
+        verify(deadLetterRepository, never())
         assert(exception.message == "discountRate 또는 discountPrice 중 하나만 존재해야 합니다.")
     }
 
@@ -117,7 +117,7 @@ class CouponWrapperServiceTest {
         }
 
         //then
-        verify(eventRepository, never())
+        verify(deadLetterRepository, never())
         assert(exception.message == "discountRate 또는 discountPrice 중 하나만 존재해야 합니다.")
     }
 }

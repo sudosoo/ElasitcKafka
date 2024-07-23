@@ -8,7 +8,7 @@ import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.repository.CouponRepository
 import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
-import com.sudosoo.takeItEasy.domain.repository.EventRepository
+import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -31,7 +31,7 @@ class CouponServiceTest(
     lateinit var couponWrapperRepository: CouponWrapperRepository
 
     @Mock
-    lateinit var eventRepository: EventRepository
+    lateinit var deadLetterRepository: DeadLetterRepository
 
     @Mock
     lateinit var couponRepository: CouponRepository
@@ -55,7 +55,7 @@ class CouponServiceTest(
     fun `이벤트가 존재하지 않으면 쿠폰을 사용할 수 없다`() {
         //given
         val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
-        `when`(eventRepository.findById(anyLong())).thenReturn(Optional.empty())
+        `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.empty())
 
         //when
         val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -63,7 +63,7 @@ class CouponServiceTest(
         }
 
         //then
-        Mockito.verify(eventRepository, never())
+        Mockito.verify(deadLetterRepository, never())
         assert(exception.message == "Event is not found")
     }
 
@@ -79,7 +79,7 @@ class CouponServiceTest(
         val service = Executors.newFixedThreadPool(10)
         val latch = CountDownLatch(numberOfExecute)
 
-        `when`(eventRepository.existsById(anyLong())).thenReturn(true)
+        `when`(deadLetterRepository.existsById(anyLong())).thenReturn(true)
         `when`(couponWrapperRepository.existsById(anyLong())).thenReturn(true)
         `when`(couponWrapperRepository.findByIdForUpdate(anyLong())).thenReturn(Optional.of(couponWrapper))
 

@@ -29,7 +29,8 @@ class OrderService(
         val order = Order(requestDto.orderer,requestDto.shippingAddr,requestDto.shippingMemo)
         order.addProducts(requestDto.orderItems)
         save(order)
-        //결제 시스템이 있다고 가정하고 이벤트를 발생시킴
+
+        //결제 시스템 완료 후 주문 완료 이벤트 발행
         val event = eventService.publish(KafkaTopics.ORDER,EventOperation.ORDER_COMPLETED, order)
         return OrderResponseDto(order.id, event.eventId)
     }

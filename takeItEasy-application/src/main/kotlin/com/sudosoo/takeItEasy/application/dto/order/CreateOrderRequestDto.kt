@@ -7,6 +7,4 @@ class CreateOrderRequestDto(
     val orderer: String,
     val shippingAddr: String,
     val shippingMemo: String
-) {
-
-}
+)
