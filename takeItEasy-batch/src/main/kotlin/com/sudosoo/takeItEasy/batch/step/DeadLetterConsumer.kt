@@ -2,9 +2,9 @@ package com.sudosoo.takeItEasy.batch.step
 
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.entity.Post
 import jakarta.persistence.EntityManagerFactory
 import org.springframework.batch.core.Step
+import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
@@ -15,9 +15,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
-import java.sql.SQLException
-import java.time.LocalDate
-import javax.sql.DataSource
 
 @Configuration
 class DeadLetterConsumer(
@@ -37,31 +34,30 @@ class DeadLetterConsumer(
         return StepBuilder(JOB_NAME, jobRepository)
             .chunk<Event, Event>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
-            .writer(bulkWriter())
-            .startLimit(2)
+            .writer(writer())
+            .faultTolerant()
+            .retryLimit(2)
+            .retry(Exception::class.java)
             .build()
     }
 
     @Bean(name = [JOB_NAME + "_reader"])
-    @StepScope
+    @JobScope
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Event> {
             return JpaPagingItemReaderBuilder<Event>()
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT e FROM event e;")
+                .queryString("SELECT e FROM Event e")
                 .saveState(false)
                 .build()
         }
 
     @Bean(name = [JOB_NAME + "_writer"])
-    override fun bulkWriter(): ItemWriter<Event> {
+    override fun writer(): ItemWriter<Event> {
         return ItemWriter<Event> { items ->
-            items.map { event ->
-                kafkaProducer.send(event)
+                items.map { event ->
+                    kafkaProducer.send(event)
+                }
             }
-
         }
-    }
-
-
 
 }
