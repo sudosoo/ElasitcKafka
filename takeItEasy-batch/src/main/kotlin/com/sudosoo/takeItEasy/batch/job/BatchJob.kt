@@ -5,13 +5,11 @@ import com.sudosoo.takeItEasy.batch.step.DeadLetterConsumer
 import com.sudosoo.takeItEasy.batch.step.HeavyCreatePost
 import com.sudosoo.takeItEasy.batch.step.OldPostsDelete
 import org.springframework.batch.core.Job
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@EnableBatchProcessing
 class BatchJob(
     val jobRepository: JobRepository,
     val heavyCreatePost: HeavyCreatePost,

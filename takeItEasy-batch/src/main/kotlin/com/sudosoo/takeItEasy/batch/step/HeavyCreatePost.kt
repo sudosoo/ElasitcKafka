@@ -36,7 +36,7 @@ class HeavyCreatePost(
         return StepBuilder(JOB_NAME, jobRepository)
             .chunk<Post, Post>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
-            .writer(bulkWriter())
+            .writer(writer())
             .build()
     }
 
@@ -50,7 +50,7 @@ class HeavyCreatePost(
         }
 
     @Bean(name = [JOB_NAME + "_writer"])
-    override fun bulkWriter(): ItemWriter<Post> {
+    override fun writer(): ItemWriter<Post> {
         var count = 0
         return ItemWriter<Post> { items ->
             val con = dataSource.connection ?: throw SQLException("Connection is null")

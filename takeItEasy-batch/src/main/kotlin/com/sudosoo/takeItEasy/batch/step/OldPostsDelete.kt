@@ -35,8 +35,10 @@ class OldPostsDelete(
         return StepBuilder(JOB_NAME, jobRepository)
             .chunk<Post, Post>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
-            .writer(bulkWriter())
-            .startLimit(2)
+            .writer(writer())
+            .faultTolerant()
+            .retryLimit(2)
+            .retry(Exception::class.java)
             .build()
     }
 
@@ -46,14 +48,14 @@ class OldPostsDelete(
         val cutoffDay = LocalDate.parse(date).minusDays(90)
             return JpaPagingItemReaderBuilder<Post>()
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay;")
+                .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay")
                 .parameterValues(mapOf("cutoffDay" to cutoffDay))
                 .saveState(false)
                 .build()
         }
 
     @Bean(name = [JOB_NAME + "_writer"])
-    override fun bulkWriter(): ItemWriter<Post> {
+    override fun writer(): ItemWriter<Post> {
         return ItemWriter<Post> { items ->
             val con = dataSource.connection ?: throw SQLException("Connection is null")
             val sql = "DELETE FROM Post WHERE id = ?;"

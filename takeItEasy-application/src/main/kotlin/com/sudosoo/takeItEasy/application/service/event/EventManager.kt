@@ -29,14 +29,5 @@ class EventManager(
         return Event(topics, operation,jsonBody)
     }
 
-    @Scheduled(fixedDelay = 10000) // 10초에 한 번씩 실행
-    @Transactional
-    fun outboxPoll() {
-        val outboxes = repository.findAll() // 모든 outbox 데이터 조회
-        outboxes.forEach { event ->
-            kafkaProducer.send(event)
-        }
-        repository.deleteAll(outboxes) // 조회한 데이터 모두 삭제
-    }
 
 }
