@@ -5,29 +5,28 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-
-public class Order {
+@Entity(name="orders")
+public class Fulfillment {
     @Id
     private Long id;
-    private String orderOwner;
+    private String orderer;
     private String shippingAddress;
     private String shippingMemo;
     @ElementCollection(targetClass = Product.class)
     @CollectionTable(name="order_products", joinColumns = @JoinColumn(name="order_id"))
     private List<Product> products = new ArrayList<>();
 
-    protected Order() {
+    protected Fulfillment() {
     }
 
-    public Order(String orderOwner, String shippingAddress, String shippingMemo) {
-        this.orderOwner = orderOwner;
+    public Fulfillment(String orderer, String shippingAddress, String shippingMemo) {
+        this.orderer = orderer;
         this.shippingAddress = shippingAddress;
         this.shippingMemo = shippingMemo;
     }
 
-    public Order of(String orderOwner, String shippingAddress, String shippingMemo){
-        return new Order(orderOwner, shippingAddress, shippingMemo);
+    public Fulfillment of(String orderer, String shippingAddress, String shippingMemo){
+        return new Fulfillment(orderer, shippingAddress, shippingMemo);
     }
 
     public void addProducts(List<Product> products) {

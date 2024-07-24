@@ -5,10 +5,9 @@ import com.sudosoo.takeItEasy.application.dto.order.CreateOrderRequestDto
 import com.sudosoo.takeItEasy.application.dto.order.OrderResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.service.event.EventManager
-import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
-import com.sudosoo.takeItEasy.domain.entity.Order
+import com.sudosoo.takeItEasy.domain.entity.Fulfillment
 import com.sudosoo.takeItEasy.domain.repository.OrderRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import jakarta.transaction.Transactional
@@ -19,13 +18,17 @@ class OrderService(
     private val repository: OrderRepository,
     private val kafkaProducer: KafkaProducer,
     private val eventManager: EventManager,
-    ) :JpaService<Order,Long>{
-    override var jpaRepository: BaseRepository<Order, Long> = repository
+    ) :JpaService<Fulfillment,Long>{
+    override var jpaRepository: BaseRepository<Fulfillment, Long> = repository
 
 
     @Transactional
     fun create(requestDto: CreateOrderRequestDto): OrderResponseDto {
-        val order = Order(requestDto.orderer,requestDto.shippingAddr,requestDto.shippingMemo)
+        val order = Fulfillment(
+            requestDto.orderer,
+            requestDto.shippingAddr,
+            requestDto.shippingMemo
+        )
         order.addProducts(requestDto.orderItems)
         save(order)
         val event = eventManager.create(KafkaTopics.ORDER, EventOperation.ORDER_COMPLETED, order)
