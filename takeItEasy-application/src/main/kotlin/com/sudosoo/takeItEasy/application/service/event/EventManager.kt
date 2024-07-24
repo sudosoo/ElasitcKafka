@@ -1,8 +1,8 @@
 package com.sudosoo.takeItEasy.application.service.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.common.jpa.JpaService
-import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation

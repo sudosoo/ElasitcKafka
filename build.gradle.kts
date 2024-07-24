@@ -1,7 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot")
+    id("org.springframework.boot") apply false
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")

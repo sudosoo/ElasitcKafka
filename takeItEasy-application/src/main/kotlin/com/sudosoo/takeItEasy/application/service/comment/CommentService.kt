@@ -1,11 +1,10 @@
 package com.sudosoo.takeItEasy.application.service.comment
 
-import com.sudosoo.takeItEasy.application.common.jpa.JpaService
-import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.Comment
-import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.data.domain.Page

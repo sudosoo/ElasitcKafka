@@ -2,7 +2,7 @@ package com.sudosoo.takeItEasy.application.redis
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
+import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.domain.entity.Post
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.redis.core.RedisTemplate
@@ -78,12 +78,14 @@ class RedisService(
 
     fun resetRedisCacheWithAllPosts(topicName: String, posts: List<Post>) {
         redisTemplate.delete(topicName)
-        posts.forEach { post ->
-            val jsonPost: String = try {
-                objectMapper.writeValueAsString(TestPostResponseDto(post))
-            } catch (e: JsonProcessingException) {
-                throw IllegalArgumentException("Invalid value")
-            }
+        posts.map { post ->
+            var jsonPost : String
+                try {
+                    val postTitle = PostCQRSDto(post.title, post.writer)
+                    jsonPost = objectMapper.writeValueAsString(postTitle)
+                } catch (e: JsonProcessingException) {
+                    throw IllegalArgumentException("Invalid value")
+                }
             redisTemplate.opsForList().leftPush("PostResponseDto", jsonPost)
         }
     }

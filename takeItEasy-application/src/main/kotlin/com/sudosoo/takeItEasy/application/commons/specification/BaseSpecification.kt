@@ -1,6 +1,6 @@
-package com.sudosoo.takeItEasy.application.common.specification
+package com.sudosoo.takeItEasy.application.commons.specification
 
-import com.sudosoo.takeItEasy.application.common.ReflectionUtils
+import com.sudosoo.takeItEasy.application.commons.ReflectionUtils
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.Expression
 import jakarta.persistence.criteria.Predicate

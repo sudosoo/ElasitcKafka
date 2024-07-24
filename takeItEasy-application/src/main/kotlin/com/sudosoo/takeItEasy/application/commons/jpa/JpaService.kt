@@ -1,6 +1,6 @@
-package com.sudosoo.takeItEasy.application.common.jpa
+package com.sudosoo.takeItEasy.application.commons.jpa
 
-import com.sudosoo.takeItEasy.application.common.CommonService.checkNotNullData
+import com.sudosoo.takeItEasy.application.commons.CommonService.checkNotNullData
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest

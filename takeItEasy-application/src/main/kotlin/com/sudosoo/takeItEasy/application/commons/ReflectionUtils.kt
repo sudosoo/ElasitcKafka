@@ -1,6 +1,6 @@
-package com.sudosoo.takeItEasy.application.common
+package com.sudosoo.takeItEasy.application.commons
 
-import com.sudosoo.takeItEasy.application.common.DateTime.DateTimeConvert
+import com.sudosoo.takeItEasy.application.commons.DateTime.DateTimeConvert
 import java.lang.reflect.InvocationTargetException
 import java.time.LocalDateTime
 import kotlin.reflect.KClass

@@ -2,11 +2,8 @@ package com.sudosoo.takeItEasy.application.kafka
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.dto.event.EventResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.EventStatus
-import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
 import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
 import jakarta.transaction.Transactional
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -37,7 +34,7 @@ class KafkaProducer(
 ) {
     @Async
     @Transactional
-    fun send(event: Event):EventResponseDto {
+    fun send(event: Event) {
         val record = ProducerRecord(event.targetName.name ,event.operation.name,event.body)
         try {
             kafkaTemplate.send(record)
@@ -47,7 +44,6 @@ class KafkaProducer(
                 repository.save(event)
             }
         }
-        return EventResponseDto(event.id)
     }
 
     fun sendNotice(memberId: String, requestMessage: String) {

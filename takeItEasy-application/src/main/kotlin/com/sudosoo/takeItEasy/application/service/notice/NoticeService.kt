@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.application.service.notice
 
-import com.sudosoo.takeItEasy.application.common.jpa.JpaService
-import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.notice.NoticeResponseDto
 import com.sudosoo.takeItEasy.domain.entity.Notice
 import com.sudosoo.takeItEasy.domain.repository.EmitterRepository
