@@ -4,12 +4,9 @@ import com.sudosoo.takeItEasy.batch.job.BatchJob
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
-@RestController
 class Scheduler(
     private val batchJob: BatchJob,
     private val jobLauncher : JobLauncher) {
@@ -20,7 +17,10 @@ class Scheduler(
         jobLauncher.run(batchJob.oldPostsDeleteJob(), jobParameter)
     }
 
-    fun testRun(){
+    @Scheduled(fixedRate = 10000)
+    fun runDeadLetterJob(){
         val jobParameter = JobParametersBuilder().addString("date", LocalDate.now().toString()).toJobParameters()
+        jobLauncher.run(batchJob.deadLetterJob(), jobParameter)
+
     }
 }

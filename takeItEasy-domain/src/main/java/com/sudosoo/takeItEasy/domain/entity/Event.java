@@ -18,6 +18,9 @@ public class Event {
     private LocalDateTime createdAt;
     private String body;
 
+    @Enumerated(EnumType.STRING)
+    private EventStatus status = EventStatus.PENDING;
+
     protected Event() {
     }
 
@@ -25,6 +28,14 @@ public class Event {
         this.targetName = topicName;
         this.operation = operation;
         this.body = body;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void failSend() {
+        this.status = EventStatus.FAILED;
     }
 
     public Long getId() {
