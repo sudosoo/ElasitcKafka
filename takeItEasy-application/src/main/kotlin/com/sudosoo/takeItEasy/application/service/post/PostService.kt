@@ -1,15 +1,15 @@
 package com.sudosoo.takeItEasy.application.service.post
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.common.jpa.JpaService
-import com.sudosoo.takeItEasy.application.common.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.comment.CommentResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.KafkaResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
-import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
+import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.application.service.category.CategoryService
@@ -45,7 +45,7 @@ class PostService(
         save(post)
     }
 
-    fun create(requestDto: CreatePostRequestDto): TestPostResponseDto {
+    fun create(requestDto: CreatePostRequestDto): PostCQRSDto {
         var kafkaResponseDto: KafkaResponseDto? = null
         try {
             val kafkaResult = kafkaProducer.replyRecord(kafkaMemberValidateRequestDto(requestDto.memberId))
@@ -66,7 +66,7 @@ class PostService(
         val result: Post = postRepository.save(post)
 
         //redis ReadRepository 데이터 삽입
-        val responseDto = TestPostResponseDto(result)
+        val responseDto = PostCQRSDto(result)
         redisService.saveReadValue(responseDto)
         return responseDto
     }

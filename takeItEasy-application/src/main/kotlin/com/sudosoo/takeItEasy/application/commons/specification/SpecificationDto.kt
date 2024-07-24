@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.common.specification
+package com.sudosoo.takeItEasy.application.commons.specification
 
 open class SpecificationDto(
     val columnName : String,

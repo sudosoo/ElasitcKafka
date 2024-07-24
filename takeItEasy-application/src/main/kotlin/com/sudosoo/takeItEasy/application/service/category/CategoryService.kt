@@ -1,6 +1,6 @@
 package com.sudosoo.takeItEasy.application.service.category
 
-import com.sudosoo.takeItEasy.application.common.jpa.JpaService
+import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.dto.category.UpdateCategoryRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Category
@@ -14,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional
 class CategoryService(
     private val categoryRepository : CategoryRepository,
 ): JpaService<Category, Long> {
+
     override var jpaRepository: BaseRepository<Category, Long> = categoryRepository
 
-    fun create(requestDto: CreateCategoryRequestDto){
-        save(Category(requestDto.title))
+    fun create(req: CreateCategoryRequestDto) {
+        save(Category(req.title))
     }
 
     fun updateTitle(requestDto: UpdateCategoryRequestDto) {

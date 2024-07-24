@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.application.common
+package com.sudosoo.takeItEasy.application.commons
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException

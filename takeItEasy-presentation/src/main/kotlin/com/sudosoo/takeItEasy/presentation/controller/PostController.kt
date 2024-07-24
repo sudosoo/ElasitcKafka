@@ -4,7 +4,7 @@ import com.sudosoo.takeItEasy.application.annotation.CustomNotify
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
-import com.sudosoo.takeItEasy.application.dto.post.TestPostResponseDto
+import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
@@ -23,8 +23,8 @@ class PostController(val postService: PostService) {
 
     @PostMapping("/create", name = "createPost")
     @Throws(ExecutionException::class, InterruptedException::class, IOException::class, TimeoutException::class)
-    fun createPost(@RequestBody @Valid requestDto: CreatePostRequestDto): ResponseEntity<TestPostResponseDto> {
-        val result: TestPostResponseDto = postService.create(requestDto)
+    fun createPost(@RequestBody @Valid requestDto: CreatePostRequestDto): ResponseEntity<PostCQRSDto> {
+        val result: PostCQRSDto = postService.create(requestDto)
         return ResponseEntity.ok(result)
     }
 

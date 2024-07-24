@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="orders")
-public class Fulfillment {
+public class Orders {
     @Id
     private Long id;
     private String orderer;
@@ -16,17 +16,17 @@ public class Fulfillment {
     @CollectionTable(name="order_products", joinColumns = @JoinColumn(name="order_id"))
     private List<Product> products = new ArrayList<>();
 
-    protected Fulfillment() {
+    protected Orders() {
     }
 
-    public Fulfillment(String orderer, String shippingAddress, String shippingMemo) {
+    public Orders(String orderer, String shippingAddress, String shippingMemo) {
         this.orderer = orderer;
         this.shippingAddress = shippingAddress;
         this.shippingMemo = shippingMemo;
     }
 
-    public Fulfillment of(String orderer, String shippingAddress, String shippingMemo){
-        return new Fulfillment(orderer, shippingAddress, shippingMemo);
+    public Orders of(String orderer, String shippingAddress, String shippingMemo){
+        return new Orders(orderer, shippingAddress, shippingMemo);
     }
 
     public void addProducts(List<Product> products) {
