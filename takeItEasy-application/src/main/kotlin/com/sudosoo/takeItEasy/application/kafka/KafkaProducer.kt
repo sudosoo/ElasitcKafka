@@ -34,7 +34,6 @@ class KafkaProducer(
     val kafkaTemplate: KafkaTemplate<String, String>,
     val replyingKafkaTemplate: ReplyingKafkaTemplate<String, String, String>
 ) {
-
     @Async
     @Transactional
     fun send(topic: KafkaTopics, eventOperation: EventOperation, eventPayload: Any):EventResponseDto {

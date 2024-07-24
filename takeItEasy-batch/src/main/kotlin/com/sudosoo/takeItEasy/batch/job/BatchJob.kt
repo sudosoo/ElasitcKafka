@@ -13,13 +13,19 @@ class BatchJob(
     val adaptStep: AdaptStep
 ) {
     fun heavyCreatePostJob(): Job {
-        return JobBuilder(BatchType.HEAVY_CREATE_POST.toString(),jobRepository)
+        return JobBuilder(BatchType.HEAVY_CREATE_POST.name,jobRepository)
             .start(adaptStep.getStep(BatchType.HEAVY_CREATE_POST))
             .build()
     }
     fun oldPostsDeleteJob(): Job {
-        return JobBuilder(BatchType.HEAVY_CREATE_POST.toString(),jobRepository)
+        return JobBuilder(BatchType.HEAVY_CREATE_POST.name,jobRepository)
             .start(adaptStep.getStep(BatchType.HEAVY_CREATE_POST))
+            .build()
+    }
+
+    fun deadLetterJob(): Job {
+        return JobBuilder(BatchType.DEAD_LETTER.name,jobRepository)
+            .start(adaptStep.getStep(BatchType.DEAD_LETTER))
             .build()
     }
 
