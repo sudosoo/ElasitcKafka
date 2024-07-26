@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
+
 }
 
 
@@ -106,6 +107,9 @@ subprojects {
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
         //redis
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+        implementation("io.github.microutils:kotlin-logging:3.0.5")
+
 
     }
 

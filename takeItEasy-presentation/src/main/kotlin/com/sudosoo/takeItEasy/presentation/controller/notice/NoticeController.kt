@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.presentation.controller
+package com.sudosoo.takeItEasy.presentation.controller.notice
 
 import com.sudosoo.takeItEasy.application.service.notice.NoticeService
 import org.springframework.web.bind.annotation.*
