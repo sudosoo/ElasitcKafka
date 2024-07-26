@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.presentation.controller
+package com.sudosoo.takeItEasy.presentation.controller.profile
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

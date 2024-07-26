@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.presentation.controller
+package com.sudosoo.takeItEasy.presentation.controller.post
 
 import com.sudosoo.takeItEasy.application.annotation.CustomNotify
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto

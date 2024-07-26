@@ -31,11 +31,12 @@ class OrdersService(
         )
         order.addProducts(requestDto.orderItems)
         save(order)
+
         val event = eventManager.create(KafkaTopics.ORDER, EventOperation.ORDER_COMPLETED, order)
-        //결제 시스템 완료 후 주문 완료 이벤트 발행
         kafkaProducer.send(event)
 
-        return OrderResponseDto(order.id)
+        //결제 시스템 완료 후 주문 완료 이벤트 발행
+        return OrderResponseDto(order.orderId)
     }
 
 

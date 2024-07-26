@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.presentation.controller
+package com.sudosoo.takeItEasy.presentation.controller.post
 
 import com.sudosoo.takeItEasy.application.service.elastic.post.ESPostService
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.presentation.controller
+package com.sudosoo.takeItEasy.presentation.controller.coupon
 
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
 import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperService

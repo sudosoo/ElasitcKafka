@@ -1,8 +1,11 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.Embeddable;
+import lombok.Data;
+import lombok.Getter;
 
 // 임시 상품 클래스
+@Data
 @Embeddable
 public class Product {
     private String productId;

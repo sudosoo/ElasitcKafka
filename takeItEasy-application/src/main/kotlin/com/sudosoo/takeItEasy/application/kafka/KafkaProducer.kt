@@ -35,7 +35,7 @@ class KafkaProducer(
     @Async
     @Transactional
     fun send(event: Event) {
-        val record = ProducerRecord(event.targetName.name ,event.operation.name,event.body)
+        val record = ProducerRecord(event.targetName.name,event.operation.name,event.body)
         try {
             kafkaTemplate.send(record)
         }catch (e: Exception){
