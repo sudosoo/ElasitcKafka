@@ -32,17 +32,15 @@ class KafkaProducer(
     val kafkaTemplate: KafkaTemplate<String, String>,
     val replyingKafkaTemplate: ReplyingKafkaTemplate<String, String, String>
 ) {
+
     @Async
-    @Transactional
     fun send(event: Event) {
         val record = ProducerRecord(event.targetName.name,event.operation.name,event.body)
         try {
             kafkaTemplate.send(record)
         }catch (e: Exception){
-            if (event.status == EventStatus.PENDING){
-                event.failSend()
-                repository.save(event)
-            }
+            event.fail()
+            repository.save(event)
         }
     }
 
@@ -69,4 +67,5 @@ class KafkaProducer(
         }
         return Objects.requireNonNull(consumerRecord)?.value() ?: ""
     }
+
 }

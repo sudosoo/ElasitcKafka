@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
+import java.sql.SQLException
+import javax.sql.DataSource
 
 @Configuration
 class DeadLetterConsumer(
@@ -22,7 +24,9 @@ class DeadLetterConsumer(
     private val transactionManager: PlatformTransactionManager,
     private val entityManagerFactory: EntityManagerFactory,
     private val kafkaProducer: KafkaProducer,
-) : StepService<Event> {
+    private val dataSource: DataSource,
+
+    ) : StepService<Event> {
 
     companion object {
         const val JOB_NAME = "DEAD_LETTER"
@@ -46,7 +50,7 @@ class DeadLetterConsumer(
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Event> {
             return JpaPagingItemReaderBuilder<Event>()
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT e FROM Event e")
+                .queryString("SELECT e FROM Event e where e.status = 'FAILED'")
                 .saveState(false)
                 .build()
         }
@@ -54,10 +58,34 @@ class DeadLetterConsumer(
     @Bean(name = [JOB_NAME + "_writer"])
     override fun writer(): ItemWriter<Event> {
         return ItemWriter<Event> { items ->
-                items.map { event ->
-                    kafkaProducer.send(event)
+            val con = dataSource.connection ?: throw SQLException("Connection is null")
+            val sql = "DELETE FROM Event WHERE id = ?;"
+            val pstmt = con.prepareStatement(sql)
+            con.autoCommit = false
+            try {
+                items.chunked(CHUNK_SIZE).forEach{
+                    for (chunk in it) {
+                        pstmt.setLong(1, chunk.id)
+                        pstmt.addBatch()
+                        kafkaProducer.send(chunk)
+                    }
+                    pstmt.executeBatch()
+                    con.commit()
+                    pstmt.clearParameters()
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                try {
+                    con.rollback()
+                } catch (sqlException: SQLException) {
+                    sqlException.printStackTrace()
+                }
+            } finally {
+                pstmt.close()
+                con.close()
             }
         }
+    }
+
 
 }
