@@ -1,8 +1,8 @@
 package com.sudosoo.takeItEasy.application.service.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
-import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
@@ -19,7 +19,7 @@ class EventManager(
     private val kafkaProducer: KafkaProducer,
     private val objectMapper: ObjectMapper,
 
-    ) :JpaService<Event, Long>, JpaSpecificService<Event, Long> {
+    ) : JpaService<Event, Long>, JpaSpecificService<Event, Long> {
     override var jpaRepository: BaseRepository<Event, Long> = repository
     override val jpaSpecRepository: BaseRepository<Event, Long> = repository
 
