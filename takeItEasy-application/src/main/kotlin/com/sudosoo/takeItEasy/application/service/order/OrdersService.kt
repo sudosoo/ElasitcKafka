@@ -1,6 +1,6 @@
 package com.sudosoo.takeItEasy.application.service.order
 
-import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.order.CreateOrderRequestDto
 import com.sudosoo.takeItEasy.application.dto.order.OrderResponseDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
@@ -18,7 +18,7 @@ class OrdersService(
     private val repository: OrdersRepository,
     private val kafkaProducer: KafkaProducer,
     private val eventManager: EventManager,
-    ) :JpaService<Orders,Long>{
+    ) : JpaService<Orders, Long> {
     override var jpaRepository: BaseRepository<Orders, Long> = repository
 
 

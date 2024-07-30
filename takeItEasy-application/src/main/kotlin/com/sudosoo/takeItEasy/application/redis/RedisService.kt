@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.application.redis
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.sudosoo.takeItEasy.application.core.commons.CommonService
 import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.domain.entity.Post
 import org.springframework.data.domain.PageRequest
@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.io.IOException
+import java.util.*
+
 
 @Service
 @Transactional
@@ -16,9 +18,7 @@ class RedisService(
     val redisTemplate: RedisTemplate<String, String>,
 ) {
 
-    private companion object {
-        val objectMapper = ObjectMapper()
-    }
+    val objectMapper = CommonService.getObjectMapper()
 
     fun <T> findByPagination(responseDtoName: String, pageable: PageRequest): MutableList<T & Any> {
         val clazz = try {
@@ -45,25 +45,20 @@ class RedisService(
             }.toMutableList()
     }
 
-    fun <T> getValues(methodName: String): MutableList<T> {
-        return try {
-            val fullClassName = "com.sudosoo.takeItEasy.application.dto.$methodName"
-            val clazz = Class.forName(fullClassName) as Class<T>
-            val jsonValues = redisTemplate.opsForList().range(methodName, 0, -1)
 
-            checkNotNull(jsonValues)
-            jsonValues.mapNotNull { jsonValue ->
-                try {
-                    objectMapper.readValue(jsonValue, clazz)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    null
-                }
-            }.toMutableList()
-        } catch (e: Exception) {
+    fun <T> getValues(clazz: Class<T>): List<T> {
+        val result: MutableList<T> = ArrayList()
+        try {
+            val className = clazz.simpleName
+            val jsonValues = redisTemplate.opsForList().range(className, 0, -1)
+            for (responseDto in Objects.requireNonNull(jsonValues)) {
+                val value = objectMapper.readValue(responseDto, clazz)
+                result.add(value)
+            }
+        } catch (e: IOException) {
             e.printStackTrace()
-            mutableListOf() // Return empty list on errors
         }
+        return result
     }
 
     fun saveReadValue(value: Any) {

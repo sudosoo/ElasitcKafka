@@ -2,6 +2,7 @@ package com.sudosoo.takeItEasy.application.kafka
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.sudosoo.takeItEasy.application.core.commons.CommonService
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventStatus
 import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
@@ -28,10 +29,10 @@ class KafkaProducer(
     val kafkaRestApiReplyTopic: String,
     @Value("\${devsoo.kafka.notice.topic}")
     val kafkaNoticeTopic: String,
-    val objectMapper: ObjectMapper,
     val kafkaTemplate: KafkaTemplate<String, String>,
     val replyingKafkaTemplate: ReplyingKafkaTemplate<String, String, String>
 ) {
+    val objectMapper = CommonService.getObjectMapper()
 
     @Async
     fun send(event: Event) {
