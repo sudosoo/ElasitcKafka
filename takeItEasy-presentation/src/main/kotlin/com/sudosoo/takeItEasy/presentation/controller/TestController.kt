@@ -15,11 +15,6 @@ class TestController (
     val postService: PostService,
 )
 {
-    @GetMapping("/getV", name = "getV")
-    fun redisGetTest(): List<PostCQRSDto> {
-        val methodName = "PostResponseDto"
-        return redisService.getValues(methodName)
-    }
 
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
