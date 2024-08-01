@@ -15,7 +15,6 @@ class TestController (
     val postService: PostService,
 )
 {
-
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
         postService.postRepositoryRedisSynchronization()
