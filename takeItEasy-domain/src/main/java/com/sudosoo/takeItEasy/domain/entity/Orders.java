@@ -1,6 +1,7 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Table(indexes = {
         @Index(name = "idx_orderer_covering", columnList = "id, orderer")
 })
+@Getter
 public class Orders {
     @Id
     private Long id;
@@ -36,7 +38,4 @@ public class Orders {
         this.products.addAll(products);
     }
 
-    public Long getId() {
-        return id;
-    }
 }

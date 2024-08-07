@@ -1,9 +1,10 @@
 package com.sudosoo.takeItEasy.batch.step
 
-import com.sudosoo.takeItEasy.application.service.post.PostService
-import com.sudosoo.takeItEasy.domain.entity.Post
+import com.sudosoo.takeItEasy.application.service.order.OrdersService
+import com.sudosoo.takeItEasy.domain.entity.Orders
 import jakarta.persistence.EntityManagerFactory
 import org.springframework.batch.core.Step
+import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
@@ -12,30 +13,30 @@ import org.springframework.batch.item.database.JpaPagingItemReader
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
+import java.time.LocalDate
 import javax.sql.DataSource
 
-@Configuration
-class HeavyCreatePost(
+@Component
+class HeavyCreateOrders(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val dataSource: DataSource,
-    private val postService: PostService,
+    private val service: OrdersService,
     private val entityManagerFactory: EntityManagerFactory
-) : StepService<Post> {
+){
 
     companion object {
-        const val JOB_NAME = "HEAVY_CREATE_POST"
+        const val JOB_NAME = "ORDER_TEST_DUMMY_CREATOR"
         const val CHUNK_SIZE: Int = 10000
     }
 
-    @Bean(name = [JOB_NAME + "_step"])
-    override fun step(): Step {
+    @Bean(name = [JOB_NAME+"_step"])
+    fun step(): Step {
         return StepBuilder(JOB_NAME, jobRepository)
-            .chunk<Post, Post>(CHUNK_SIZE, transactionManager)
+            .chunk<Orders, Orders>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
             .writer(bulkWriter())
             .startLimit(2)
@@ -44,32 +45,29 @@ class HeavyCreatePost(
 
     @StepScope
     //@Bean(name = [JOB_NAME + "_reader"])
-    override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Post> {
-            return JpaPagingItemReaderBuilder<Post>()
+    fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Orders> {
+            return JpaPagingItemReaderBuilder<Orders>()
                 .entityManagerFactory(entityManagerFactory)
                 .saveState(false)
                 .build()
         }
 
-    //@Bean(name = [JOB_NAME + "_writer"])
-    override fun bulkWriter(): ItemWriter<Post> {
+    //@Bean(name = [JOB_NAME+"_writer"])
+    fun bulkWriter(): ItemWriter<Orders> {
         var count = 0
-        return ItemWriter<Post> { items ->
+        return ItemWriter<Orders> { items ->
             val con = dataSource.connection ?: throw SQLException("Connection is null")
-            val sql = "INSERT INTO post (title, content, category_id, member_id, writer_name, view_count, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            val sql = "INSERT INTO orders (orderer,shippingAddress,shippingMemo) VALUES (?, ?, ?)"
             val pstmt = con.prepareStatement(sql)
             try {
                 items.chunked(CHUNK_SIZE).forEach{
-                    con.autoCommit = false
-                    val post = postService.createBatchPosts(count)
 
-                    pstmt.setString(1, post.title)
-                    pstmt.setString(2, post.content)
-                    pstmt.setLong(3, 1L)
-                    pstmt.setLong(4, post.memberId)
-                    pstmt.setString(5, post.writer)
-                    pstmt.setInt(6, post.viewCount)
-                    pstmt.setBoolean(7, post.isDeleted)
+                    con.autoCommit = false
+                    val orders = service.createBatchOrders(count)
+
+                    pstmt.setString(1, orders.orderer)
+                    pstmt.setString(2, orders.shippingAddress)
+                    pstmt.setString(3, orders.shippingMemo)
 
                     pstmt.addBatch()
                     count++

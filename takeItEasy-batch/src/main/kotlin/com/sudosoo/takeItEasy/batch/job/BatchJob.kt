@@ -1,9 +1,6 @@
 package com.sudosoo.takeItEasy.batch.job
 
-import com.sudosoo.takeItEasy.batch.step.BatchType
-import com.sudosoo.takeItEasy.batch.step.DeadLetterConsumer
-import com.sudosoo.takeItEasy.batch.step.HeavyCreatePost
-import com.sudosoo.takeItEasy.batch.step.OldPostsDelete
+import com.sudosoo.takeItEasy.batch.step.*
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.job.builder.JobBuilder
@@ -16,7 +13,8 @@ class BatchJob(
     val jobRepository: JobRepository,
     val heavyCreatePost: HeavyCreatePost,
     val oldPostsDelete: OldPostsDelete,
-    val deadLetterConsumer: DeadLetterConsumer
+    val deadLetterConsumer: DeadLetterConsumer,
+    val heavyCreateOrders: HeavyCreateOrders
 ) {
     fun heavyCreatePostJob(): Job {
         return JobBuilder(BatchType.HEAVY_CREATE_POST.name,jobRepository)
@@ -24,7 +22,7 @@ class BatchJob(
             .build()
     }
     fun oldPostsDeleteJob(): Job {
-        return JobBuilder(BatchType.HEAVY_CREATE_POST.name,jobRepository)
+        return JobBuilder(BatchType.OLD_POSTS_DELETE.name,jobRepository)
             .start(oldPostsDelete.step())
             .build()
     }
@@ -33,6 +31,13 @@ class BatchJob(
         return JobBuilder(BatchType.DEAD_LETTER.name,jobRepository)
             .start(deadLetterConsumer.step())
             .build()
+    }
+
+    fun orderTestDummyCreator():Job{
+        return JobBuilder(BatchType.ORDER_TEST_DUMMY_CREATOR.name,jobRepository)
+            .start(heavyCreateOrders.step())
+            .build()
+
     }
 
 }

@@ -12,12 +12,13 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
 import java.time.LocalDate
 import javax.sql.DataSource
 
-@Configuration
+@Component
 class OldPostsDelete(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
@@ -26,7 +27,7 @@ class OldPostsDelete(
 ) : StepService<Post> {
 
     companion object {
-        const val JOB_NAME = "oldPostsDelete"
+        const val JOB_NAME = "OLD_POSTS_DELETE"
         const val CHUNK_SIZE: Int = 10000
     }
 

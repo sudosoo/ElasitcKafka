@@ -8,6 +8,7 @@ import com.sudosoo.takeItEasy.application.service.event.EventManager
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
 import com.sudosoo.takeItEasy.domain.entity.Orders
+import com.sudosoo.takeItEasy.domain.entity.Post
 import com.sudosoo.takeItEasy.domain.repository.orders.OrdersRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import jakarta.transaction.Transactional
@@ -44,6 +45,10 @@ class OrdersService(
 
     fun getByNameCoveringIndex(orderer: String): List<Orders> {
         return repository.coveringIndex(orderer)
+    }
+
+    fun createBatchOrders(count: Int): Orders {
+        return Orders("Name$count",  "addr$count",  "memo$count")
     }
 
 
