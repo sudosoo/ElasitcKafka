@@ -5,8 +5,8 @@ import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecific
 import com.sudosoo.takeItEasy.application.dto.notice.NoticeResponseDto
 import com.sudosoo.takeItEasy.application.emitter.EmitterProducer
 import com.sudosoo.takeItEasy.domain.entity.Notice
-import com.sudosoo.takeItEasy.domain.repository.NoticeRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
+import com.sudosoo.takeItEasy.domain.repository.notice.NoticeRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -16,7 +16,7 @@ class NoticeService(
     private val noticeRepository: NoticeRepository,
     private val emitterProducer: EmitterProducer,
 
-) : JpaService<Notice, Long>, JpaSpecificService<Notice, Long> {
+    ) : JpaService<Notice, Long>, JpaSpecificService<Notice, Long> {
     override var jpaRepository: BaseRepository<Notice, Long> = noticeRepository
     override var jpaSpecRepository: BaseRepository<Notice, Long> = noticeRepository
 

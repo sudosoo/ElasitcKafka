@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.comment;
 
 import com.sudosoo.takeItEasy.domain.entity.Comment;
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository;

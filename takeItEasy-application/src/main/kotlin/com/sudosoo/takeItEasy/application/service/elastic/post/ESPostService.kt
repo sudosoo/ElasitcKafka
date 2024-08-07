@@ -1,9 +1,8 @@
 package com.sudosoo.takeItEasy.application.service.elastic.post
 
-import com.sudosoo.takeItEasy.application.dto.post.specification.PostSpec
 import com.sudosoo.takeItEasy.domain.entity.EsPost
-import com.sudosoo.takeItEasy.domain.repository.PostElasticRepository
-import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import com.sudosoo.takeItEasy.domain.repository.post.PostElasticRepository
+import com.sudosoo.takeItEasy.domain.repository.post.PostRepository
 import org.springframework.stereotype.Service
 
 @Service

@@ -2,9 +2,9 @@ package com.sudosoo.takeItEasy.batch.step
 
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Event
+import com.sudosoo.takeItEasy.domain.entity.Post
 import jakarta.persistence.EntityManagerFactory
 import org.springframework.batch.core.Step
-import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
+import java.time.LocalDate
 import javax.sql.DataSource
 
 @Configuration
@@ -46,14 +47,14 @@ class DeadLetterConsumer(
     }
 
     @Bean(name = [JOB_NAME + "_reader"])
-    @JobScope
+    @StepScope
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Event> {
-            return JpaPagingItemReaderBuilder<Event>()
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT e FROM Event e where e.status = 'FAILED'")
-                .saveState(false)
-                .build()
-        }
+        return JpaPagingItemReaderBuilder<Event>()
+            .entityManagerFactory(entityManagerFactory)
+            .queryString("SELECT e FROM Event e where e.status = 'FAILED'")
+            .saveState(false)
+            .build()
+    }
 
     @Bean(name = [JOB_NAME + "_writer"])
     override fun writer(): ItemWriter<Event> {
@@ -84,8 +85,10 @@ class DeadLetterConsumer(
                 pstmt.close()
                 con.close()
             }
+
         }
     }
+
 
 
 }

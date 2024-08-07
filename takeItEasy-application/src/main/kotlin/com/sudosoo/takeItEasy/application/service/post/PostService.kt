@@ -1,23 +1,22 @@
 package com.sudosoo.takeItEasy.application.service.post
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.core.commons.CommonService
+import com.sudosoo.takeItEasy.application.commons.CommonService
 import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.comment.CommentResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.KafkaResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDto
 import com.sudosoo.takeItEasy.application.dto.post.CreatePostRequestDto
+import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.application.dto.post.PostDetailResponseDto
 import com.sudosoo.takeItEasy.application.dto.post.PostTitleOnlyResponseDto
-import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.application.redis.RedisService
 import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import com.sudosoo.takeItEasy.domain.entity.Post
-import com.sudosoo.takeItEasy.domain.repository.CommentRepository
-import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import com.sudosoo.takeItEasy.domain.repository.comment.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
+import com.sudosoo.takeItEasy.domain.repository.post.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable

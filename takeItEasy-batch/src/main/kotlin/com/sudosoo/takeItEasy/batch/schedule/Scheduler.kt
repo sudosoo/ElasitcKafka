@@ -5,12 +5,10 @@ import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
-import java.time.LocalDateTime
 
-@Component
+@Configuration
 class Scheduler(
     private val batchJob: BatchJob,
     private val jobLauncher : JobLauncher) {
@@ -23,7 +21,8 @@ class Scheduler(
 
     @Scheduled(fixedRate = 10000)
     fun runDeadLetterJob(){
-        val jobParameter = JobParametersBuilder().addString("date", LocalDateTime.now().toString()).toJobParameters()
+        val jobParameter = JobParametersBuilder().addString("date", LocalDate.now().toString()).toJobParameters()
         jobLauncher.run(batchJob.deadLetterJob(), jobParameter)
     }
+
 }

@@ -3,7 +3,7 @@ package com.sudosoo.takeItEasy.application.dto.coupon
 import com.sudosoo.takeItEasy.application.annotation.CustomDateFormatValidator
 import jakarta.validation.constraints.Size
 
-class CouponWrapperCreateDto(
+class RewardCreateDto(
     val eventId: Long,
     @CustomDateFormatValidator
     val couponDeadline: String,

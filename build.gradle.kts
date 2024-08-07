@@ -6,7 +6,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
-
 }
 
 
@@ -108,8 +107,10 @@ subprojects {
         //redis
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
-        implementation("io.github.microutils:kotlin-logging:3.0.5")
-
+        // Lombok
+        compileOnly ("org.projectlombok:lombok")
+        annotationProcessor ("org.projectlombok:lombok")
+        testCompileOnly ("org.projectlombok:lombok")
 
     }
 

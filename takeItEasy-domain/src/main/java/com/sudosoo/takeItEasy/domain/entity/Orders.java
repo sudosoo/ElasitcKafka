@@ -2,20 +2,19 @@ package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.validator.constraints.UUID;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="orders")
+@Table(indexes = {
+        @Index(name = "idx_orderer_covering", columnList = "id, orderer")
+})
 @Getter
-@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class Orders {
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.TIME)
-    private String orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String orderer;
     private String shippingAddress;
     private String shippingMemo;
@@ -23,6 +22,8 @@ public class Orders {
     @CollectionTable(name="order_products", joinColumns = @JoinColumn(name="order_id"))
     private List<Product> products = new ArrayList<>();
 
+    protected Orders() {
+    }
 
     public Orders(String orderer, String shippingAddress, String shippingMemo) {
         this.orderer = orderer;

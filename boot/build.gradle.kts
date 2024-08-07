@@ -14,4 +14,8 @@ dependencies {
 
     //jasypt
     implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
+
+    //spring batch
+    implementation ("org.springframework.boot:spring-boot-starter-batch")
+
 }

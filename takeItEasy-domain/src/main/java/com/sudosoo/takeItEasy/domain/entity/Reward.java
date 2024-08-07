@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class CouponWrapper extends BaseEntity {
+public class Reward extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,58 +35,54 @@ public class CouponWrapper extends BaseEntity {
         }
     }
 
-    private CouponWrapper(Long id, long eventId, String eventName, int couponQuantity, LocalDate couponDeadline, Long discountPrice) {
+    private Reward(Long id, long eventId, int couponQuantity, LocalDate couponDeadline, Long discountPrice) {
         this.id = id;
         this.eventId = eventId;
-        this.couponName = eventName + discountPrice;
         this.couponQuantity = couponQuantity;
         this.couponDeadline = couponDeadline;
         this.discountPrice = discountPrice;
     }
 
-    public static CouponWrapper testPriceOf(Long id, long eventId, String eventName, int couponQuantity, String couponDeadline, Long discountPrice) {
-        return new CouponWrapper(id, eventId, eventName, couponQuantity, LocalDate.parse(couponDeadline), discountPrice);
+    public static Reward testPriceOf(Long id, long eventId, int couponQuantity, String couponDeadline, Long discountPrice) {
+        return new Reward(id, eventId, couponQuantity, LocalDate.parse(couponDeadline), discountPrice);
     }
 
-    public CouponWrapper( long eventId ,String eventName, int couponQuantity, LocalDate couponDeadline,  long discountPrice) {
-        this.couponName = eventName + discountPrice;
+    public Reward(long eventId , int couponQuantity, LocalDate couponDeadline, long discountPrice) {
         this.eventId = eventId;
         this.couponDeadline = couponDeadline;
         this.discountPrice = discountPrice;
         this.couponQuantity = couponQuantity;
     }
 
-    public static CouponWrapper priceOf(long eventId, String couponName, int couponQuantity, String couponDeadline, Long discountPrice) {
-        return new CouponWrapper(eventId, couponName, couponQuantity, LocalDate.parse(couponDeadline), discountPrice);
+    public static Reward priceOf(long eventId, int couponQuantity, String couponDeadline, Long discountPrice) {
+        return new Reward(eventId, couponQuantity, LocalDate.parse(couponDeadline), discountPrice);
     }
 
 
 
-    private CouponWrapper(Long id ,long eventId, String eventName, int couponQuantity, LocalDate couponDeadline, int discountRate) {
+    private Reward(Long id , long eventId, int couponQuantity, LocalDate couponDeadline, int discountRate) {
         this.id = id;
         this.eventId = eventId;
-        this.couponName = eventName + discountRate;
         this.couponQuantity = couponQuantity;
         this.couponDeadline = couponDeadline;
         this.discountRate = discountRate;
     }
-    public static CouponWrapper testRateOf(Long id, long eventId, String eventName, int couponQuantity, String couponDeadline, int discountRate) {
-        return new CouponWrapper(id, eventId, eventName, couponQuantity, LocalDate.parse(couponDeadline), discountRate);
+    public static Reward testRateOf(Long id, long eventId, int couponQuantity, String couponDeadline, int discountRate) {
+        return new Reward(id, eventId, couponQuantity, LocalDate.parse(couponDeadline), discountRate);
     }
 
-    private CouponWrapper(long eventId, String eventName, int couponQuantity, LocalDate couponDeadline, int discountRate) {
+    private Reward(long eventId, int couponQuantity, LocalDate couponDeadline, int discountRate) {
         this.eventId = eventId;
-        this.couponName = eventName + discountRate;
         this.couponQuantity = couponQuantity;
         this.couponDeadline = couponDeadline;
         this.discountRate = discountRate;
     }
 
-    public static CouponWrapper rateOf(long eventId, String couponName, int couponQuantity, String couponDeadline, Integer discountRate) {
-        return new CouponWrapper(eventId, couponName, couponQuantity, LocalDate.parse(couponDeadline), discountRate);
+    public static Reward rateOf(long eventId, int couponQuantity, String couponDeadline, Integer discountRate) {
+        return new Reward(eventId, couponQuantity, LocalDate.parse(couponDeadline), discountRate);
     }
 
-    protected CouponWrapper() {
+    protected Reward() {
     }
 
 

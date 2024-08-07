@@ -13,10 +13,10 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
 import javax.sql.DataSource
-
 @Configuration
 class HeavyCreatePost(
     private val jobRepository: JobRepository,
@@ -43,11 +43,11 @@ class HeavyCreatePost(
     @Bean(name = [JOB_NAME + "_reader"])
     @StepScope
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Post> {
-            return JpaPagingItemReaderBuilder<Post>()
-                .entityManagerFactory(entityManagerFactory)
-                .saveState(false)
-                .build()
-        }
+        return JpaPagingItemReaderBuilder<Post>()
+            .entityManagerFactory(entityManagerFactory)
+            .saveState(false)
+            .build()
+    }
 
     @Bean(name = [JOB_NAME + "_writer"])
     override fun writer(): ItemWriter<Post> {
@@ -88,7 +88,5 @@ class HeavyCreatePost(
             }
         }
     }
-
-
 
 }

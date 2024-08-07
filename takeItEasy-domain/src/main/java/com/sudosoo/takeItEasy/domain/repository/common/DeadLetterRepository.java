@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.common;
 
 import com.sudosoo.takeItEasy.domain.entity.Event;
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository;

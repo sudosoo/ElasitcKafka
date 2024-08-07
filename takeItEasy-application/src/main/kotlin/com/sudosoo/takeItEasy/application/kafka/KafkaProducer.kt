@@ -1,12 +1,9 @@
 package com.sudosoo.takeItEasy.application.kafka
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.sudosoo.takeItEasy.application.core.commons.CommonService
+import com.sudosoo.takeItEasy.application.commons.CommonService
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.entity.EventStatus
-import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
-import jakarta.transaction.Transactional
+import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
@@ -68,5 +65,4 @@ class KafkaProducer(
         }
         return Objects.requireNonNull(consumerRecord)?.value() ?: ""
     }
-
 }

@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.heart;
 
 import com.sudosoo.takeItEasy.domain.entity.Comment;
 import com.sudosoo.takeItEasy.domain.entity.Heart;

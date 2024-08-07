@@ -6,7 +6,7 @@ import com.sudosoo.takeItEasy.application.service.comment.CommentService
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Post
-import com.sudosoo.takeItEasy.domain.repository.CommentRepository
+import com.sudosoo.takeItEasy.domain.repository.comment.CommentRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

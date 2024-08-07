@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.sql.DataSource
 
 @Configuration
@@ -46,13 +47,13 @@ class OldPostsDelete(
     @StepScope
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Post> {
         val cutoffDay = LocalDate.parse(date).minusDays(90)
-            return JpaPagingItemReaderBuilder<Post>()
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay")
-                .parameterValues(mapOf("cutoffDay" to cutoffDay))
-                .saveState(false)
-                .build()
-        }
+        return JpaPagingItemReaderBuilder<Post>()
+            .entityManagerFactory(entityManagerFactory)
+            .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay")
+            .parameterValues(mapOf("cutoffDay" to cutoffDay))
+            .saveState(false)
+            .build()
+    }
 
     @Bean(name = [JOB_NAME + "_writer"])
     override fun writer(): ItemWriter<Post> {
@@ -60,7 +61,7 @@ class OldPostsDelete(
             val con = dataSource.connection ?: throw SQLException("Connection is null")
             val sql = "DELETE FROM Post WHERE id = ?;"
             val pstmt = con.prepareStatement(sql)
-                con.autoCommit = false
+            con.autoCommit = false
             try {
                 items.chunked(CHUNK_SIZE).forEach{
                     for (chunk in it) {

@@ -1,8 +1,6 @@
 package com.sudosoo.takeItEasy.application.emitter
 
-import com.sudosoo.takeItEasy.application.service.notice.NoticeService
-import com.sudosoo.takeItEasy.domain.repository.EmitterRepository
-import com.sudosoo.takeItEasy.domain.repository.EmitterRepositoryImpl
+import com.sudosoo.takeItEasy.domain.repository.common.EmitterRepositoryImpl
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.io.IOException

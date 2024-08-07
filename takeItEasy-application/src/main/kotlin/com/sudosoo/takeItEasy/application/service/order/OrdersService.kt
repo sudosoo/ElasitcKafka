@@ -8,7 +8,8 @@ import com.sudosoo.takeItEasy.application.service.event.EventManager
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
 import com.sudosoo.takeItEasy.domain.entity.Orders
-import com.sudosoo.takeItEasy.domain.repository.OrdersRepository
+import com.sudosoo.takeItEasy.domain.entity.Post
+import com.sudosoo.takeItEasy.domain.repository.orders.OrdersRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -36,7 +37,19 @@ class OrdersService(
         kafkaProducer.send(event)
 
         //결제 시스템 완료 후 주문 완료 이벤트 발행
-        return OrderResponseDto(order.orderId)
+        return OrderResponseDto(order)
+    }
+
+    fun getByNameLegacy(orderer: String): List<Orders>{
+        return repository.findByOrderer(orderer)
+    }
+
+    fun getByNameCoveringIndex(orderer: String): List<Orders> {
+        return repository.coveringIndex(orderer)
+    }
+
+    fun createBatchOrders(count: Int): Orders {
+        return Orders("Name$count",  "addr$count",  "memo$count")
     }
 
 

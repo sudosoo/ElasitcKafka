@@ -4,8 +4,8 @@ import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.service.category.CategoryService
 import com.sudosoo.takeItEasy.domain.entity.Category
-import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
-import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import com.sudosoo.takeItEasy.domain.repository.category.CategoryRepository
+import com.sudosoo.takeItEasy.domain.repository.post.PostRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

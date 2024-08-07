@@ -7,7 +7,7 @@ import com.sudosoo.takeItEasy.application.service.comment.CommentService
 import com.sudosoo.takeItEasy.application.service.heart.HeartService
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.*
-import com.sudosoo.takeItEasy.domain.repository.HeartRepository
+import com.sudosoo.takeItEasy.domain.repository.heart.HeartRepository
 import org.hibernate.validator.internal.util.Contracts.assertNotNull
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows

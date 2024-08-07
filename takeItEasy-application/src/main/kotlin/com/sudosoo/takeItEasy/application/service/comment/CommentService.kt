@@ -5,7 +5,7 @@ import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecific
 import com.sudosoo.takeItEasy.application.dto.comment.CreateCommentRequestDto
 import com.sudosoo.takeItEasy.application.service.post.PostService
 import com.sudosoo.takeItEasy.domain.entity.Comment
-import com.sudosoo.takeItEasy.domain.repository.CommentRepository
+import com.sudosoo.takeItEasy.domain.repository.comment.CommentRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

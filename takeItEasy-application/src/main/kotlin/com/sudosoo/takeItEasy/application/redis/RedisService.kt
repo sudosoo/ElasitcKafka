@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.application.redis
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.sudosoo.takeItEasy.application.core.commons.CommonService
+import com.sudosoo.takeItEasy.application.commons.CommonService
 import com.sudosoo.takeItEasy.application.dto.post.PostCQRSDto
 import com.sudosoo.takeItEasy.domain.entity.Post
 import org.springframework.data.domain.PageRequest

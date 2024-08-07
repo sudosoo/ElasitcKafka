@@ -7,7 +7,7 @@ import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.EventOperation
 import com.sudosoo.takeItEasy.domain.entity.KafkaTopics
-import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
