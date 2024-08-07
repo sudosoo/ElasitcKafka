@@ -38,6 +38,14 @@ class OrdersService(
         return OrderResponseDto(order.id)
     }
 
+    fun getByNameLegacy(orderer: String): List<Orders>{
+        return repository.findByOrderer(orderer)
+    }
+
+    fun getByNameCoveringIndex(orderer: String): List<Orders> {
+        return repository.coveringIndex(orderer)
+    }
+
 
 }
 

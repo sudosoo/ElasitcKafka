@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface PostRepository extends BaseRepository<Post, Long>, PostQueryDslRepository {
+public interface PostRepository extends BaseRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.category.id = :categoryId")
     Page<Post> findPostsPaginationByCategoryId(@Param("categoryId")Long categoryId, Pageable pageRequest);

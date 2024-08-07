@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="orders")
+@Table(indexes = {
+        @Index(name = "idx_orderer_covering", columnList = "id, orderer")
+})
 public class Orders {
     @Id
     private Long id;
