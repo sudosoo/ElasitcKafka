@@ -1,19 +1,17 @@
 package com.sudosoo.takeiteasy.application.service
 
 import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
-import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
+import com.sudosoo.takeItEasy.application.dto.coupon.RewardCreateDto
 import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperService
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.Reward
 import com.sudosoo.takeItEasy.domain.entity.Reward.testRateOf
-import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
 import com.sudosoo.takeItEasy.domain.repository.coupon.RewardRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -24,9 +22,6 @@ import java.util.*
 class RewardServiceTest {
     @Mock
     lateinit var rewardRepository: RewardRepository
-
-    @Mock
-    lateinit var deadLetterRepository: DeadLetterRepository
 
     @Mock
     lateinit var jpaService: JpaService<Coupon, Long>
@@ -45,7 +40,7 @@ class RewardServiceTest {
     @Test
     @Throws(Exception::class)
     fun `가격할인 쿠폰이 만들어 져야 한다`() {
-        val requestDto = CouponWrapperCreateDto(
+        val requestDto = RewardCreateDto(
             1L,
             LocalDate.now().toString(),
             100,
@@ -53,22 +48,20 @@ class RewardServiceTest {
             null,
             null
         )
-        val testPriceCoupon = Reward.testPriceOf(1L, 1L, "testEvent", 100, LocalDate.now().toString(), 10000L)
+        val testPriceCoupon = Reward.testPriceOf(1L, 1L, 100, LocalDate.now().toString(), 10000L)
         `when`(rewardRepository.save(testPriceCoupon)).thenReturn(testPriceCoupon)
-        `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
         couponWrapperService.create(requestDto)
 
         // Then
-        verify(deadLetterRepository, times(1)).findById(requestDto.eventId);
         verify(rewardRepository, times(1)).save(any(Reward::class.java))
     }
 
     @Test
     @Throws(Exception::class)
     fun `할인율 쿠폰이 만들어 져야 한다`() {
-        val requestDto = CouponWrapperCreateDto(
+        val requestDto = RewardCreateDto(
             1L,
             LocalDate.now().toString(),
             100,
@@ -77,15 +70,13 @@ class RewardServiceTest {
             null
         )
         val testRateCoupon = testRateOf(
-            1L, 1L, requestDto.eventName,10, requestDto.couponDeadline, requestDto.discountRate!!)
+            1L, 1L,10, requestDto.couponDeadline, requestDto.discountRate!!)
         `when`(rewardRepository.save(testRateCoupon)).thenReturn(testRateCoupon)
-        `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
         couponWrapperService.create(requestDto)
 
         // Then
-        verify(deadLetterRepository, times(1)).findById(requestDto.eventId)
         verify(rewardRepository, times(1)).save(any(Reward::class.java))
     }
 
@@ -93,7 +84,7 @@ class RewardServiceTest {
     fun `요청에 할인율과 할인가격이 둘 다 있으면 생성되지 않는다`() {
         //given
         val requestDto =
-            CouponWrapperCreateDto(1L, "2024-12-31T23:59:59", 10, 10000L, 10, null)
+            RewardCreateDto(1L, "2024-12-31T23:59:59", 10, 10000L, 10, null)
 
         //when
         val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -101,7 +92,6 @@ class RewardServiceTest {
         }
 
         //then
-        verify(deadLetterRepository, never())
         assert(exception.message == "discountRate 또는 discountPrice 중 하나만 존재해야 합니다.")
     }
 
@@ -109,7 +99,7 @@ class RewardServiceTest {
     fun `요청에 할인율과 할인가격이 둘 다 없으면 생성 되지 않는다`() {
         //given
         val requestDto =
-            CouponWrapperCreateDto(1L, "2024-12-31T23:59:59", 10, null, null, null)
+            RewardCreateDto(1L, "2024-12-31T23:59:59", 10, null, null, null)
 
         //when
         val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -117,7 +107,6 @@ class RewardServiceTest {
         }
 
         //then
-        verify(deadLetterRepository, never())
         assert(exception.message == "discountRate 또는 discountPrice 중 하나만 존재해야 합니다.")
     }
 }

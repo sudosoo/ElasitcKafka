@@ -28,10 +28,8 @@ class CouponServiceTest(
 ) {
     @Mock
     lateinit var rewardRepository: RewardRepository
-
     @Mock
     lateinit var deadLetterRepository: DeadLetterRepository
-
     @Mock
     lateinit var couponRepository: CouponRepository
     @Mock
@@ -39,9 +37,6 @@ class CouponServiceTest(
 
     @InjectMocks
     lateinit var couponService: CouponService
-
-    @Mock
-    val mockEvent: Event = Mockito.mock(Event::class.java)
 
 
     @BeforeEach
@@ -51,27 +46,10 @@ class CouponServiceTest(
 
 
     @Test
-    fun `이벤트가 존재하지 않으면 쿠폰을 사용할 수 없다`() {
-        //given
-        val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
-        `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.empty())
-
-        //when
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            couponService.couponIssuance(requestDto)
-        }
-
-        //then
-        Mockito.verify(deadLetterRepository, never())
-        assert(exception.message == "Event is not found")
-    }
-
-
-    @Test
     @Throws(InterruptedException::class)
     fun `멀티 스레드 환경 선착순 쿠폰 발급 테스트`() {
         val maxCouponCount = 10
-        val reward = Reward.testRateOf(1L, 1L, "testEvent", maxCouponCount, LocalDate.now().toString(), 10)
+        val reward = Reward.testRateOf(1L, 1L, maxCouponCount, LocalDate.now().toString(), 10)
         val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
         val successCount = AtomicInteger()
         val numberOfExecute = 10000

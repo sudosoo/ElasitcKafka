@@ -1,6 +1,6 @@
 package com.sudosoo.takeItEasy.presentation.controller
 
-import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
+import com.sudosoo.takeItEasy.application.dto.coupon.RewardCreateDto
 import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,7 +14,7 @@ class CouponWrapperController(
     private val couponWrapperService : CouponWrapperService
 ) {
     @PostMapping("/create", name = "couponWrapperCreate")
-    fun createEvent(@RequestBody @Valid requestDto: CouponWrapperCreateDto) {
+    fun createEvent(@RequestBody @Valid requestDto: RewardCreateDto) {
         couponWrapperService.create(requestDto)
     }
 
