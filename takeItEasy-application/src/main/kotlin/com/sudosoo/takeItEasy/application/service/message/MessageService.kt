@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.application.service.message
 
-import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
-import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Message
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 class MessageService(
     private val kafkaProducer: KafkaProducer,
     private val messageRepository: MessageRepository
-) :JpaService<Message, Long> , JpaSpecificService<Message, Long>{
+) : JpaService<Message, Long>, JpaSpecificService<Message, Long> {
     override var jpaRepository: BaseRepository<Message, Long> = messageRepository
     override var jpaSpecRepository: BaseRepository<Message, Long> = messageRepository
 

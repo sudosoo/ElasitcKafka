@@ -1,8 +1,8 @@
 package com.sudosoo.takeItEasy.application.service.post
 
 import com.sudosoo.takeItEasy.application.commons.CommonService
-import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
-import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.comment.CommentResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.KafkaResponseDto
 import com.sudosoo.takeItEasy.application.dto.kafka.kafkaMemberValidateRequestDto

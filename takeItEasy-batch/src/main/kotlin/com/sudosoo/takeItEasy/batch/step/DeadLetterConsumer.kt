@@ -14,11 +14,11 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
 import java.time.LocalDate
 import javax.sql.DataSource
+
 @Configuration
 class DeadLetterConsumer(
     private val jobRepository: JobRepository,
@@ -39,7 +39,7 @@ class DeadLetterConsumer(
         return StepBuilder(JOB_NAME, jobRepository)
             .chunk<Event, Event>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
-            .writer(bulkWriter())
+            .writer(writer())
             .faultTolerant()
             .retryLimit(2)
             .retry(Exception::class.java)
@@ -57,7 +57,7 @@ class DeadLetterConsumer(
     }
 
     @Bean(name = [JOB_NAME + "_writer"])
-    override fun bulkWriter(): ItemWriter<Event> {
+    override fun writer(): ItemWriter<Event> {
         return ItemWriter<Event> { items ->
             val con = dataSource.connection ?: throw SQLException("Connection is null")
             val sql = "DELETE FROM Event WHERE id = ?;"
@@ -85,8 +85,10 @@ class DeadLetterConsumer(
                 pstmt.close()
                 con.close()
             }
+
         }
     }
+
 
 
 }

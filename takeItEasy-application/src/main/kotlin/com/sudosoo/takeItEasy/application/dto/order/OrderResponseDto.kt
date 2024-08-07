@@ -1,7 +1,9 @@
 package com.sudosoo.takeItEasy.application.dto.order
 
-class OrderResponseDto(
-    val orderId: Long
+import com.sudosoo.takeItEasy.domain.entity.Orders
+
+class OrderResponseDto(orders: Orders
 ) {
+    val orderId = orders.id
 
 }

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class StartupTasks(
-    val scheduler: Scheduler,
     val jobLauncher: JobLauncher,
     val batchJob: BatchJob
 ) :ApplicationRunner {

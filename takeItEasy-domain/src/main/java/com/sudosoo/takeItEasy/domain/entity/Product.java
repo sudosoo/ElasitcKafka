@@ -1,9 +1,6 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 // 임시 상품 클래스
 @Embeddable

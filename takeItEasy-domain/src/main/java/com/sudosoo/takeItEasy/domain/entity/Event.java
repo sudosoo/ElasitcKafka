@@ -1,12 +1,15 @@
 package com.sudosoo.takeItEasy.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
 public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,6 +19,7 @@ public class Event {
     private EventOperation operation;
     @CreatedDate
     private LocalDateTime createdAt;
+    @Column(columnDefinition = "TEXT")
     private String body;
 
     @Enumerated(EnumType.STRING)
@@ -30,31 +34,9 @@ public class Event {
         this.body = body;
     }
 
-    public EventStatus getStatus() {
-        return status;
-    }
-
-    public void failSend() {
+    public void fail() {
         this.status = EventStatus.FAILED;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public KafkaTopics getTargetName() {
-        return targetName;
-    }
-
-    public EventOperation getOperation() {
-        return operation;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getBody() {
-        return body;
-    }
 }

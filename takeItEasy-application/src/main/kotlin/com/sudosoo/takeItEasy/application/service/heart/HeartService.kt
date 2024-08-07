@@ -1,7 +1,7 @@
 package com.sudosoo.takeItEasy.application.service.heart
 
-import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
-import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
+import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.core.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.heart.CommentHeartRequestDto
 import com.sudosoo.takeItEasy.application.dto.heart.PostHeartRequestDto
 import com.sudosoo.takeItEasy.application.service.comment.CommentService
@@ -20,7 +20,7 @@ class HeartService(
     private val heartRepository: HeartRepository,
     private val postService: PostService,
     private val commentService: CommentService
-) :JpaService<Heart, Long>, JpaSpecificService<Heart,Long> {
+) : JpaService<Heart, Long>, JpaSpecificService<Heart, Long> {
     override var jpaRepository: BaseRepository<Heart, Long> = heartRepository
     override var jpaSpecRepository: BaseRepository<Heart,Long> = heartRepository
 

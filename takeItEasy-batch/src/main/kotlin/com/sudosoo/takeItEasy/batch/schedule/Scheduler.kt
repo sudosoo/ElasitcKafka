@@ -5,16 +5,15 @@ import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Configuration
 class Scheduler(
     private val batchJob: BatchJob,
-    private val jobLauncher : JobLauncher
-) {
+    private val jobLauncher : JobLauncher) {
     @Scheduled(cron = "0 0 0 * * ?")
-    fun run(){
+        fun run(){
         val jobParameter = JobParametersBuilder().addString("date", LocalDate.now().toString()).toJobParameters()
         jobLauncher.run(batchJob.heavyCreatePostJob(), jobParameter)
         jobLauncher.run(batchJob.oldPostsDeleteJob(), jobParameter)
@@ -24,11 +23,6 @@ class Scheduler(
     fun runDeadLetterJob(){
         val jobParameter = JobParametersBuilder().addString("date", LocalDate.now().toString()).toJobParameters()
         jobLauncher.run(batchJob.deadLetterJob(), jobParameter)
-    }
-
-    fun runOrderTestDummyCreator() {
-        val jobParameter = JobParametersBuilder().addString("date", LocalDate.now().toString()).toJobParameters()
-        jobLauncher.run(batchJob.orderTestDummyCreator(), jobParameter)
     }
 
 }

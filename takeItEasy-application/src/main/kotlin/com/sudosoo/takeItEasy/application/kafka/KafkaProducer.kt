@@ -37,7 +37,7 @@ class KafkaProducer(
         try {
             kafkaTemplate.send(record)
         }catch (e: Exception){
-            event.failSend()
+            event.fail()
             repository.save(event)
         }
     }
@@ -65,5 +65,4 @@ class KafkaProducer(
         }
         return Objects.requireNonNull(consumerRecord)?.value() ?: ""
     }
-
 }

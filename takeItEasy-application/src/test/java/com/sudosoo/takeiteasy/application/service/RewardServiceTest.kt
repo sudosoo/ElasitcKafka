@@ -1,8 +1,8 @@
 package com.sudosoo.takeiteasy.application.service
 
-import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
+import com.sudosoo.takeItEasy.application.core.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.RewardCreateDto
-import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperService
+import com.sudosoo.takeItEasy.application.service.coupon.RewardService
 import com.sudosoo.takeItEasy.domain.entity.Coupon
 import com.sudosoo.takeItEasy.domain.entity.Event
 import com.sudosoo.takeItEasy.domain.entity.Reward
@@ -27,7 +27,7 @@ class RewardServiceTest {
     lateinit var jpaService: JpaService<Coupon, Long>
 
     @InjectMocks
-    lateinit var couponWrapperService: CouponWrapperService
+    lateinit var rewardService: RewardService
 
     @Mock
     val mockEvent: Event = mock(Event::class.java)
@@ -52,7 +52,7 @@ class RewardServiceTest {
         `when`(rewardRepository.save(testPriceCoupon)).thenReturn(testPriceCoupon)
 
         // When
-        couponWrapperService.create(requestDto)
+        rewardService.create(requestDto)
 
         // Then
         verify(rewardRepository, times(1)).save(any(Reward::class.java))
@@ -74,7 +74,7 @@ class RewardServiceTest {
         `when`(rewardRepository.save(testRateCoupon)).thenReturn(testRateCoupon)
 
         // When
-        couponWrapperService.create(requestDto)
+        rewardService.create(requestDto)
 
         // Then
         verify(rewardRepository, times(1)).save(any(Reward::class.java))
@@ -88,7 +88,7 @@ class RewardServiceTest {
 
         //when
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            couponWrapperService.create(requestDto)
+            rewardService.create(requestDto)
         }
 
         //then
@@ -103,7 +103,7 @@ class RewardServiceTest {
 
         //when
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            couponWrapperService.create(requestDto)
+            rewardService.create(requestDto)
         }
 
         //then

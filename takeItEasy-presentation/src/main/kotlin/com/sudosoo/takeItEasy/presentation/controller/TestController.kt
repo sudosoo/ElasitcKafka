@@ -10,17 +10,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/test")
 class TestController (
-    val scheduler: Scheduler,
-    val redisService: RedisService,
     val postService: PostService,
-)
-{
-    @GetMapping("/getV", name = "getV")
-    fun redisGetTest(): List<PostCQRSDto> {
-        val methodName = "PostResponseDto"
-        return redisService.getValues(methodName)
-    }
-
+){
     @PostMapping("/synchronize", name = "repositoryRedisSynchronization")
     fun repositoryRedisSynchronization() {
         postService.postRepositoryRedisSynchronization()

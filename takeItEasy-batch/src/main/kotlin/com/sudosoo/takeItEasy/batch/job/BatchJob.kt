@@ -2,13 +2,11 @@ package com.sudosoo.takeItEasy.batch.job
 
 import com.sudosoo.takeItEasy.batch.step.*
 import org.springframework.batch.core.Job
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@EnableBatchProcessing
 class BatchJob(
     val jobRepository: JobRepository,
     val heavyCreatePost: HeavyCreatePost,
