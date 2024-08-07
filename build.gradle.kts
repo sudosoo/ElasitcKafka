@@ -107,6 +107,11 @@ subprojects {
         //redis
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
+        // Lombok
+        compileOnly ("org.projectlombok:lombok")
+        annotationProcessor ("org.projectlombok:lombok")
+        testCompileOnly ("org.projectlombok:lombok")
+
     }
 
     tasks.test {
