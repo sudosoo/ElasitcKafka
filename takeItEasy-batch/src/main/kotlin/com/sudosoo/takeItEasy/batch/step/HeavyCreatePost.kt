@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
 import javax.sql.DataSource
-
 @Configuration
 class HeavyCreatePost(
     private val jobRepository: JobRepository,
@@ -28,7 +27,7 @@ class HeavyCreatePost(
 ) : StepService<Post> {
 
     companion object {
-        const val JOB_NAME = "HEAVY_CREATE_POST"
+        const val JOB_NAME = "heavyCreatePosts"
         const val CHUNK_SIZE: Int = 10000
     }
 
@@ -38,20 +37,19 @@ class HeavyCreatePost(
             .chunk<Post, Post>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
             .writer(bulkWriter())
-            .startLimit(2)
             .build()
     }
 
+    @Bean(name = [JOB_NAME + "_reader"])
     @StepScope
-    //@Bean(name = [JOB_NAME + "_reader"])
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Post> {
-            return JpaPagingItemReaderBuilder<Post>()
-                .entityManagerFactory(entityManagerFactory)
-                .saveState(false)
-                .build()
-        }
+        return JpaPagingItemReaderBuilder<Post>()
+            .entityManagerFactory(entityManagerFactory)
+            .saveState(false)
+            .build()
+    }
 
-    //@Bean(name = [JOB_NAME + "_writer"])
+    @Bean(name = [JOB_NAME + "_writer"])
     override fun bulkWriter(): ItemWriter<Post> {
         var count = 0
         return ItemWriter<Post> { items ->
@@ -90,7 +88,5 @@ class HeavyCreatePost(
             }
         }
     }
-
-
 
 }

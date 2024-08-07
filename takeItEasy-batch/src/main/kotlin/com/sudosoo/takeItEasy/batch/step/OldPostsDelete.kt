@@ -16,9 +16,10 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import java.sql.SQLException
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.sql.DataSource
 
-@Component
+@Configuration
 class OldPostsDelete(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
@@ -27,7 +28,7 @@ class OldPostsDelete(
 ) : StepService<Post> {
 
     companion object {
-        const val JOB_NAME = "OLD_POSTS_DELETE"
+        const val JOB_NAME = "oldPostsDelete"
         const val CHUNK_SIZE: Int = 10000
     }
 
@@ -37,7 +38,9 @@ class OldPostsDelete(
             .chunk<Post, Post>(CHUNK_SIZE, transactionManager)
             .reader(reader(null))
             .writer(bulkWriter())
-            .startLimit(2)
+            .faultTolerant()
+            .retryLimit(2)
+            .retry(Exception::class.java)
             .build()
     }
 
@@ -45,13 +48,13 @@ class OldPostsDelete(
     @StepScope
     override fun reader(@Value("#{jobParameters[date]}") date: String?): JpaPagingItemReader<Post> {
         val cutoffDay = LocalDate.parse(date).minusDays(90)
-            return JpaPagingItemReaderBuilder<Post>()
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay;")
-                .parameterValues(mapOf("cutoffDay" to cutoffDay))
-                .saveState(false)
-                .build()
-        }
+        return JpaPagingItemReaderBuilder<Post>()
+            .entityManagerFactory(entityManagerFactory)
+            .queryString("SELECT p.id FROM Post p WHERE is_deleted = true AND deleted_at < :cutoffDay")
+            .parameterValues(mapOf("cutoffDay" to cutoffDay))
+            .saveState(false)
+            .build()
+    }
 
     @Bean(name = [JOB_NAME + "_writer"])
     override fun bulkWriter(): ItemWriter<Post> {
@@ -59,7 +62,7 @@ class OldPostsDelete(
             val con = dataSource.connection ?: throw SQLException("Connection is null")
             val sql = "DELETE FROM Post WHERE id = ?;"
             val pstmt = con.prepareStatement(sql)
-                con.autoCommit = false
+            con.autoCommit = false
             try {
                 items.chunked(CHUNK_SIZE).forEach{
                     for (chunk in it) {

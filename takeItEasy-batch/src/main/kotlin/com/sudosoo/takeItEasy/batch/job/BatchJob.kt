@@ -15,7 +15,7 @@ class BatchJob(
     val oldPostsDelete: OldPostsDelete,
     val deadLetterConsumer: DeadLetterConsumer,
     val heavyCreateOrders: HeavyCreateOrders
-) {
+){
     fun heavyCreatePostJob(): Job {
         return JobBuilder(BatchType.HEAVY_CREATE_POST.name,jobRepository)
             .start(heavyCreatePost.step())
@@ -37,7 +37,6 @@ class BatchJob(
         return JobBuilder(BatchType.ORDER_TEST_DUMMY_CREATOR.name,jobRepository)
             .start(heavyCreateOrders.step())
             .build()
-
     }
 
 }

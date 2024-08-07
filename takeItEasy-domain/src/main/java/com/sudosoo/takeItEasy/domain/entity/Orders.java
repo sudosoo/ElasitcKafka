@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 public class Orders {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String orderer;
     private String shippingAddress;
