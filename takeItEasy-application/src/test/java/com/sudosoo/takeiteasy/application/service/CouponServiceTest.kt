@@ -4,16 +4,15 @@ import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponIssuanceRequestDto
 import com.sudosoo.takeItEasy.application.service.coupon.CouponService
 import com.sudosoo.takeItEasy.domain.entity.Coupon
-import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.repository.CouponRepository
-import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
-import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.entity.Reward
+import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.repository.coupon.CouponRepository
+import com.sudosoo.takeItEasy.domain.repository.coupon.RewardRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.*
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.never
@@ -22,13 +21,13 @@ import org.springframework.dao.PessimisticLockingFailureException
 import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 class CouponServiceTest(
 ) {
     @Mock
-    lateinit var couponWrapperRepository: CouponWrapperRepository
+    lateinit var rewardRepository: RewardRepository
 
     @Mock
     lateinit var deadLetterRepository: DeadLetterRepository
@@ -72,7 +71,7 @@ class CouponServiceTest(
     @Throws(InterruptedException::class)
     fun `멀티 스레드 환경 선착순 쿠폰 발급 테스트`() {
         val maxCouponCount = 10
-        val couponWrapper = CouponWrapper.testRateOf(1L, 1L, "testEvent", maxCouponCount, LocalDate.now().toString(), 10)
+        val reward = Reward.testRateOf(1L, 1L, "testEvent", maxCouponCount, LocalDate.now().toString(), 10)
         val requestDto = CouponIssuanceRequestDto(1L, 1L, 1L)
         val successCount = AtomicInteger()
         val numberOfExecute = 10000
@@ -80,8 +79,8 @@ class CouponServiceTest(
         val latch = CountDownLatch(numberOfExecute)
 
         `when`(deadLetterRepository.existsById(anyLong())).thenReturn(true)
-        `when`(couponWrapperRepository.existsById(anyLong())).thenReturn(true)
-        `when`(couponWrapperRepository.findByIdForUpdate(anyLong())).thenReturn(Optional.of(couponWrapper))
+        `when`(rewardRepository.existsById(anyLong())).thenReturn(true)
+        `when`(rewardRepository.findByIdForUpdate(anyLong())).thenReturn(Optional.of(reward))
 
 
         for (i in 0 until numberOfExecute) {

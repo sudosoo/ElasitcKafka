@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.common;
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 

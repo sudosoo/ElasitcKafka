@@ -3,23 +3,23 @@ package com.sudosoo.takeItEasy.application.service.coupon
 import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
-import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
-import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
-import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.entity.Reward
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
+import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.repository.coupon.RewardRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
 class CouponWrapperService(
-    private val couponWrapperRepository: CouponWrapperRepository,
+    private val rewardRepository: RewardRepository,
     private val deadLetterRepository: DeadLetterRepository
 
-): JpaService<CouponWrapper, Long>, JpaSpecificService<CouponWrapper, Long> {
+): JpaService<Reward, Long>, JpaSpecificService<Reward, Long> {
 
-    override var jpaRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
-    override val jpaSpecRepository: BaseRepository<CouponWrapper, Long> = couponWrapperRepository
+    override var jpaRepository: BaseRepository<Reward, Long> = rewardRepository
+    override val jpaSpecRepository: BaseRepository<Reward, Long> = rewardRepository
 
     fun create(requestDto: CouponWrapperCreateDto){
         validateDiscountFields(requestDto)
@@ -41,13 +41,13 @@ class CouponWrapperService(
         { "discountRate 또는 discountPrice 중 하나만 존재해야 합니다." }
     }
 
-    private fun priceCouponCreate(requestDto: CouponWrapperCreateDto): CouponWrapper {
-        return CouponWrapper.priceOf(
+    private fun priceCouponCreate(requestDto: CouponWrapperCreateDto): Reward {
+        return Reward.priceOf(
             requestDto.eventId,requestDto.eventName ,requestDto.couponQuantity ,requestDto.couponDeadline ,requestDto.discountPrice)
     }
 
-    private fun rateCouponCreate(requestDto: CouponWrapperCreateDto): CouponWrapper {
-        return CouponWrapper.rateOf(
+    private fun rateCouponCreate(requestDto: CouponWrapperCreateDto): Reward {
+        return Reward.rateOf(
             requestDto.eventId,requestDto.eventName  ,requestDto.couponQuantity ,requestDto.couponDeadline ,requestDto.discountRate)
     }
 

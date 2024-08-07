@@ -5,7 +5,7 @@ import com.sudosoo.takeItEasy.application.commons.specification.JpaSpecificServi
 import com.sudosoo.takeItEasy.application.dto.message.MessageSendRequestDto
 import com.sudosoo.takeItEasy.application.kafka.KafkaProducer
 import com.sudosoo.takeItEasy.domain.entity.Message
-import com.sudosoo.takeItEasy.domain.repository.MessageRepository
+import com.sudosoo.takeItEasy.domain.repository.message.MessageRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

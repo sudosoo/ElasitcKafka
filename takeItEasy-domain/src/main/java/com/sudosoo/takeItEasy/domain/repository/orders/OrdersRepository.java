@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.orders;
 
 
 import com.sudosoo.takeItEasy.domain.entity.Orders;

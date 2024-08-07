@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.coupon;
 
 import com.sudosoo.takeItEasy.domain.entity.Coupon;
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository;

@@ -4,11 +4,11 @@ import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.coupon.CouponWrapperCreateDto
 import com.sudosoo.takeItEasy.application.service.coupon.CouponWrapperService
 import com.sudosoo.takeItEasy.domain.entity.Coupon
-import com.sudosoo.takeItEasy.domain.entity.CouponWrapper
-import com.sudosoo.takeItEasy.domain.entity.CouponWrapper.testRateOf
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.repository.CouponWrapperRepository
-import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.entity.Reward
+import com.sudosoo.takeItEasy.domain.entity.Reward.testRateOf
+import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
+import com.sudosoo.takeItEasy.domain.repository.coupon.RewardRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,9 +21,9 @@ import org.mockito.MockitoAnnotations
 import java.time.LocalDate
 import java.util.*
 
-class CouponWrapperServiceTest {
+class RewardServiceTest {
     @Mock
-    lateinit var couponWrapperRepository: CouponWrapperRepository
+    lateinit var rewardRepository: RewardRepository
 
     @Mock
     lateinit var deadLetterRepository: DeadLetterRepository
@@ -53,8 +53,8 @@ class CouponWrapperServiceTest {
             null,
             null
         )
-        val testPriceCoupon = CouponWrapper.testPriceOf(1L, 1L, "testEvent", 100, LocalDate.now().toString(), 10000L)
-        `when`(couponWrapperRepository.save(testPriceCoupon)).thenReturn(testPriceCoupon)
+        val testPriceCoupon = Reward.testPriceOf(1L, 1L, "testEvent", 100, LocalDate.now().toString(), 10000L)
+        `when`(rewardRepository.save(testPriceCoupon)).thenReturn(testPriceCoupon)
         `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
@@ -62,7 +62,7 @@ class CouponWrapperServiceTest {
 
         // Then
         verify(deadLetterRepository, times(1)).findById(requestDto.eventId);
-        verify(couponWrapperRepository, times(1)).save(any(CouponWrapper::class.java))
+        verify(rewardRepository, times(1)).save(any(Reward::class.java))
     }
 
     @Test
@@ -78,7 +78,7 @@ class CouponWrapperServiceTest {
         )
         val testRateCoupon = testRateOf(
             1L, 1L, requestDto.eventName,10, requestDto.couponDeadline, requestDto.discountRate!!)
-        `when`(couponWrapperRepository.save(testRateCoupon)).thenReturn(testRateCoupon)
+        `when`(rewardRepository.save(testRateCoupon)).thenReturn(testRateCoupon)
         `when`(deadLetterRepository.findById(anyLong())).thenReturn(Optional.ofNullable(mockEvent))
 
         // When
@@ -86,7 +86,7 @@ class CouponWrapperServiceTest {
 
         // Then
         verify(deadLetterRepository, times(1)).findById(requestDto.eventId)
-        verify(couponWrapperRepository, times(1)).save(any(CouponWrapper::class.java))
+        verify(rewardRepository, times(1)).save(any(Reward::class.java))
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.sudosoo.takeItEasy.domain.repository;
+package com.sudosoo.takeItEasy.domain.repository.category;
 
 import com.sudosoo.takeItEasy.domain.entity.Category;
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository;

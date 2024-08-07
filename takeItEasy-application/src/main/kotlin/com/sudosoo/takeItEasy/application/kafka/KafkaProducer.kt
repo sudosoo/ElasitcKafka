@@ -1,11 +1,9 @@
 package com.sudosoo.takeItEasy.application.kafka
 
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.sudosoo.takeItEasy.application.commons.CommonService
 import com.sudosoo.takeItEasy.domain.entity.Event
-import com.sudosoo.takeItEasy.domain.entity.EventStatus
-import com.sudosoo.takeItEasy.domain.repository.DeadLetterRepository
-import jakarta.transaction.Transactional
+import com.sudosoo.takeItEasy.domain.repository.common.DeadLetterRepository
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.header.internals.RecordHeader
@@ -28,21 +26,19 @@ class KafkaProducer(
     val kafkaRestApiReplyTopic: String,
     @Value("\${devsoo.kafka.notice.topic}")
     val kafkaNoticeTopic: String,
-    val objectMapper: ObjectMapper,
     val kafkaTemplate: KafkaTemplate<String, String>,
     val replyingKafkaTemplate: ReplyingKafkaTemplate<String, String, String>
 ) {
+    val objectMapper = CommonService.getObjectMapper()
+
     @Async
-    @Transactional
     fun send(event: Event) {
-        val record = ProducerRecord(event.targetName.name ,event.operation.name,event.body)
+        val record = ProducerRecord(event.targetName.name,event.operation.name,event.body)
         try {
             kafkaTemplate.send(record)
         }catch (e: Exception){
-            if (event.status == EventStatus.PENDING){
-                event.failSend()
-                repository.save(event)
-            }
+            event.failSend()
+            repository.save(event)
         }
     }
 
@@ -69,4 +65,5 @@ class KafkaProducer(
         }
         return Objects.requireNonNull(consumerRecord)?.value() ?: ""
     }
+
 }

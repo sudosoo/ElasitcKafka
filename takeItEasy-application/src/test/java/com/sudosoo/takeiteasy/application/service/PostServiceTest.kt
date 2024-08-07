@@ -10,8 +10,8 @@ import com.sudosoo.takeItEasy.domain.entity.Category
 import com.sudosoo.takeItEasy.domain.entity.Comment
 import com.sudosoo.takeItEasy.domain.entity.Heart
 import com.sudosoo.takeItEasy.domain.entity.Post
-import com.sudosoo.takeItEasy.domain.repository.CommentRepository
-import com.sudosoo.takeItEasy.domain.repository.PostRepository
+import com.sudosoo.takeItEasy.domain.repository.comment.CommentRepository
+import com.sudosoo.takeItEasy.domain.repository.post.PostRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach

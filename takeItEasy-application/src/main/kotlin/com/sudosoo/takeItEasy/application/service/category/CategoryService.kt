@@ -4,7 +4,7 @@ import com.sudosoo.takeItEasy.application.commons.jpa.JpaService
 import com.sudosoo.takeItEasy.application.dto.category.CreateCategoryRequestDto
 import com.sudosoo.takeItEasy.application.dto.category.UpdateCategoryRequestDto
 import com.sudosoo.takeItEasy.domain.entity.Category
-import com.sudosoo.takeItEasy.domain.repository.CategoryRepository
+import com.sudosoo.takeItEasy.domain.repository.category.CategoryRepository
 import com.sudosoo.takeItEasy.domain.repository.common.BaseRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
