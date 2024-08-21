@@ -4,17 +4,45 @@
 ### Java ###
 # Compiled class file
 *.class
+HELP.md
+.gradle
+build/
+!gradle/wrapper/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Log file
-*.log
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# BlueJ files
-*.ctxt
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# Package Files #
+### VS Code ###
+.vscode/
+
+### Package Files ###
 *.jar
 *.war
 *.nar
@@ -23,14 +51,43 @@
 *.tar.gz
 *.rar
 
-# Gradle
-.gradle/
-build/
-!build.gradle
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### macOS Patch ###
+# iCloud generated files
+*.icloud
+
+### Gradle ###
+.gradle
+**/build/
+!src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -54,4 +111,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-# End of https://www.toptal.com/developers/gitignore/api/java,gradle
+### config ###
+/src/main/resources/aws/
+/src/main/resources/images/
